@@ -35,7 +35,7 @@ public class UserEntity {
     @Column(name = "accountType")
     private AccountServiceImpl.AcountType accountType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntitySet")
     private Set<NuisanceEntity> nuisanceEntitySet;
 
     @Column(name = "updatedDate")
@@ -46,10 +46,6 @@ public class UserEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
 
