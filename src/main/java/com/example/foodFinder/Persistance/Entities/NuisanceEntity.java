@@ -23,6 +23,26 @@ public class NuisanceEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nuisanceEntitySet")
+    @JoinColumn(name = "user_entity")
     private UserEntity userEntitySet;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UserEntity getUserEntitySet() {
+        return userEntitySet;
+    }
+
+    public void setUserEntitySet(UserEntity userEntitySet) {
+        this.userEntitySet = userEntitySet;
+    }
 }
