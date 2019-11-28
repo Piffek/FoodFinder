@@ -1,15 +1,48 @@
 package com.example.foodFinder.Persistance.Entities;
 
+import com.example.foodFinder.Persistance.Services.AccountServiceImpl;
+import org.springframework.context.annotation.Lazy;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class UserEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "street")
+    private String street;
+
+    @Enumerated
+    @Column(name = "accountType")
+    private AccountServiceImpl.AcountType accountType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<NuisanceEntity> nuisanceEntitySet;
+
+    @Column(name = "updatedDate")
+    private Date updatedDate;
+
+    @Column(name = "createdDate")
+    private Date createdDate;
 
     public Long getId() {
         return id;
@@ -17,5 +50,16 @@ public class UserEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    @PostUpdate
+    private void setUpdatedDate(){
+        updatedDate = new Date();
+    }
+
+    @PostConstruct
+    private void setCreatedDate(){
+        createdDate = new Date();
     }
 }
