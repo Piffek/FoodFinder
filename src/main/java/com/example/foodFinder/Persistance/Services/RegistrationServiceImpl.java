@@ -1,18 +1,18 @@
 package com.example.foodFinder.Persistance.Services;
 
-import com.example.foodFinder.Persistance.Entities.UserEntity;
 import com.example.foodFinder.Persistance.Services.Interfaces.RegistrationService;
+import com.example.foodFinder.Persistance.dto.UserEntityDTO;
 
 import java.util.List;
 
 public class RegistrationServiceImpl implements RegistrationService {
     @Override
-    public UserEntity customerRegistration(UserEntity userEntity) {
+    public UserEntityDTO userRegistration(UserEntityDTO userEntity) {
         return null;
     }
 
     @Override
-    public List<UserEntity> multiCustomerRegistration(List<UserEntity> userEntities) {
+    public List<UserEntityDTO> multiCustomerRegistration(List<UserEntityDTO> userEntities) {
         return null;
     }
 }
