@@ -1,4 +1,4 @@
-package com.example.foodFinder.Persistance.dto;
+package com.example.foodFinder.Dto;
 
 
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;

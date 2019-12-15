@@ -1,7 +1,7 @@
 package com.example.foodFinder.Persistance.Services;
 
 import com.example.foodFinder.Persistance.Services.Interfaces.RegistrationService;
-import com.example.foodFinder.Persistance.dto.UserEntityDTO;
+import com.example.foodFinder.Dto.UserEntityDTO;
 
 import java.util.List;
 
