@@ -5,14 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HomePageController {
+@RequestMapping("/signup")
+public class RegisterController {
 
     @RequestMapping("/")
-    public ModelAndView homePage() {
-        ModelAndView modelAndView = new ModelAndView("index");
+    public ModelAndView registerPage() {
+        ModelAndView modelAndView = new ModelAndView("signup");
         return modelAndView;
     }
-
-
-
 }
