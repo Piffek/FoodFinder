@@ -2,7 +2,7 @@ package com.example.foodFinder.Dto;
 
 
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;
-import com.example.foodFinder.Persistance.Services.AccountServiceImpl;
+import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Date;

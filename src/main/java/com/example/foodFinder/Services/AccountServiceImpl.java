@@ -1,6 +1,6 @@
-package com.example.foodFinder.Persistance.Services;
+package com.example.foodFinder.Services;
 
-import com.example.foodFinder.Persistance.Services.Interfaces.AccountService;
+import com.example.foodFinder.Services.Interfaces.AccountService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
