@@ -1,7 +1,8 @@
 package com.example.foodFinder.Persistance.Entities;
 
-import com.example.foodFinder.Persistance.Services.AccountServiceImpl;
-import org.springframework.context.annotation.Lazy;
+import com.example.foodFinder.Services.AccountServiceImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -24,6 +27,15 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email_adress")
+    private String emailAdress;
 
     @Column(name = "city")
     private String city;
@@ -44,18 +56,13 @@ public class UserEntity {
     @Column(name = "createdDate")
     private Date createdDate;
 
-    public Long getId() {
-        return id;
-    }
-
-
     @PostUpdate
-    private void setUpdatedDate(){
+    private void initUpdatedDate(){
         updatedDate = new Date();
     }
 
     @PostConstruct
-    private void setCreatedDate(){
+    private void initCreatedDate(){
         createdDate = new Date();
     }
 }
