@@ -8,9 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomePageController {
 
     @RequestMapping("/")
-    public ModelAndView homePage()
-    {
-        ModelAndView modelAndView = new ModelAndView("index");
+    public ModelAndView homePage() {
+        ModelAndView modelAndView = new ModelAndView("layout");
         return modelAndView;
     }
+
+
+
 }

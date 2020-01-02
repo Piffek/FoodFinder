@@ -1,4 +1,4 @@
-package com.example.foodFinder.Persistance.Services.Interfaces;
+package com.example.foodFinder.Services.Interfaces;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
 

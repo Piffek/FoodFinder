@@ -1,9 +1,8 @@
 package com.example.foodFinder.Persistance.Entities;
 
-import com.example.foodFinder.Persistance.Services.AccountServiceImpl;
+import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Column;
@@ -28,6 +27,15 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email_adress")
+    private String emailAdress;
 
     @Column(name = "city")
     private String city;

@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+
+<head layout:fragment="head_title">
+    <title>Rejestracja</title>
+</head>
+
+<body>
+
+
+<header layout:fragment="banner" class="masthead text-center text-white">
+    <div class="masthead-content">
+        <div class="container">
+            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationRequest}" method="post">
+                <input type="text" th:field="*{name}" name="name" placeholder="nazwa">
+                <input type="email" th:field="*{emailAdress}" name="emailAdress" placeholder="email">
+                <input type="password" th:field="*{password}" name="password" placeholder="hasło">
+
+                <button type="submit">Wyślij rejestracje</button>
+            </form>
+        </div>
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+</header>
+
+
+<div layout:fragment="content" >
+    <header>
+
+    </header>
+</div>
+</body>
+
+
+
+<body>
+
+</body>
+</html>
