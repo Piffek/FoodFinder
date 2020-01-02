@@ -1,4 +1,4 @@
-package com.example.foodFinder.Form;
+package com.example.foodFinder.Requests;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class UserRegistrationForm {
+public class UserRegistrationRequest {
 
     @NotNull
     @Size(min = 4, max = 30)

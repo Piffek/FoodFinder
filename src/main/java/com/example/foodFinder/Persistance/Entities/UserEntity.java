@@ -28,6 +28,15 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email_adress")
+    private String emailAdress;
+
     @Column(name = "city")
     private String city;
 

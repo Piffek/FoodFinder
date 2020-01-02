@@ -12,7 +12,7 @@
 <header layout:fragment="banner" class="masthead text-center text-white">
     <div class="masthead-content">
         <div class="container">
-            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
+            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationRequest}" method="post">
                 <input type="text" th:field="*{name}" name="name" placeholder="nazwa">
                 <input type="email" th:field="*{emailAdress}" name="emailAdress" placeholder="email">
                 <input type="password" th:field="*{password}" name="password" placeholder="hasło">

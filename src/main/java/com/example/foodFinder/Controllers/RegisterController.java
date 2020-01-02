@@ -1,6 +1,6 @@
 package com.example.foodFinder.Controllers;
 
-import com.example.foodFinder.Form.UserRegistrationForm;
+import com.example.foodFinder.Requests.UserRegistrationRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +14,14 @@ import javax.validation.Valid;
 public class RegisterController {
 
     @RequestMapping("/")
-    public ModelAndView registerPage(UserRegistrationForm userRegistrationForm) {
+    public ModelAndView registerPage(UserRegistrationRequest userRegistrationRequest) {
         ModelAndView modelAndView = new ModelAndView("signup");
         return modelAndView;
     }
 
     @RequestMapping(value="user-signup", method = RequestMethod.POST)
     public ModelAndView userSignUp(
-            @Valid UserRegistrationForm userRegistrationForm,
+            @Valid UserRegistrationRequest userRegistrationRequest,
             BindingResult bindingResult) {
 
         ModelAndView modelAndView = new ModelAndView("signup");

@@ -12,6 +12,9 @@ import java.util.Set;
 @Setter
 public class UserEntityDTO {
     private Long id;
+    private String name;
+    private String password;
+    private String emailAdress;
     private String city;
     private String street;
     private AccountServiceImpl.AcountType accountType;
