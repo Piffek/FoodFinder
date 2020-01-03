@@ -17,6 +17,7 @@ public class UserEntityDTO {
     private String emailAdress;
     private String city;
     private String street;
+    private String postCode;
     private AccountServiceImpl.AcountType accountType;
     private Set<NuisanceEntity> nuisanceEntitySet;
     private Date updatedDate;

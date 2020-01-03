@@ -43,6 +43,9 @@ public class UserEntity {
     @Column(name = "street")
     private String street;
 
+    @Column(name = "post_code")
+    private String postCode;
+
     @Enumerated
     @Column(name = "accountType")
     private AccountServiceImpl.AcountType accountType;
