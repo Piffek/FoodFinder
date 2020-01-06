@@ -12,14 +12,13 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "nuisances")
+@Table(name = "nuisance")
 public class NuisanceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

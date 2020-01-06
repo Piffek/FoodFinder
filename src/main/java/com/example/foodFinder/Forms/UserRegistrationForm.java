@@ -4,6 +4,7 @@ import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,7 @@ public class UserRegistrationForm {
     @NotNull
     private String city;
 
+    @Enumerated
     @NotNull
-    private String accountPlan;
+    private AccountServiceImpl.AccountPlan accountPlan;
 }

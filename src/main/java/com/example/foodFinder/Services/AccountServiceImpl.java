@@ -18,8 +18,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public enum AccountPlan {
-        SOFT,
-        STANDARD,
-        PREMIUM
+        soft,
+        standard,
+        premiun
     }
 }
