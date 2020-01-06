@@ -13,7 +13,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/signup/*").permitAll()
+                    .antMatchers("/", "/signup/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

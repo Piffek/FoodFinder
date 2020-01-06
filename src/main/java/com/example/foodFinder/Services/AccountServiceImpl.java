@@ -13,11 +13,11 @@ public class AccountServiceImpl implements AccountService {
     private EntityManager entityManager;
 
     @Override
-    public AcountType getUserAccountType(Long userId) {
+    public AccountPlan getUserAccountPlan(Long userId) {
         return null;
     }
 
-    public enum AcountType {
+    public enum AccountPlan {
         SOFT,
         STANDARD,
         PREMIUM

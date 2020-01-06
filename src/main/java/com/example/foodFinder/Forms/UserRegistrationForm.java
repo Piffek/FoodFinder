@@ -1,18 +1,17 @@
-package com.example.foodFinder.Requests;
+package com.example.foodFinder.Forms;
 
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class UserRegistrationRequest {
+public class UserRegistrationForm {
 
     @NotNull
     @Size(min = 4, max = 30)
@@ -31,11 +30,5 @@ public class UserRegistrationRequest {
     private String city;
 
     @NotNull
-    private String street;
-
-    @NotNull
-    @Max(6)
-    private String postCode;
-
-    private AccountServiceImpl.AcountType accountType;
+    private String accountPlan;
 }

@@ -40,15 +40,9 @@ public class UserEntity {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "street")
-    private String street;
-
-    @Column(name = "post_code")
-    private String postCode;
-
     @Enumerated
-    @Column(name = "accountType")
-    private AccountServiceImpl.AcountType accountType;
+    @Column(name = "accountPlan")
+    private AccountServiceImpl.AccountPlan accountPlan;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntitySet")
     private Set<NuisanceEntity> nuisanceEntitySet;

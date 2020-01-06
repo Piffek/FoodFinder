@@ -7,11 +7,15 @@ public class UserMapper {
 
     public UserEntityDTO toUserEntityDto(UserEntity userEntity) {
         UserEntityDTO userEntityDTO = new UserEntityDTO();
-        userEntityDTO.setAccountType(userEntity.getAccountType());
+        userEntityDTO.setName(userEntity.getName());
+        userEntityDTO.setEmailAdress(userEntity.getEmailAdress());
+        userEntityDTO.setPassword(userEntity.getPassword());
         userEntityDTO.setCity(userEntity.getCity());
-        userEntityDTO.setStreet(userEntity.getStreet());
+        userEntityDTO.setAccountPlan(userEntity.getAccountPlan());
         userEntityDTO.setId(userEntity.getId());
         userEntityDTO.setNuisanceEntitySet(userEntity.getNuisanceEntitySet());
+        userEntityDTO.setCreatedDate(userEntity.getCreatedDate());
+        userEntityDTO.setUpdatedDate(userEntity.getUpdatedDate());
         return userEntityDTO;
     }
 }

@@ -12,13 +12,18 @@
 <header layout:fragment="banner" class="masthead text-center text-white">
     <div class="masthead-content">
         <div class="container">
-            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationRequest}" method="post">
-                <input type="text" th:field="*{name}" name="name" placeholder="nazwa">
-                <input type="email" th:field="*{emailAdress}" name="emailAdress" placeholder="email">
-                <input type="password" th:field="*{password}" name="password" placeholder="hasło">
 
-                <button type="submit">Wyślij rejestracje</button>
+            Wybrany plan to <span th:text="${plan}"></span><br>
+            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
+                <input th:type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
+                <input th:type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
+                <input th:type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
+                <input th:type="text"th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
+                <input disabled type="text" name="accountPlan" th:value="${plan}"> <br>
+
+                <br><button type="submit">Wyślij rejestracje</button>
             </form>
+
         </div>
     </div>
     <div class="bg-circle-1 bg-circle"></div>
