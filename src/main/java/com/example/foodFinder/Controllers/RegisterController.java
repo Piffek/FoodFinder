@@ -1,10 +1,12 @@
 package com.example.foodFinder.Controllers;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
+import com.example.foodFinder.Events.OnRegistrationCompleteEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -21,9 +24,12 @@ public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     private final MessageSource messageSource;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public RegisterController(MessageSource messageSource) {
+    public RegisterController(final MessageSource messageSource,
+                              final ApplicationEventPublisher applicationEventPublisher) {
         this.messageSource = messageSource;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @RequestMapping("/plans")
@@ -55,10 +61,15 @@ public class RegisterController {
     @RequestMapping(value = "user-signup", method = RequestMethod.POST)
     public ModelAndView userSignUp(
             final UserRegistrationForm userRegistrationForm,
-            final BindingResult bindingResult)
+            final BindingResult bindingResult,
+            final WebRequest request)
     {
 
         ModelAndView modelAndView = new ModelAndView("signup");
+
+        UserEntityDTO userEntityDTO = formMappingToEntity(userRegistrationForm);
+        applicationEventPublisher.publishEvent(
+                new OnRegistrationCompleteEvent(userEntityDTO, request.getLocale(), request.getContextPath()));
         return modelAndView;
     }
 
