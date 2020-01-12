@@ -1,6 +1,7 @@
 package com.example.foodFinder.Dto;
 
 
+import com.example.foodFinder.PasswordMatches;
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.Set;
 public class UserEntityDTO {
     private Long id;
     private String name;
+    private String matchingPassword;
     private String password;
     private String emailAdress;
     private String city;

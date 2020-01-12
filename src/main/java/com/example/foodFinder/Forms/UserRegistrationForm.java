@@ -1,5 +1,6 @@
 package com.example.foodFinder.Forms;
 
+import com.example.foodFinder.PasswordMatches;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@PasswordMatches
 public class UserRegistrationForm {
 
     @NotNull
@@ -26,6 +28,10 @@ public class UserRegistrationForm {
     @NotNull
     @Min(2)
     private String password;
+
+    @NotNull
+    @Min(2)
+    private String matchingPassword;
 
     @NotNull
     private String city;

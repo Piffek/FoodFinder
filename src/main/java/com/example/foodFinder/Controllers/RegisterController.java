@@ -1,7 +1,7 @@
 package com.example.foodFinder.Controllers;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
-import com.example.foodFinder.Events.OnRegistrationCompleteEvent;
+import com.example.foodFinder.Events.OnRegistrationEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import org.slf4j.Logger;
@@ -13,9 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -60,7 +61,7 @@ public class RegisterController {
 
     @RequestMapping(value = "user-signup", method = RequestMethod.POST)
     public ModelAndView userSignUp(
-            final UserRegistrationForm userRegistrationForm,
+            @Valid final UserRegistrationForm userRegistrationForm,
             final BindingResult bindingResult,
             final WebRequest request)
     {
@@ -69,7 +70,7 @@ public class RegisterController {
 
         UserEntityDTO userEntityDTO = formMappingToEntity(userRegistrationForm);
         applicationEventPublisher.publishEvent(
-                new OnRegistrationCompleteEvent(userEntityDTO, request.getLocale(), request.getContextPath()));
+                new OnRegistrationEvent(userEntityDTO, request.getLocale(), request.getContextPath()));
         return modelAndView;
     }
 
@@ -79,6 +80,7 @@ public class RegisterController {
         userEntityDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
         userEntityDTO.setName(userRegistrationForm.getName());
         userEntityDTO.setPassword(userRegistrationForm.getPassword());
+        userEntityDTO.setMatchingPassword(userRegistrationForm.getMatchingPassword());
         userEntityDTO.setAccountPlan(userRegistrationForm.getAccountPlan());
         return userEntityDTO;
     }
