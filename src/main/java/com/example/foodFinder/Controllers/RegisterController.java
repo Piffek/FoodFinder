@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,8 +66,11 @@ public class RegisterController {
             final BindingResult bindingResult,
             final WebRequest request)
     {
-
         ModelAndView modelAndView = new ModelAndView("signup");
+
+        if(bindingResult.hasErrors()) {
+
+        }
 
         UserEntityDTO userEntityDTO = formMappingToEntity(userRegistrationForm);
         applicationEventPublisher.publishEvent(

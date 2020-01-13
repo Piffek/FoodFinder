@@ -1,7 +1,6 @@
 package com.example.foodFinder.Dto;
 
 
-import com.example.foodFinder.PasswordMatches;
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;

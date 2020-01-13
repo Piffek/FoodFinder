@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@PasswordMatches
+@PasswordMatches(message = "{validator.password.dont.match}")
 public class UserRegistrationForm {
 
     @NotNull

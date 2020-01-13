@@ -22,6 +22,10 @@
                 <input th:type="text"th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
                 <input disabled type="text" name="accountPlan" th:value="${plan}"> <br>
 
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                </div>
+
                 <br><button type="submit">Wyślij rejestracje</button>
             </form>
 
