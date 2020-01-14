@@ -13,15 +13,14 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@PasswordMatches(message = "{validator.password.dont.match}")
+@PasswordMatches(message = "{validation.constraints.password.dont.match.message}")
 public class UserRegistrationForm {
 
-    @NotNull
-    @Size(min = 4, max = 30)
+    @Size(message = "{validation.constraints.name.size.message}",min = 4, max = 30)
     private String name;
 
     @Email
-    @NotNull
+    @NotNull(message = "{validation.constraints.email.not.null}")
     @Min(4)
     private String emailAdress;
 
@@ -33,7 +32,7 @@ public class UserRegistrationForm {
     @Min(2)
     private String matchingPassword;
 
-    @NotNull
+    @NotNull(message = "{validation.constraints.city.not.null}")
     private String city;
 
     @Enumerated
