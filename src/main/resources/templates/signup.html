@@ -19,8 +19,8 @@
                 <input th:type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
                 <input th:type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
                 <input th:type="password" th:field="*{matchingPassword}" th:placeholder="#{register.form.matchingPassword}"> <br>
-                <input th:type="text"th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
-                <input disabled type="text" name="accountPlan" th:value="${plan}"> <br>
+                <input th:type="text" th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
+                <input disabled type="text"  th:field="*{accountPlan}" name="accountPlan" th:value="${plan}"> <br>
 
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
                     <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>

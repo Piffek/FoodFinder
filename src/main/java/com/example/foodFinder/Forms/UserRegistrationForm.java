@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @PasswordMatches(message = "{validation.constraints.password.dont.match.message}")
 public class UserRegistrationForm {
 
-    @Size(message = "{validation.constraints.name.size.message}",min = 4, max = 30)
+    @Size(message = "{validation.constraints.name.size.message}", min = 4, max = 30)
     private String name;
 
     @Email

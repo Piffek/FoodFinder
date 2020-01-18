@@ -3,6 +3,7 @@ package com.example.foodFinder.Persistance.Entities;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Accessors(chain = true)
 @Table(name = "user")
 public class UserEntity {
 

@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -56,6 +57,7 @@ public class RegisterController {
             UserRegistrationForm userRegistrationForm)
     {
         ModelAndView modelAndView = new ModelAndView("signup");
+        userRegistrationForm.setAccountPlan(AccountServiceImpl.AccountPlan.valueOf(plan));
         modelAndView.addObject("plan", plan);
         return modelAndView;
     }
