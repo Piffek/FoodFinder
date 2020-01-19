@@ -1,6 +1,8 @@
 package com.example.foodFinder.Forms;
 
+import com.example.foodFinder.AccountTypeEnumValueExist;
 import com.example.foodFinder.PasswordMatches;
+import com.example.foodFinder.PasswordSize;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,18 +26,15 @@ public class UserRegistrationForm {
     @Min(4)
     private String emailAdress;
 
-    @NotNull
-    @Min(2)
+    @PasswordSize(4)
     private String password;
 
-    @NotNull
-    @Min(2)
     private String matchingPassword;
 
     @NotNull(message = "{validation.constraints.city.not.null}")
     private String city;
 
-    @Enumerated
-    @NotNull
-    private AccountServiceImpl.AccountPlan accountPlan;
+    @NotNull(message = "{validation.constraints.accountPlan.not.null}")
+    @AccountTypeEnumValueExist
+    private String accountPlan;
 }

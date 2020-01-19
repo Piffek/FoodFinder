@@ -1,10 +1,10 @@
 package com.example.foodFinder.Services.Interfaces;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
+import com.example.foodFinder.Services.AccountServiceImpl;
 
 import java.util.List;
 
 public interface RegistrationService {
-    UserEntityDTO userRegistration(UserEntityDTO userEntityDto);
-    List<UserEntityDTO> multiCustomerRegistration(List<UserEntityDTO> userEntitiesDto);
+    Long createUser(UserEntityDTO userEntityDto);
 }

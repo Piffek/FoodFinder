@@ -58,6 +58,7 @@ public class UserEntity {
     private void initEnable() {
         this.enabled = false;
     }
+
     @PostConstruct
     private void initCreatedDate(){
         this.createdDate = new Date();

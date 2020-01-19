@@ -17,15 +17,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     private EntityManager em;
 
     @Override
-    public UserEntityDTO userRegistration(UserEntityDTO userEntityDto) {
+    public Long createUser(UserEntityDTO userEntityDto) {
         UserEntity userEntity = UserMapper.toEntity(userEntityDto);
         em.persist(userEntity);
         em.flush();
-        return userEntityDto;
-    }
-
-    @Override
-    public List<UserEntityDTO> multiCustomerRegistration(List<UserEntityDTO> userEntities) {
-        return null;
+        return userEntity.getId();
     }
 }

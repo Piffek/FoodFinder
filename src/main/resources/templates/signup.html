@@ -8,43 +8,42 @@
 
 <body>
 
-
 <header layout:fragment="banner" class="masthead text-center text-white">
-    <div class="masthead-content">
-        <div class="container">
+        <div class="masthead-content">
+            <div class="container">
 
-            Wybrany plan to <span th:text="${plan}"></span><br>
-            <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
-                <input th:type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
-                <input th:type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
-                <input th:type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
-                <input th:type="password" th:field="*{matchingPassword}" th:placeholder="#{register.form.matchingPassword}"> <br>
-                <input th:type="text" th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
-                <input disabled type="text"  th:field="*{accountPlan}" name="accountPlan" th:value="${plan}"> <br>
+                Wybrany plan to <span th:text="${plan}"></span><br>
+                <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
+                    <input th:type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
+                    <input th:type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
+                    <input th:type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
+                    <input th:type="password" th:field="*{matchingPassword}"
+                           th:placeholder="#{register.form.matchingPassword}"> <br>
+                    <input th:type="text" th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
+                    <input type="hidden" th:field="*{accountPlan}"> <br>
 
-                <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-                </div>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                    </div>
 
-                <br><button type="submit">Wyślij rejestracje</button>
-            </form>
+                    <br>
+                    <button type="submit">Wyślij rejestracje</button>
+                </form>
 
+            </div>
         </div>
-    </div>
-    <div class="bg-circle-1 bg-circle"></div>
-    <div class="bg-circle-2 bg-circle"></div>
-    <div class="bg-circle-3 bg-circle"></div>
-    <div class="bg-circle-4 bg-circle"></div>
+        <div class="bg-circle-1 bg-circle"></div>
+        <div class="bg-circle-2 bg-circle"></div>
+        <div class="bg-circle-3 bg-circle"></div>
+        <div class="bg-circle-4 bg-circle"></div>
 </header>
 
-
-<div layout:fragment="content" >
+<div layout:fragment="content">
     <header>
 
     </header>
 </div>
 </body>
-
 
 
 <body>
