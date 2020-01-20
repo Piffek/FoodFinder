@@ -12,12 +12,11 @@
         <div class="masthead-content">
             <div class="container">
 
-                Wybrany plan to <span th:text="${plan}"></span><br>
                 <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
                     <input th:type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
                     <input th:type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
-                    <input th:type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
-                    <input th:type="password" th:field="*{matchingPassword}"
+                    <input type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
+                    <input type="password" th:field="*{matchingPassword}"
                            th:placeholder="#{register.form.matchingPassword}"> <br>
                     <input th:type="text" th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
                     <input type="hidden" th:field="*{accountPlan}"> <br>

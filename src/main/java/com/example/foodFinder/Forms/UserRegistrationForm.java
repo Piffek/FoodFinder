@@ -23,7 +23,6 @@ public class UserRegistrationForm {
 
     @Email
     @NotNull(message = "{validation.constraints.email.not.null}")
-    @Min(4)
     private String emailAdress;
 
     @PasswordSize(4)
