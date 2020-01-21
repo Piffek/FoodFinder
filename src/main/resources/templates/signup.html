@@ -11,7 +11,6 @@
 <header layout:fragment="banner" class="masthead text-center text-white">
         <div class="masthead-content">
             <div class="container">
-
                 <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
                     <input type="text" th:field="*{name}" placeholder="#{register.form.name}"> <br>
                     <input type="email" th:field="*{emailAdress}" placeholder="#{register.form.email}"> <br>
