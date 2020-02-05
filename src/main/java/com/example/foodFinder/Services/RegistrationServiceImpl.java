@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import javax.transaction.Transactional;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
@@ -16,11 +16,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     @Override
     public Long createUser(UserEntityDTO userEntityDto) {
         UserEntity userEntity = UserMapper.toEntity(userEntityDto);
         em.persist(userEntity);
-        em.flush();
         return userEntity.getId();
     }
 }

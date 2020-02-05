@@ -1,19 +1,16 @@
 package com.example.foodFinder.Controllers;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
-import com.example.foodFinder.Events.OnRegistrationEvent;
+import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import com.example.foodFinder.Services.Interfaces.RegistrationService;
-import com.example.foodFinder.Utils.LookupUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,9 +76,10 @@ public class RegisterController {
             return modelAndView;
         }
 
-            UserEntityDTO userEntityDTO = formMappingToDto(userRegistrationForm);
-            applicationEventPublisher.publishEvent(
-                    new OnRegistrationEvent(userEntityDTO, request.getLocale(), request.getContextPath()));
+        UserEntityDTO userEntityDTO = formMappingToDto(userRegistrationForm);
+        applicationEventPublisher.publishEvent(
+                new OnRegisterationEvent(userEntityDTO, request.getLocale())
+        );
 
         return modelAndView;
     }
