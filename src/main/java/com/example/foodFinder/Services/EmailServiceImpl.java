@@ -1,7 +1,13 @@
 package com.example.foodFinder.Services;
 
 import com.example.foodFinder.Services.Interfaces.EmailService;
+import freemarker.core.ParseException;
+import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -63,8 +69,16 @@ public class EmailServiceImpl implements EmailService {
             mime.setRecipients(Message.RecipientType.TO, recipients);
 
             javaMailSender.send(mime);
-        } catch (Exception e) {
-
+        } catch (TemplateException | MessagingException  | MalformedTemplateNameException e) {
+            logger.error("template exception", e);
+        }catch (UnsupportedEncodingException e) {
+            logger.error("encoding exception", e);
+        } catch (ParseException e) {
+            logger.error("parse exception", e);
+        } catch (TemplateNotFoundException e) {
+            logger.error("template not found exception", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

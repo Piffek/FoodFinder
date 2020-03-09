@@ -2,22 +2,20 @@ package com.example.foodFinder.Conf;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.core.HTMLOutputFormat;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Configuration
 public class FreemarkerConf {
-    private final String TEMPLATE_PATH = "/email-templates/";
+    private final String TEMPLATE_PATH = "classpath:/email-templates/";
 
-
-    public FreeMarkerConfigurer freemarkerConfiguration() {
-        FreeMarkerConfigurer configuration =
-                new FreeMarkerConfigurer();
-        configuration.getConfiguration().setOutputFormat(HTMLOutputFormat.INSTANCE);
-        configuration.getConfiguration().setOutputEncoding("UTF-8");
+    @Bean
+    public freemarker.template.Configuration freemarkerConfiguration() {
+        freemarker.template.Configuration configuration =
+                new freemarker.template.Configuration();
+        configuration.setOutputFormat(HTMLOutputFormat.INSTANCE);
+        configuration.setOutputEncoding("UTF-8");
         configuration.setDefaultEncoding("UTF-8");
-        configuration.getConfiguration().setTemplateLoader(new ClassTemplateLoader(getClass(), TEMPLATE_PATH));
-
         return configuration;
     }
 }
