@@ -22,7 +22,7 @@ public class NuisanceEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_entity")
+    @JoinColumn(name = "user_id")
     private UserEntity userEntitySet;
 
     public Long getId() {

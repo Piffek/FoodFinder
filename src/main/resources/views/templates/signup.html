@@ -12,12 +12,12 @@
         <div class="masthead-content">
             <div class="container">
                 <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
-                    <input type="text" th:field="*{name}" placeholder="#{register.form.name}"> <br>
-                    <input type="email" th:field="*{emailAdress}" placeholder="#{register.form.email}"> <br>
-                    <input type="password" th:field="*{password}" placeholder="#{register.form.password}"> <br>
+                    <input type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
+                    <input type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
+                    <input type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
                     <input type="password" th:field="*{matchingPassword}"
-                           placeholder="#{register.form.matchingPassword}"> <br>
-                    <input type="text" th:field="*{city}" placeholder="#{register.form.city}"> <br>
+                           th:placeholder="#{register.form.matchingPassword}"> <br>
+                    <input type="text" th:field="*{city}" th:placeholder="#{register.form.city}"> <br>
                     <input type="hidden" th:field="*{accountPlan}"> <br>
 
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
@@ -25,7 +25,7 @@
                     </div>
 
                     <br>
-                    <button type="submit">Wyślij rejestracje</button>
+                    <button type="submit" th:text="#{text.send}"></button>
                 </form>
 
             </div>

@@ -1,19 +1,16 @@
 package com.example.foodFinder.Controllers;
 
 import com.example.foodFinder.Dto.UserEntityDTO;
-import com.example.foodFinder.Events.OnRegistrationEvent;
+import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import com.example.foodFinder.Services.Interfaces.RegistrationService;
-import com.example.foodFinder.Utils.LookupUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +39,7 @@ public class RegisterController {
 
     @RequestMapping("/plans")
     public ModelAndView planSelect() {
-        ModelAndView modelAndView = new ModelAndView("plans");
+        final ModelAndView modelAndView = new ModelAndView("plans");
         modelAndView.addObject("accountPlans", AccountServiceImpl.AccountPlan.values());
         return modelAndView;
     }
@@ -51,7 +48,7 @@ public class RegisterController {
     public ModelAndView registration(
             @PathVariable("plan") String plan
     ) {
-        ModelAndView modelAndView = new ModelAndView("registration");
+        final ModelAndView modelAndView = new ModelAndView("registration");
         modelAndView.addObject("plan", plan);
         return modelAndView;
     }
@@ -60,7 +57,7 @@ public class RegisterController {
     public ModelAndView registerPage(
             UserRegistrationForm userRegistrationForm,
             @PathVariable("plan") String plan) {
-        ModelAndView modelAndView = new ModelAndView("signup");
+        final ModelAndView modelAndView = new ModelAndView("signup");
 
         userRegistrationForm.setAccountPlan(plan);
         modelAndView.addObject("plan", plan);
@@ -73,20 +70,21 @@ public class RegisterController {
             @Valid UserRegistrationForm userRegistrationForm,
             final BindingResult bindingResult,
             final WebRequest request) {
-        ModelAndView modelAndView = new ModelAndView("signup");
+        final ModelAndView modelAndView = new ModelAndView("signup");
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
         }
 
-            UserEntityDTO userEntityDTO = formMappingToDto(userRegistrationForm);
-            applicationEventPublisher.publishEvent(
-                    new OnRegistrationEvent(userEntityDTO, request.getLocale(), request.getContextPath()));
+        final UserEntityDTO userEntityDTO = formMappingToDto(userRegistrationForm);
+        applicationEventPublisher.publishEvent(
+                new OnRegisterationEvent(userEntityDTO, request.getLocale())
+        );
 
         return modelAndView;
     }
 
-    private UserEntityDTO formMappingToDto(UserRegistrationForm userRegistrationForm) {
+    private UserEntityDTO formMappingToDto(final UserRegistrationForm userRegistrationForm) {
         UserEntityDTO userEntityDTO = new UserEntityDTO();
         userEntityDTO.setCity(userRegistrationForm.getCity());
         userEntityDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
