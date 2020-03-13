@@ -2,6 +2,7 @@ package com.example.foodFinder.Dto;
 
 
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;
+import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,4 +25,6 @@ public class UserEntityDTO {
     private Set<NuisanceEntity> nuisanceEntitySet;
     private Date updatedDate;
     private Date createdDate;
+    private VerificationTokenEntity activatedToken;
+
 }
