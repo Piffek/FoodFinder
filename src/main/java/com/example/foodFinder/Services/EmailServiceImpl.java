@@ -1,5 +1,6 @@
 package com.example.foodFinder.Services;
 
+import com.example.foodFinder.Constranits;
 import com.example.foodFinder.Services.Interfaces.EmailService;
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
@@ -7,6 +8,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 import javax.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,58 +29,63 @@ import java.util.Properties;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
-    private final String TEMPLATE_PATH = "/email-templates/";
 
-    private final FreeMarkerConfigurer freeMarkerConfigurer;
-    private final JavaMailSender javaMailSender;
+  private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
+  private final String TEMPLATE_PATH = "/email-templates/";
 
-    public EmailServiceImpl(FreeMarkerConfigurer freeMarkerConfigurer,
-                            JavaMailSender javaMailSender) {
-        this.freeMarkerConfigurer = freeMarkerConfigurer;
-        this.javaMailSender = javaMailSender;
+  private final FreeMarkerConfigurer freeMarkerConfigurer;
+  private final JavaMailSender javaMailSender;
+
+  public EmailServiceImpl(FreeMarkerConfigurer freeMarkerConfigurer,
+      JavaMailSender javaMailSender) {
+    this.freeMarkerConfigurer = freeMarkerConfigurer;
+    this.javaMailSender = javaMailSender;
+  }
+
+  @Override
+  public void sendEmail(final List<String> toList, final Map<String, Object> dataModel,
+      final String templateName,
+      final String recipients, final Locale locale) {
+    Properties properties = new Properties();
+    final String localeString = locale != null ? locale.toString() : Constranits.DEFAULT_LOCALE;
+    final String templatePath = TEMPLATE_PATH + "" + templateName + "_" + localeString + ".properties";
+
+    try (InputStream inputStream = getClass().getResourceAsStream(templatePath)) {
+      properties.load(inputStream);
+    } catch (IOException e) {
+      logger.error("Error while loading email template properties: {}", templatePath, e);
     }
 
-    @Override
-    public void sendEmail(final List<String> toList, final Map<String, Object> dataModel, final String templateName,
-                          final String recipients) {
-        Properties properties = new Properties();
-
-        try(InputStream inputStream = getClass().getResourceAsStream(TEMPLATE_PATH+""+templateName+".properties")) {
-            properties.load(inputStream);
-        } catch (IOException e) {
-            logger.error("Error while loading email template properties: {}", templateName, e);
-        }
-
-        LinkedHashMap<Object, Object> finalDataModel = new LinkedHashMap<>(properties);
-        if(dataModel != null) {
-            finalDataModel.putAll(dataModel);
-        }
-
-        try {
-            Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName+".ftl");
-            StringWriter stringWriter = new StringWriter();
-            template.process(finalDataModel, stringWriter);
-
-            String mailText = stringWriter.toString();
-
-            MimeMessage mime = javaMailSender.createMimeMessage();
-            mime.setFrom(new InternetAddress("do-not-replay@foodfinder.pl", "Piwko"));
-            mime.setSubject(properties.getProperty("subject"), "UTF-8");
-            mime.setText(mailText, template.getOutputEncoding(), "html");
-            mime.setRecipients(Message.RecipientType.TO, recipients);
-
-            javaMailSender.send(mime);
-        } catch (TemplateException | MessagingException  | MalformedTemplateNameException e) {
-            logger.error("template exception", e);
-        }catch (UnsupportedEncodingException e) {
-            logger.error("encoding exception", e);
-        } catch (ParseException e) {
-            logger.error("parse exception", e);
-        } catch (TemplateNotFoundException e) {
-            logger.error("template not found exception", e);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    LinkedHashMap<Object, Object> finalDataModel = new LinkedHashMap<>(properties);
+    if (dataModel != null) {
+      finalDataModel.putAll(dataModel);
     }
+
+    try {
+      Template template = freeMarkerConfigurer.getConfiguration()
+          .getTemplate(templateName + ".ftl");
+      StringWriter stringWriter = new StringWriter();
+      template.process(finalDataModel, stringWriter);
+
+      String mailText = stringWriter.toString();
+
+      MimeMessage mime = javaMailSender.createMimeMessage();
+      mime.setFrom(new InternetAddress("do-not-replay@foodfinder.pl", "Piwko"));
+      mime.setSubject(properties.getProperty("subject"), "UTF-8");
+      mime.setText(mailText, template.getOutputEncoding(), "html");
+      mime.setRecipients(Message.RecipientType.TO, recipients);
+
+      javaMailSender.send(mime);
+    } catch (TemplateException | MessagingException | MalformedTemplateNameException e) {
+      logger.error("template exception", e);
+    } catch (UnsupportedEncodingException e) {
+      logger.error("encoding exception", e);
+    } catch (ParseException e) {
+      logger.error("parse exception", e);
+    } catch (TemplateNotFoundException e) {
+      logger.error("template not found exception", e);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

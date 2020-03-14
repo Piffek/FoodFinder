@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FreemarkerConf {
-    private final String TEMPLATE_PATH = "classpath:/email-templates/";
 
     @Bean
     public freemarker.template.Configuration freemarkerConfiguration() {
