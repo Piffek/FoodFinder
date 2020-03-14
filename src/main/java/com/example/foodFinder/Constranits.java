@@ -12,5 +12,8 @@ import org.springframework.data.relational.core.sql.In;
  * Copyright 2020 (C) PiwkoSoft.
  */
 public class Constranits {
-  public static int EXPIRATION_TOKEN_TIME= 30;
+
+  public static String BASIC_URL = "http://localhost:78";
+  public static String DEFAULT_LOCALE = "pl";
+  public static int EXPIRATION_TOKEN_TIME = 30;
 }
