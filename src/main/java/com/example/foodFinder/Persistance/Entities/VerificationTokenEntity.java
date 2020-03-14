@@ -1,5 +1,6 @@
 package com.example.foodFinder.Persistance.Entities;
 
+import com.example.foodFinder.Constranits;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Base64;
@@ -66,7 +67,7 @@ public class VerificationTokenEntity {
     private void setExpirationTokenDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Timestamp(calendar.getTime().getTime()));
-        calendar.add(Calendar.MINUTE, 30);
+        calendar.add(Calendar.MINUTE, Constranits.EXPIRATION_TOKEN_TIME);
         this.tokenExpiryDate = new Date(calendar.getTime().getTime());
     }
 }
