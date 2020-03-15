@@ -1,12 +1,8 @@
 package com.example.foodFinder.Persistance.Entities;
 
 import com.example.foodFinder.Services.AccountServiceImpl;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -41,7 +37,7 @@ public class UserEntity {
 
     private String name;
 
-    private String password;
+    private String password; // TOOO hash password
 
     private String emailAdress;
 

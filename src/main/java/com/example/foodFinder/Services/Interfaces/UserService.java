@@ -5,6 +5,7 @@ import com.example.foodFinder.Services.AccountServiceImpl;
 
 import java.util.List;
 
-public interface RegistrationService {
+public interface UserService {
     Long createUser(UserEntityDTO userEntityDto);
+    void updateUser(UserEntityDTO userEntityDto);
 }

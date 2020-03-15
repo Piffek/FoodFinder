@@ -2,6 +2,7 @@ package com.example.foodFinder.Mapper;
 
 import com.example.foodFinder.Dto.VerificationTokenDTO;
 import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
+import javax.jws.soap.SOAPBinding.Use;
 
 /**
  * Project: FoodFinder
@@ -19,6 +20,8 @@ public class VerificationTokenMapper {
     verificationTokenDTO.setId(verificationTokenEntity.getId());
     verificationTokenDTO.setToken(verificationTokenEntity.getToken());
     verificationTokenDTO.setTokenExpiryDate(verificationTokenEntity.getTokenExpiryDate());
+    verificationTokenDTO.setUser(verificationTokenEntity.getUser() != null ? UserMapper
+        .toDto(verificationTokenEntity.getUser()) : null);
     return verificationTokenDTO;
   }
 

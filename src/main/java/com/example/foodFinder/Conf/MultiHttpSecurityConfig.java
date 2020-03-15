@@ -13,7 +13,10 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/signup/**").permitAll()
+                    .antMatchers(
+                        "/",
+                        "/signup/**",
+                        "/activate-token/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

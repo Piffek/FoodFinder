@@ -53,6 +53,23 @@ h6 {
   font-weight: 700;
   letter-spacing: 0.1rem;
 }
+header.alert-success {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-top: 5rem;
+  font-size: 20px;
+  background-color: #d4edda;
+}
+
+header.alert-error {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-top: 5rem;
+  font-size: 20px;
+  background-color: #f8d7da;
+}
 
 header.masthead {
   position: relative;

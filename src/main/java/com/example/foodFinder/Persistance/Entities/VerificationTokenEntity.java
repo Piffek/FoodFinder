@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -56,12 +57,7 @@ public class VerificationTokenEntity {
     }
 
     private void setToken() {
-        try {
-            final SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
-            this.token = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        this.token = UUID.randomUUID().toString();
     }
 
     private void setExpirationTokenDate() {

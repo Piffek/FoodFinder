@@ -1,0 +1,21 @@
+﻿<div xmlns:th="http://www.thymeleaf.org" th:fragment="alert">
+  <header th:if="${error != null}" class="alert-error text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <div class="alert alert-danger" role="alert">
+          <span th:text="${error}"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <header th:if="${sucess != null}" class="alert-success text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <div class="alert alert-success" role="alert">
+          <span th:text="#{sucess}"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>

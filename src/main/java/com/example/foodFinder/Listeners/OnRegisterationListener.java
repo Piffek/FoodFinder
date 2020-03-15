@@ -6,7 +6,7 @@ import com.example.foodFinder.Dto.VerificationTokenDTO;
 import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Mapper.VerificationTokenMapper;
 import com.example.foodFinder.Services.Interfaces.EmailService;
-import com.example.foodFinder.Services.Interfaces.RegistrationService;
+import com.example.foodFinder.Services.Interfaces.UserService;
 import com.example.foodFinder.Services.Interfaces.TokenService;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Component;
 public class OnRegisterationListener implements ApplicationListener<OnRegisterationEvent> {
 
   private final EmailService emailService;
-  private final RegistrationService registrationService;
+  private final UserService userService;
   private final TokenService tokenService;
 
   public OnRegisterationListener(final EmailService emailService,
-      final RegistrationService registrationService,
+      final UserService userService,
       final TokenService tokenService) {
     this.emailService = emailService;
-    this.registrationService = registrationService;
+    this.userService = userService;
     this.tokenService = tokenService;
   }
 
@@ -34,7 +34,7 @@ public class OnRegisterationListener implements ApplicationListener<OnRegisterat
     final UserEntityDTO userEntityDTO = (UserEntityDTO) onRegisterEvent.getUserEntityDTO();
     final VerificationTokenDTO verificationTokenDTO = tokenService.generateSecretToken();
     userEntityDTO.setActivatedToken(VerificationTokenMapper.toEntity(verificationTokenDTO));
-    registrationService.createUser(userEntityDTO);
+    userService.createUser(userEntityDTO);
 
     Map<String, Object> params = new HashMap<>();
     params.put("name", userEntityDTO.getEmailAdress());
