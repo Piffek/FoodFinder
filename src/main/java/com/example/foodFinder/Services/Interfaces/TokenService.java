@@ -13,4 +13,5 @@ import com.example.foodFinder.Dto.VerificationTokenDTO;
  */
 public interface TokenService {
   VerificationTokenDTO generateSecretToken();
+  VerificationTokenDTO getByToken(String token);
 }

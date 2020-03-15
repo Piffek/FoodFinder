@@ -26,5 +26,5 @@ public class UserEntityDTO {
     private Date updatedDate;
     private Date createdDate;
     private VerificationTokenEntity activatedToken;
-
+    private boolean enabled;
 }

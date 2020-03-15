@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  * <p>
  * Author    : Patryk Piwko
  * <p>
- * Copyright 2020 (C) Piwko.
+ * Copyright 2020 (C) PiwkoSoft.
  */
 @Getter
 @Setter
@@ -21,4 +21,5 @@ public class VerificationTokenDTO {
   private Long id;
   private String token;
   private Date tokenExpiryDate; //current + 30m
+  private UserEntityDTO user;
 }

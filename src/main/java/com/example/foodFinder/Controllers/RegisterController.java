@@ -4,7 +4,7 @@ import com.example.foodFinder.Dto.UserEntityDTO;
 import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
-import com.example.foodFinder.Services.Interfaces.RegistrationService;
+import com.example.foodFinder.Services.Interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,11 +26,11 @@ public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     private final MessageSource messageSource;
-    private final RegistrationService registrationService;
+    private final UserService registrationService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public RegisterController(final MessageSource messageSource,
-                              final RegistrationService registrationService,
+                              final UserService registrationService,
                               final ApplicationEventPublisher applicationEventPublisher) {
         this.messageSource = messageSource;
         this.registrationService = registrationService;
