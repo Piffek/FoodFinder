@@ -55,7 +55,7 @@ public class ActivationController {
       return modelAndView;
     }
 
-    if (verificationTokenDTO.getTokenExpiryDate().before(new Date())) {
+    if (verificationTokenDTO.getTokenExpiryDate().after(new Date())) {
       modelAndView.addObject("error",
           messageSource
               .getMessage("activate.user.token.expired.date", null, request.getLocale()));
