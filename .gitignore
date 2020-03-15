@@ -74,3 +74,6 @@ mvnw
 mvnw.cmd
 .mvn
 .mvn/
+
+*.js
+*.map
