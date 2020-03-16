@@ -2,6 +2,7 @@ package com.example.foodFinder.Services;
 
 import com.example.foodFinder.Constranits;
 import com.example.foodFinder.Services.Interfaces.EmailService;
+import com.sun.mail.util.MailConnectException;
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;

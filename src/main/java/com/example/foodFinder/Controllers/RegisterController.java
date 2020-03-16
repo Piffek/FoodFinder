@@ -4,11 +4,10 @@ import com.example.foodFinder.Dto.UserEntityDTO;
 import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Services.AccountServiceImpl;
-import com.example.foodFinder.Services.Interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +24,14 @@ import javax.validation.Valid;
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
-    private final MessageSource messageSource;
-    private final UserService registrationService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegisterController(final MessageSource messageSource,
-                              final UserService registrationService,
-                              final ApplicationEventPublisher applicationEventPublisher) {
-        this.messageSource = messageSource;
-        this.registrationService = registrationService;
+    public RegisterController(
+        final ApplicationEventPublisher applicationEventPublisher,
+        final PasswordEncoder passwordEncoder) {
         this.applicationEventPublisher = applicationEventPublisher;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping("/plans")
@@ -85,12 +82,12 @@ public class RegisterController {
     }
 
     private UserEntityDTO formMappingToDto(final UserRegistrationForm userRegistrationForm) {
+        final String hashedPassword = passwordEncoder.encode(userRegistrationForm.getMatchingPassword());
         UserEntityDTO userEntityDTO = new UserEntityDTO();
         userEntityDTO.setCity(userRegistrationForm.getCity());
         userEntityDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
         userEntityDTO.setName(userRegistrationForm.getName());
-        userEntityDTO.setPassword(userRegistrationForm.getPassword());
-        userEntityDTO.setMatchingPassword(userRegistrationForm.getMatchingPassword());
+        userEntityDTO.setPassword(hashedPassword);
         userEntityDTO.setAccountPlan(AccountServiceImpl.AccountPlan.lookup(userRegistrationForm.getAccountPlan()));
         return userEntityDTO;
     }

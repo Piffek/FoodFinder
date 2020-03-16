@@ -23,6 +23,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
@@ -37,7 +38,7 @@ public class UserEntity {
 
     private String name;
 
-    private String password; // TOOO hash password
+    private String password;
 
     private String emailAdress;
 
