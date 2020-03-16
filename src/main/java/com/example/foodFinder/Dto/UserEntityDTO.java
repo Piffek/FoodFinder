@@ -17,7 +17,6 @@ import java.util.Set;
 public class UserEntityDTO {
     private Long id;
     private String name;
-    private String matchingPassword;
     private String password;
     private String emailAdress;
     private String city;

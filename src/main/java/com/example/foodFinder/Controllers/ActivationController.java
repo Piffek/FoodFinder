@@ -55,7 +55,7 @@ public class ActivationController {
       return modelAndView;
     }
 
-    if (verificationTokenDTO.getTokenExpiryDate().after(new Date())) {
+    if (verificationTokenDTO.getTokenExpiryDate().before(new Date())) {
       modelAndView.addObject("error",
           messageSource
               .getMessage("activate.user.token.expired.date", null, request.getLocale()));
@@ -67,6 +67,10 @@ public class ActivationController {
     UserEntityDTO userEntityDTO = verificationTokenDTO.getUser();
     userEntityDTO.setEnabled(true);
     userService.updateUser(userEntityDTO);
+
+    modelAndView.addObject("sucess",
+        messageSource
+            .getMessage("activate.user.sucess", null, request.getLocale()));
     return modelAndView;
   }
 
