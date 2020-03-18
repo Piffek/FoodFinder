@@ -23,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountPlanEntity findAccountPlanByName(String accountPlan) {
+    public AccountPlanEntity findAccountPlanByName(AccountPlan accountPlan) {
         Query query = em.createQuery("FROM AccountPlanEntity ape WHERE ape.accountPlan = :accountPlan");
         query.setParameter("accountPlan", accountPlan);
         return (AccountPlanEntity) query.getSingleResult();

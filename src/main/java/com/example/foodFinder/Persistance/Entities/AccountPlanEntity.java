@@ -4,6 +4,7 @@ import com.example.foodFinder.Services.AccountServiceImpl;
 import com.example.foodFinder.Utils.LookupUtil;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,8 @@ public class AccountPlanEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String accountPlan;
+  @Enumerated(EnumType.STRING)
+  private AccountPlan accountPlan;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountPlan")
   private Set<UserEntity> users;

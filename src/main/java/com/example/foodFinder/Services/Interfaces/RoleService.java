@@ -1,6 +1,7 @@
 package com.example.foodFinder.Services.Interfaces;
 
 import com.example.foodFinder.Persistance.Entities.RoleEntity;
+import com.example.foodFinder.Persistance.Entities.RoleEntity.Role;
 
 /**
  * Project: FoodFinder
@@ -13,5 +14,5 @@ import com.example.foodFinder.Persistance.Entities.RoleEntity;
  */
 public interface RoleService {
   RoleEntity findById(Long id);
-  RoleEntity findIdByRole(String roleName);
+  RoleEntity findIdByRole(Role roleName);
 }

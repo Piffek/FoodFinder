@@ -4,6 +4,7 @@ import com.example.foodFinder.Persistance.Entities.RoleEntity;
 import com.example.foodFinder.Persistance.Entities.UserEntity;
 import com.example.foodFinder.Services.Interfaces.UserService;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     List<GrantedAuthority> authorities = userEntity.getRoles().stream()
         .map(RoleEntity::getName)
+        .map(Objects::toString)
         .map(SimpleGrantedAuthority::new)
         .collect(Collectors.toList());
 
