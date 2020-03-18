@@ -1,6 +1,7 @@
 package com.example.foodFinder.Services;
 
 import com.example.foodFinder.Persistance.Entities.RoleEntity;
+import com.example.foodFinder.Persistance.Entities.RoleEntity.Role;
 import com.example.foodFinder.Services.Interfaces.RoleService;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -29,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
-  public RoleEntity findIdByRole(final String roleName) {
+  public RoleEntity findIdByRole(final Role roleName) {
     Query query = em.createQuery("FROM RoleEntity re WHERE re.name = :name");
     query.setParameter("name", roleName);
     RoleEntity role;

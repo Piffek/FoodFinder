@@ -2,18 +2,15 @@ package com.example.foodFinder.Persistance.Entities;
 
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.PostPersist;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 /**
  * Project: FoodFinder
@@ -33,18 +30,19 @@ public class RoleEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String name;
+  @Enumerated(EnumType.STRING)
+  private Role name;
 
   @ManyToMany(mappedBy = "roles")
   private Set<UserEntity> user;
 
-  public enum Roles {
+  public enum Role {
     USER("USER"),
     ADMIN("ADMIN");
 
     private String name;
 
-    Roles(String name) {
+    Role(String name) {
       this.name = name;
     }
 

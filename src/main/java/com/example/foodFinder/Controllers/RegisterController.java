@@ -6,8 +6,9 @@ import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Facades.Interfaces.AccountFacade;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Persistance.Entities.AccountPlanEntity;
+import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
 import com.example.foodFinder.Persistance.Entities.RoleEntity;
-import com.example.foodFinder.Persistance.Entities.RoleEntity.Roles;
+import com.example.foodFinder.Persistance.Entities.RoleEntity.Role;
 import com.example.foodFinder.Services.Interfaces.RoleService;
 import java.util.Collections;
 import org.slf4j.Logger;
@@ -94,7 +95,8 @@ public class RegisterController {
       return modelAndView;
     }
 
-    AccountPlanDTO accountPlanDTO = accountFacade.findAccountPlanByName(userRegistrationForm.getAccountPlan());
+    AccountPlanDTO accountPlanDTO = accountFacade
+        .findAccountPlanByName(AccountPlan.lookup(userRegistrationForm.getAccountPlan()));
 
     if (accountPlanDTO == null) {
       logger.debug("account plan {} not found", userRegistrationForm.getAccountPlan());
@@ -113,7 +115,7 @@ public class RegisterController {
       final AccountPlanDTO accountPlanDTO) {
     final String hashedPassword = passwordEncoder
         .encode(userRegistrationForm.getMatchingPassword());
-    final RoleEntity roleEntity = roleService.findIdByRole(Roles.USER.getName());
+    final RoleEntity roleEntity = roleService.findIdByRole(Role.USER);
 
     UserDTO userDTO = new UserDTO();
     userDTO.setCity(userRegistrationForm.getCity());

@@ -1,5 +1,6 @@
 package com.example.foodFinder.Dto;
 
+import com.example.foodFinder.Persistance.Entities.RoleEntity.Role;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class RoleDTO {
-  public String name;
+  public Role name;
   public Set<Long> users;
 }
