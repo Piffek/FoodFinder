@@ -1,7 +1,11 @@
 package com.example.foodFinder.Persistance.Entities;
 
 import com.example.foodFinder.Services.AccountServiceImpl;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -11,7 +15,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -19,11 +22,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.Cascade;
 
 @Getter
 @Setter
@@ -36,7 +38,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
 
     private String password;
 
@@ -44,10 +46,19 @@ public class UserEntity {
 
     private String city;
 
-    @Enumerated
-    private AccountServiceImpl.AccountPlan accountPlan;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_plan_id")
+    private AccountPlanEntity accountPlan;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntitySet")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = { @JoinColumn(name = "user_id") },
+        inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<RoleEntity> roles;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<NuisanceEntity> nuisanceEntitySet;
 
     @Temporal(TemporalType.TIMESTAMP)

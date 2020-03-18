@@ -1,6 +1,6 @@
 package com.example.foodFinder.Dto;
 
-import java.util.Date;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Project: FoodFinder
  * <p>
- * Created on: 13.03.2020
+ * Created on: 16.03.2020
  * <p>
  * Author    : Patryk Piwko
  * <p>
@@ -17,9 +17,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class VerificationTokenDTO {
-  private Long id;
-  private String token;
-  private Date tokenExpiryDate; //current + 30m
-  private Long user;
+public class RoleDTO {
+  public String name;
+  public Set<Long> users;
 }

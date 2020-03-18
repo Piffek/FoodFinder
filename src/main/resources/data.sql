@@ -1,0 +1,1 @@
+INSERT INTO account_plan (account_plan) VALUES ('standard');

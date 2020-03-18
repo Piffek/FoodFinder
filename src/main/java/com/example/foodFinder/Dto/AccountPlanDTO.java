@@ -1,6 +1,8 @@
 package com.example.foodFinder.Dto;
 
-import java.util.Date;
+import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
+import com.example.foodFinder.Persistance.Entities.UserEntity;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -8,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * Project: FoodFinder
  * <p>
- * Created on: 13.03.2020
+ * Created on: 17.03.2020
  * <p>
  * Author    : Patryk Piwko
  * <p>
@@ -17,9 +19,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class VerificationTokenDTO {
+public class AccountPlanDTO {
   private Long id;
-  private String token;
-  private Date tokenExpiryDate; //current + 30m
-  private Long user;
+  private AccountPlan accountPlan;
+  private Set<Long> users;
 }

@@ -1,6 +1,7 @@
 package com.example.foodFinder.Services.Interfaces;
 
 import com.example.foodFinder.Dto.VerificationTokenDTO;
+import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
 
 /**
  * Project: FoodFinder
@@ -12,6 +13,7 @@ import com.example.foodFinder.Dto.VerificationTokenDTO;
  * Copyright 2020 (C) PiwkoSoft.
  */
 public interface TokenService {
-  VerificationTokenDTO generateSecretToken();
-  VerificationTokenDTO getByToken(String token);
+  VerificationTokenEntity generateSecretToken();
+  VerificationTokenEntity getByToken(String token);
+  VerificationTokenEntity findById(Long id);
 }

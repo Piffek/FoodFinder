@@ -12,7 +12,6 @@
         <div class="masthead-content">
             <div class="container">
                 <form th:action="@{/signup/user-signup}" th:object="${userRegistrationForm}" method="post">
-                    <input type="text" th:field="*{name}" th:placeholder="#{register.form.name}"> <br>
                     <input type="email" th:field="*{emailAdress}" th:placeholder="#{register.form.email}"> <br>
                     <input type="password" th:field="*{password}" th:placeholder="#{register.form.password}"> <br>
                     <input type="password" th:field="*{matchingPassword}"
