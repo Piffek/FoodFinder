@@ -34,7 +34,7 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    public AccountPlanDTO findAccountPlanByName(AccountPlan accountPlan) {
+    public AccountPlanDTO findAccountPlanByName(String accountPlan) {
         AccountPlanEntity accountPlanEntity = accountService.findAccountPlanByName(accountPlan);
         if(accountPlanEntity == null) {
             return null;

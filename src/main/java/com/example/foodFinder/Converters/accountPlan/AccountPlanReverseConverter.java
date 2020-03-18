@@ -36,7 +36,7 @@ public class AccountPlanReverseConverter implements ReverseConverter<AccountPlan
         .collect(Collectors.toSet());
 
     accountPlanEntity.setId(accountPlanDTO.getId());
-    accountPlanEntity.setAccountPlan(accountPlanDTO.getAccountPlan().name());
+    accountPlanEntity.setAccountPlan(accountPlanDTO.getAccountPlan());
     accountPlanEntity.setUsers(userEntities);
     return accountPlanEntity;
   }

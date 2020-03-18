@@ -5,7 +5,7 @@ import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan
 
 public interface AccountService {
     AccountPlanEntity getUserAccountPlan(Long userId);
-    AccountPlanEntity findAccountPlanByName(AccountPlan accountPlan);
+    AccountPlanEntity findAccountPlanByName(String accountPlan);
     AccountPlanEntity findById(Long id);
 
 }

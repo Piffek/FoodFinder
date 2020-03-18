@@ -13,6 +13,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 /**
  * Project: FoodFinder
@@ -36,4 +37,19 @@ public class RoleEntity {
 
   @ManyToMany(mappedBy = "roles")
   private Set<UserEntity> user;
+
+  public enum Roles {
+    USER("USER"),
+    ADMIN("ADMIN");
+
+    private String name;
+
+    Roles(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
+  }
 }

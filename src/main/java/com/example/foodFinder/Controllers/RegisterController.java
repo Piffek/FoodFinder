@@ -6,9 +6,10 @@ import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Facades.Interfaces.AccountFacade;
 import com.example.foodFinder.Forms.UserRegistrationForm;
 import com.example.foodFinder.Persistance.Entities.AccountPlanEntity;
-import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
-import com.example.foodFinder.Services.AccountServiceImpl;
-import com.example.foodFinder.Services.Interfaces.AccountService;
+import com.example.foodFinder.Persistance.Entities.RoleEntity;
+import com.example.foodFinder.Persistance.Entities.RoleEntity.Roles;
+import com.example.foodFinder.Services.Interfaces.RoleService;
+import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,14 +42,17 @@ public class RegisterController {
   private final ApplicationEventPublisher applicationEventPublisher;
   private final PasswordEncoder passwordEncoder;
   private final AccountFacade accountFacade;
+  private final RoleService roleService;
 
   public RegisterController(
       final ApplicationEventPublisher applicationEventPublisher,
       final PasswordEncoder passwordEncoder,
-      final AccountFacade accountFacade) {
+      final AccountFacade accountFacade,
+      final RoleService roleService) {
     this.applicationEventPublisher = applicationEventPublisher;
     this.passwordEncoder = passwordEncoder;
     this.accountFacade = accountFacade;
+    this.roleService = roleService;
   }
 
   @RequestMapping("/plans")
@@ -90,8 +94,7 @@ public class RegisterController {
       return modelAndView;
     }
 
-    AccountPlanDTO accountPlanDTO = accountFacade.findAccountPlanByName(
-        AccountPlan.lookup(userRegistrationForm.getAccountPlan()));
+    AccountPlanDTO accountPlanDTO = accountFacade.findAccountPlanByName(userRegistrationForm.getAccountPlan());
 
     if (accountPlanDTO == null) {
       logger.debug("account plan {} not found", userRegistrationForm.getAccountPlan());
@@ -110,12 +113,15 @@ public class RegisterController {
       final AccountPlanDTO accountPlanDTO) {
     final String hashedPassword = passwordEncoder
         .encode(userRegistrationForm.getMatchingPassword());
+    final RoleEntity roleEntity = roleService.findIdByRole(Roles.USER.getName());
+
     UserDTO userDTO = new UserDTO();
     userDTO.setCity(userRegistrationForm.getCity());
     userDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
     userDTO.setUsername(userRegistrationForm.getEmailAdress());
     userDTO.setPassword(hashedPassword);
     userDTO.setAccountPlan(accountPlanDTO.getId());
+    userDTO.setRoles(roleEntity != null ? Collections.singleton(roleEntity.getId()) : null);
     return userDTO;
   }
 }

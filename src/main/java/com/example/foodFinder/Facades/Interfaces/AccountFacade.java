@@ -5,6 +5,6 @@ import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan
 
 public interface AccountFacade {
     AccountPlanDTO getUserAccountPlan(Long userId);
-    AccountPlanDTO findAccountPlanByName(AccountPlan accountPlan);
+    AccountPlanDTO findAccountPlanByName(String accountPlan);
 
 }

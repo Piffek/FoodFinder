@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,7 @@ import lombok.Setter;
  * <p>
  * Author    : Patryk Piwko
  * <p>
- * Copyright 2020 (C) Si-eCommerce sp. z o.o.
+ * Copyright 2020 (C) PiwkoSoft.
  */
 @Getter
 @Setter

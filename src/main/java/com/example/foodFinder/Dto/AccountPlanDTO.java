@@ -21,6 +21,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AccountPlanDTO {
   private Long id;
-  private AccountPlan accountPlan;
+  private String accountPlan;
   private Set<Long> users;
 }

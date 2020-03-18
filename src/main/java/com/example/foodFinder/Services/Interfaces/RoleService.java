@@ -13,4 +13,5 @@ import com.example.foodFinder.Persistance.Entities.RoleEntity;
  */
 public interface RoleService {
   RoleEntity findById(Long id);
+  RoleEntity findIdByRole(String roleName);
 }

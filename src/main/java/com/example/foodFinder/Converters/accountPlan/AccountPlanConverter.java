@@ -5,6 +5,7 @@ import com.example.foodFinder.Dto.AccountPlanDTO;
 import com.example.foodFinder.Dto.UserDTO;
 import com.example.foodFinder.Persistance.Entities.AccountPlanEntity;
 import com.example.foodFinder.Persistance.Entities.UserEntity;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,9 @@ public class AccountPlanConverter implements Converter<AccountPlanDTO, AccountPl
   public AccountPlanDTO convert(AccountPlanEntity accountPlanEntity) {
     return new AccountPlanDTO()
         .setId(accountPlanEntity.getId())
-        .setAccountPlan(AccountPlanEntity.AccountPlan.lookup(accountPlanEntity.getAccountPlan()))
-        .setUsers(accountPlanEntity.getUsers().stream().map(UserEntity::getId).collect(Collectors.toSet()));
+        .setAccountPlan(accountPlanEntity.getAccountPlan())
+        .setUsers(accountPlanEntity.getUsers().stream()
+            .filter(Objects::nonNull)
+            .map(UserEntity::getId).collect(Collectors.toSet()));
   }
 }
