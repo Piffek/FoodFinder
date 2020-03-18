@@ -1,7 +1,5 @@
 package com.example.foodFinder.Services;
 
-import com.example.foodFinder.Dto.VerificationTokenDTO;
-import com.example.foodFinder.Mapper.VerificationTokenMapper;
 import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
 import com.example.foodFinder.Services.Interfaces.TokenService;
 import javax.persistence.EntityManager;
@@ -31,16 +29,16 @@ public class TokenServiceImpl implements TokenService {
   private EntityManager em;
 
   @Override
-  public VerificationTokenDTO generateSecretToken() {
+  public VerificationTokenEntity generateSecretToken() {
     final VerificationTokenEntity verificationTokenEntity = new VerificationTokenEntity();
     em.persist(verificationTokenEntity);
 
     logger.debug("create token {}", verificationTokenEntity.getToken());
-    return VerificationTokenMapper.toDTO(verificationTokenEntity);
+    return verificationTokenEntity;
   }
 
   @Override
-  public VerificationTokenDTO getByToken(final String token) {
+  public VerificationTokenEntity getByToken(final String token) {
     Query query = em.createQuery("FROM VerificationTokenEntity vte WHERE vte.token = :token");
     query.setParameter("token", token);
     VerificationTokenEntity verificationTokenEntity;
@@ -50,6 +48,11 @@ public class TokenServiceImpl implements TokenService {
       return null;
     }
 
-    return VerificationTokenMapper.toDTO(verificationTokenEntity);
+    return verificationTokenEntity;
+  }
+
+  @Override
+  public VerificationTokenEntity findById(Long id) {
+    return em.find(VerificationTokenEntity.class, id);
   }
 }

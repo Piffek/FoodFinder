@@ -1,7 +1,9 @@
 package com.example.foodFinder.Dto;
 
 
+import com.example.foodFinder.Persistance.Entities.AccountPlanEntity;
 import com.example.foodFinder.Persistance.Entities.NuisanceEntity;
+import com.example.foodFinder.Persistance.Entities.RoleEntity;
 import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
 import com.example.foodFinder.Services.AccountServiceImpl;
 import lombok.Getter;
@@ -14,16 +16,16 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class UserEntityDTO {
+public class UserDTO {
     private Long id;
-    private String name;
+    private String username;
     private String password;
     private String emailAdress;
     private String city;
-    private AccountServiceImpl.AccountPlan accountPlan;
-    private Set<NuisanceEntity> nuisanceEntitySet;
+    private Long accountPlan;
+    private Set<Long> roles;
     private Date updatedDate;
     private Date createdDate;
-    private VerificationTokenEntity activatedToken;
+    private Long activatedToken;
     private boolean enabled;
 }
