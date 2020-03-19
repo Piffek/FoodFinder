@@ -1,5 +1,6 @@
 package com.example.foodFinder.Conf;
 
+import com.example.foodFinder.Services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,9 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return super.userDetailsService();
+    private final UserDetailsServiceImpl userDetailsService;
+
+    public MultiHttpSecurityConfig(
+        final UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -30,7 +32,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -47,11 +49,15 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
                     .antMatchers(
                         "/",
                         "/signup/**",
-                        "/activate-token/**").permitAll()
+                        "/activate-token/**",
+                        "/login").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/login")
+                    .usernameParameter("name")
+                    .passwordParameter("password")
+                    .successForwardUrl("/")
                     .permitAll()
                     .and()
                 .logout()

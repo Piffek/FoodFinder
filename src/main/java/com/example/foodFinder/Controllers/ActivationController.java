@@ -45,7 +45,7 @@ public class ActivationController {
 
   @RequestMapping("/{token}")
   public ModelAndView activate(@PathVariable("token") String token, final WebRequest request) {
-    ModelAndView modelAndView = new ModelAndView("login");
+    ModelAndView modelAndView = new ModelAndView("index.html");
     VerificationTokenDTO verificationTokenDTO = tokenFacade.getByToken(token);
 
     if (verificationTokenDTO == null) {
