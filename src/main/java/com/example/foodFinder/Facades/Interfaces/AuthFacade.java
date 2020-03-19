@@ -1,6 +1,6 @@
-package com.example.foodFinder.Services.Interfaces;
+package com.example.foodFinder.Facades.Interfaces;
 
-public interface AuthService {
+public interface AuthFacade {
 
     boolean hasAccessToPage(Long userId, String pageName);
     boolean emailUnavailable(String email);

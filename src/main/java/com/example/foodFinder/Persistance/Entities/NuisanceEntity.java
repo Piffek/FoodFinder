@@ -1,6 +1,5 @@
 package com.example.foodFinder.Persistance.Entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,8 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "nuisance")
 public class NuisanceEntity {
@@ -23,25 +25,5 @@ public class NuisanceEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity userEntitySet;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public UserEntity getUserEntitySet() {
-        return userEntitySet;
-    }
-
-    public void setUserEntitySet(UserEntity userEntitySet) {
-        this.userEntitySet = userEntitySet;
-    }
+    private UserEntity userEntity;
 }

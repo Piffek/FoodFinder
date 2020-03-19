@@ -1,6 +1,5 @@
 package com.example.foodFinder.Events;
 
-import com.example.foodFinder.Dto.UserEntityDTO;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

@@ -1,10 +1,11 @@
 package com.example.foodFinder.Listeners;
 
 import com.example.foodFinder.Constranits;
-import com.example.foodFinder.Dto.UserEntityDTO;
+import com.example.foodFinder.Dto.UserDTO;
 import com.example.foodFinder.Dto.VerificationTokenDTO;
 import com.example.foodFinder.Events.OnRegisterationEvent;
-import com.example.foodFinder.Mapper.VerificationTokenMapper;
+import com.example.foodFinder.Facades.Interfaces.TokenFacade;
+import com.example.foodFinder.Facades.Interfaces.UserFacade;
 import com.example.foodFinder.Services.Interfaces.EmailService;
 import com.example.foodFinder.Services.Interfaces.UserService;
 import com.example.foodFinder.Services.Interfaces.TokenService;
@@ -18,27 +19,27 @@ import org.springframework.stereotype.Component;
 public class OnRegisterationListener implements ApplicationListener<OnRegisterationEvent> {
 
   private final EmailService emailService;
-  private final UserService userService;
-  private final TokenService tokenService;
+  private final UserFacade userFacade;
+  private final TokenFacade tokenFacade;
 
   public OnRegisterationListener(final EmailService emailService,
-      final UserService userService,
-      final TokenService tokenService) {
+      final UserFacade userFacade,
+      final TokenFacade tokenFacade) {
     this.emailService = emailService;
-    this.userService = userService;
-    this.tokenService = tokenService;
+    this.userFacade = userFacade;
+    this.tokenFacade = tokenFacade;
   }
 
   @Override
   public void onApplicationEvent(final OnRegisterationEvent onRegisterEvent) {
-    final UserEntityDTO userEntityDTO = (UserEntityDTO) onRegisterEvent.getUserEntityDTO();
-    final VerificationTokenDTO verificationTokenDTO = tokenService.generateSecretToken();
-    userEntityDTO.setActivatedToken(VerificationTokenMapper.toEntity(verificationTokenDTO));
-    userService.createUser(userEntityDTO);
+    final UserDTO userDTO = (UserDTO) onRegisterEvent.getUserEntityDTO();
+    final VerificationTokenDTO verificationTokenDTO = tokenFacade.generateSecretToken();
+    userDTO.setActivatedToken(verificationTokenDTO.getId());
+    userFacade.createUser(userDTO);
 
     Map<String, Object> params = new HashMap<>();
-    params.put("name", userEntityDTO.getEmailAdress());
-    params.put("activate_url", Constranits.BASIC_URL+"/activate-token/"+userEntityDTO.getActivatedToken().getToken());
+    params.put("name", userDTO.getEmailAdress());
+    params.put("activate_url", Constranits.BASIC_URL+"/activate-token/"+ verificationTokenDTO.getToken());
 
     emailService.sendEmail(Collections.singletonList("patrykpiwko123412@gmail.com"),
         params, "registration", "registration", onRegisterEvent.getLocale());
