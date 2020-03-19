@@ -5,6 +5,7 @@ import com.example.foodFinder.Persistance.Entities.UserEntity;
 import com.example.foodFinder.Services.Interfaces.UserService;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +38,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
     final UserEntity userEntity = userService.findByUsername(username);
     if(userEntity == null) {
       logger.debug("username {} not found", username);
       throw new UsernameNotFoundException(username);
     }
 
-    List<GrantedAuthority> authorities = userEntity.getRoles().stream()
+    final List<RoleEntity> roles = userService.getRolesByUsername(username);
+
+    List<GrantedAuthority> authorities = roles.stream()
         .map(RoleEntity::getName)
         .map(Objects::toString)
         .map(SimpleGrantedAuthority::new)

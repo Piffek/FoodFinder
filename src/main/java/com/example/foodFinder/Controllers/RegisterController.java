@@ -60,6 +60,7 @@ public class RegisterController {
   public ModelAndView planSelect() {
     final ModelAndView modelAndView = new ModelAndView("plans");
     modelAndView.addObject("accountPlans", AccountPlanEntity.AccountPlan.values());
+    logger.debug("registration begin ...");
     return modelAndView;
   }
 
@@ -69,6 +70,7 @@ public class RegisterController {
   ) {
     final ModelAndView modelAndView = new ModelAndView("registration");
     modelAndView.addObject("plan", plan);
+    logger.debug("selected plan {}", plan);
     return modelAndView;
   }
 
@@ -92,6 +94,7 @@ public class RegisterController {
     final ModelAndView modelAndView = new ModelAndView("signup");
 
     if (bindingResult.hasErrors()) {
+      logger.debug("registration form errors {}", bindingResult.getAllErrors());
       return modelAndView;
     }
 
@@ -117,6 +120,7 @@ public class RegisterController {
         .encode(userRegistrationForm.getMatchingPassword());
     final RoleEntity roleEntity = roleService.findIdByRole(Role.USER);
 
+    logger.debug("creating user {} with role {}", userRegistrationForm.getEmailAdress(), roleEntity.getName());
     UserDTO userDTO = new UserDTO();
     userDTO.setCity(userRegistrationForm.getCity());
     userDTO.setEmailAdress(userRegistrationForm.getEmailAdress());

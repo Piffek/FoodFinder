@@ -45,8 +45,8 @@ public class ActivationController {
 
   @RequestMapping("/{token}")
   public ModelAndView activate(@PathVariable("token") String token, final WebRequest request) {
-    ModelAndView modelAndView = new ModelAndView("login");
-    VerificationTokenDTO verificationTokenDTO = tokenFacade.getByToken(token);
+    ModelAndView modelAndView = new ModelAndView("index");
+    final VerificationTokenDTO verificationTokenDTO = tokenFacade.getByToken(token);
 
     if (verificationTokenDTO == null) {
       modelAndView.addObject("error",
@@ -65,7 +65,7 @@ public class ActivationController {
       return modelAndView;
     }
 
-    UserDTO userDTO = userFacade.findById(verificationTokenDTO.getUser());
+    final UserDTO userDTO = userFacade.findById(verificationTokenDTO.getUser());
     userDTO.setEnabled(true);
     userFacade.updateUser(userDTO);
 
