@@ -60,6 +60,7 @@ public class RegisterController {
   public ModelAndView planSelect() {
     final ModelAndView modelAndView = new ModelAndView("plans");
     modelAndView.addObject("accountPlans", AccountPlanEntity.AccountPlan.values());
+    logger.debug("registration begin ...");
     return modelAndView;
   }
 
@@ -69,6 +70,7 @@ public class RegisterController {
   ) {
     final ModelAndView modelAndView = new ModelAndView("registration");
     modelAndView.addObject("plan", plan);
+    logger.debug("selected plan {}", plan);
     return modelAndView;
   }
 

@@ -37,8 +37,8 @@ public class EmailServiceImpl implements EmailService {
   private final FreeMarkerConfigurer freeMarkerConfigurer;
   private final JavaMailSender javaMailSender;
 
-  public EmailServiceImpl(FreeMarkerConfigurer freeMarkerConfigurer,
-      JavaMailSender javaMailSender) {
+  public EmailServiceImpl(final FreeMarkerConfigurer freeMarkerConfigurer,
+      final JavaMailSender javaMailSender) {
     this.freeMarkerConfigurer = freeMarkerConfigurer;
     this.javaMailSender = javaMailSender;
   }
@@ -57,20 +57,20 @@ public class EmailServiceImpl implements EmailService {
       logger.error("Error while loading email template properties: {}", templatePath, e);
     }
 
-    LinkedHashMap<Object, Object> finalDataModel = new LinkedHashMap<>(properties);
+    final LinkedHashMap<Object, Object> finalDataModel = new LinkedHashMap<>(properties);
     if (dataModel != null) {
       finalDataModel.putAll(dataModel);
     }
 
     try {
-      Template template = freeMarkerConfigurer.getConfiguration()
+      final Template template = freeMarkerConfigurer.getConfiguration()
           .getTemplate(templateName + ".ftl");
-      StringWriter stringWriter = new StringWriter();
+      final StringWriter stringWriter = new StringWriter();
       template.process(finalDataModel, stringWriter);
 
-      String mailText = stringWriter.toString();
+      final String mailText = stringWriter.toString();
 
-      MimeMessage mime = javaMailSender.createMimeMessage();
+      final MimeMessage mime = javaMailSender.createMimeMessage();
       mime.setFrom(new InternetAddress("do-not-replay@foodfinder.pl", "Piwko"));
       mime.setSubject(properties.getProperty("subject"), "UTF-8");
       mime.setText(mailText, template.getOutputEncoding(), "html");
@@ -88,5 +88,7 @@ public class EmailServiceImpl implements EmailService {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    logger.debug("email with subject {} sending to {}", properties.getProperty("subject"), toList);
   }
 }

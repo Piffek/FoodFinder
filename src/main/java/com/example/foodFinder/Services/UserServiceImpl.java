@@ -47,14 +47,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserEntity findById(Long id) {
+  public UserEntity findById(final Long id) {
     Query query = em.createQuery("FROM UserEntity ue WHERE ue.id = :id");
     query.setParameter("id", id);
     return (UserEntity) query.getSingleResult();
   }
 
   @Override
-  public List<RoleEntity> getRolesByUsername(String username) {
+  public List<RoleEntity> getRolesByUsername(final String username) {
     Query query = em.createQuery("SELECT ue.roles FROM UserEntity ue WHERE ue.username = :username");
     query.setParameter("username", username);
     return (List<RoleEntity>) query.getResultList();

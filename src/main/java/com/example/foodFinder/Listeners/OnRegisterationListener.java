@@ -1,22 +1,24 @@
 package com.example.foodFinder.Listeners;
 
 import com.example.foodFinder.Constranits;
+import com.example.foodFinder.Controllers.RegisterController;
 import com.example.foodFinder.Dto.UserDTO;
 import com.example.foodFinder.Dto.VerificationTokenDTO;
 import com.example.foodFinder.Events.OnRegisterationEvent;
 import com.example.foodFinder.Facades.Interfaces.TokenFacade;
 import com.example.foodFinder.Facades.Interfaces.UserFacade;
 import com.example.foodFinder.Services.Interfaces.EmailService;
-import com.example.foodFinder.Services.Interfaces.UserService;
-import com.example.foodFinder.Services.Interfaces.TokenService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OnRegisterationListener implements ApplicationListener<OnRegisterationEvent> {
+  private static final Logger logger = LoggerFactory.getLogger(OnRegisterationListener.class);
 
   private final EmailService emailService;
   private final UserFacade userFacade;
@@ -36,6 +38,7 @@ public class OnRegisterationListener implements ApplicationListener<OnRegisterat
     final VerificationTokenDTO verificationTokenDTO = tokenFacade.generateSecretToken();
     userDTO.setActivatedToken(verificationTokenDTO.getId());
     userFacade.createUser(userDTO);
+    logger.debug("created user {}", userDTO.getUsername());
 
     Map<String, Object> params = new HashMap<>();
     params.put("name", userDTO.getEmailAdress());

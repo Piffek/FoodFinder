@@ -52,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
   }
 
   @Override
-  public VerificationTokenEntity findById(Long id) {
+  public VerificationTokenEntity findById(final Long id) {
     return em.find(VerificationTokenEntity.class, id);
   }
 }
