@@ -94,6 +94,7 @@ public class RegisterController {
     final ModelAndView modelAndView = new ModelAndView("signup");
 
     if (bindingResult.hasErrors()) {
+      logger.debug("registration form errors {}", bindingResult.getAllErrors());
       return modelAndView;
     }
 
@@ -119,6 +120,7 @@ public class RegisterController {
         .encode(userRegistrationForm.getMatchingPassword());
     final RoleEntity roleEntity = roleService.findIdByRole(Role.USER);
 
+    logger.debug("creating user {} with role {}", userRegistrationForm.getEmailAdress(), roleEntity.getName());
     UserDTO userDTO = new UserDTO();
     userDTO.setCity(userRegistrationForm.getCity());
     userDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
