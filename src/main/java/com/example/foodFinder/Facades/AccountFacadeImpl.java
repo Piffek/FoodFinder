@@ -8,10 +8,9 @@ import com.example.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan
 import com.example.foodFinder.Persistance.Entities.UserEntity;
 import com.example.foodFinder.Services.Interfaces.AccountService;
 import com.example.foodFinder.Services.Interfaces.UserService;
-import javax.persistence.Query;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class AccountFacadeImpl implements AccountFacade {
 
     private final UserService userService;

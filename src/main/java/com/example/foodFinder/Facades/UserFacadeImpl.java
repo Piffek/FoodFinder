@@ -6,11 +6,9 @@ import com.example.foodFinder.Dto.UserDTO;
 import com.example.foodFinder.Facades.Interfaces.UserFacade;
 import com.example.foodFinder.Persistance.Entities.UserEntity;
 import com.example.foodFinder.Services.Interfaces.UserService;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-@Transactional
+@Component
 public class UserFacadeImpl implements UserFacade {
 
   private final ReverseConverter<UserEntity, UserDTO> reverseConverter;

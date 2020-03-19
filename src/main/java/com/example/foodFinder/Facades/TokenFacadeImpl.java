@@ -5,12 +5,9 @@ import com.example.foodFinder.Dto.VerificationTokenDTO;
 import com.example.foodFinder.Facades.Interfaces.TokenFacade;
 import com.example.foodFinder.Persistance.Entities.VerificationTokenEntity;
 import com.example.foodFinder.Services.Interfaces.TokenService;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
@@ -21,8 +18,7 @@ import org.springframework.stereotype.Service;
  * <p>
  * Copyright 2020 (C) PiwkoSoft.
  */
-@Service
-@Transactional
+@Component
 public class TokenFacadeImpl implements TokenFacade {
   private static final Logger logger = LoggerFactory.getLogger(
       TokenFacadeImpl.class);
