@@ -46,10 +46,11 @@ public class OnActivationListener implements ApplicationListener<OnActivationEve
     userFacade.setAsEnable(userDTO);
     tokenFacade.setAsUsed(verificationTokenDTO);
 
-    Map<String, Object> params = new HashMap<>();
-    params.put("name", userDTO.getEmailAdress());
-
     final String email = userDTO.getEmailAdress();
-    emailService.sendEmail(Collections.singletonList(email), params, "activation", "activation", onActivationEvent.getLocale());
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("name", email);
+
+    emailService.sendEmail(email, params, "activation", onActivationEvent.getLocale());
   }
 }

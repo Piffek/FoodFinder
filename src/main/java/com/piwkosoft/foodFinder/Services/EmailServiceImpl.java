@@ -8,7 +8,10 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Objects;
+import javax.mail.Address;
 import javax.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,15 +46,17 @@ public class EmailServiceImpl implements EmailService {
   }
 
   @Override
-  public void sendEmail(final List<String> toList, final Map<String, Object> dataModel,
-      final String templateName,
-      final String recipients, final Locale locale) {
+  public void sendEmail(final List<String> recipients, final Map<String, Object> dataModel,
+      final String templateName, final Locale locale) {
     Properties properties = new Properties();
     final String localeString = locale != null ? locale.toString() : Constranits.DEFAULT_LOCALE;
     final String templatePath = TEMPLATE_PATH + "" + templateName + "_" + localeString + ".properties";
+    final String defaultEmailProperty = TEMPLATE_PATH + "" + Constranits.DEFAULT_EMAIL_PROPERTY_FILE + "_" + localeString + ".properties";
 
-    try (InputStream inputStream = getClass().getResourceAsStream(templatePath)) {
+    try (final InputStream inputStream = getClass().getResourceAsStream(templatePath);
+         final InputStream defaultEmailPropertyFile = getClass().getResourceAsStream(defaultEmailProperty)) {
       properties.load(inputStream);
+      properties.load(defaultEmailPropertyFile);
     } catch (IOException e) {
       logger.error("Error while loading email template properties: {}", templatePath, e);
     }
@@ -73,7 +78,7 @@ public class EmailServiceImpl implements EmailService {
       mime.setFrom(new InternetAddress("do-not-replay@foodfinder.pl", "Piwko"));
       mime.setSubject(properties.getProperty("subject"), "UTF-8");
       mime.setText(mailText, template.getOutputEncoding(), "html");
-      mime.setRecipients(Message.RecipientType.TO, recipients);
+      mime.setRecipients(Message.RecipientType.TO, setEmails(recipients));
 
       javaMailSender.send(mime);
     } catch (TemplateException | MessagingException | MalformedTemplateNameException e) {
@@ -88,6 +93,31 @@ public class EmailServiceImpl implements EmailService {
       e.printStackTrace();
     }
 
-    logger.debug("email with subject {} sending to {}", properties.getProperty("subject"), toList);
+    logger.debug("email sending to {}",recipients);
+  }
+
+
+  @Override
+  public void sendEmail(final String recipient, final Map<String, Object> message,
+      final String templateName, final Locale locale) {
+    sendEmail(Collections.singletonList(recipient), message, templateName, locale);
+  }
+
+  private Address[] setEmails(final List<String> emails)  {
+
+    return emails.stream()
+        .map(this::internetAddress)
+        .filter(Objects::nonNull)
+        .toArray(Address[]::new);
+  }
+
+  private Address internetAddress(final String email) {
+    final String personal = email.substring(0, email.indexOf("@"));
+    try {
+      return new InternetAddress(email, personal);
+    } catch (final UnsupportedEncodingException e) {
+      logger.error("encoding exception for adress {}", email ,e);
+    }
+    return null;
   }
 }

@@ -7,9 +7,11 @@ import com.piwkosoft.foodFinder.Events.OnRegisterationEvent;
 import com.piwkosoft.foodFinder.Facades.Interfaces.TokenFacade;
 import com.piwkosoft.foodFinder.Facades.Interfaces.UserFacade;
 import com.piwkosoft.foodFinder.Services.Interfaces.EmailService;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingEnumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -44,7 +46,6 @@ public class OnRegisterationListener implements ApplicationListener<OnRegisterat
     params.put("name", email);
     params.put("activate_url", Constranits.BASIC_URL+"/activate-token/"+ verificationTokenDTO.getToken());
 
-    emailService.sendEmail(Collections.singletonList(email),
-        params, "registration", "registration", onRegisterEvent.getLocale());
+    emailService.sendEmail(email, params, "registration", onRegisterEvent.getLocale());
   }
 }
