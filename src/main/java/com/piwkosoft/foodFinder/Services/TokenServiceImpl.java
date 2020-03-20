@@ -33,7 +33,6 @@ public class TokenServiceImpl implements TokenService {
     final VerificationTokenEntity verificationTokenEntity = new VerificationTokenEntity();
     em.persist(verificationTokenEntity);
 
-    logger.debug("create token {}", verificationTokenEntity.getToken());
     return verificationTokenEntity;
   }
 
