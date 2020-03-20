@@ -22,7 +22,7 @@
         <tr>
             <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
                 <p>${dear} ${name},</p>
-                <p>${activate.account}</p>
+                <p>${activate_account}</p>
             </td>
         </tr>
     </table>

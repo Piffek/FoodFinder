@@ -26,7 +26,7 @@ public class LoginController {
 
   @RequestMapping("/login/error")
   public ModelAndView error(final UserLoginForm userLoginForm, final WebRequest request) {
-    ModelAndView modelAndView = new ModelAndView("index");
+    ModelAndView modelAndView = new ModelAndView("login");
     modelAndView.addObject("userLoginForm", userLoginForm);
     modelAndView.addObject("error",
         messageSource.getMessage("loggin.failure", null, request.getLocale()));
