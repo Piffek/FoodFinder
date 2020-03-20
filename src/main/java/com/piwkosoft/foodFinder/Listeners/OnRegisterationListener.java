@@ -39,11 +39,12 @@ public class OnRegisterationListener implements ApplicationListener<OnRegisterat
     userFacade.createUser(userDTO);
     logger.debug("created user {}", userDTO.getUsername());
 
+    final String email = userDTO.getEmailAdress();
     Map<String, Object> params = new HashMap<>();
-    params.put("name", userDTO.getEmailAdress());
+    params.put("name", email);
     params.put("activate_url", Constranits.BASIC_URL+"/activate-token/"+ verificationTokenDTO.getToken());
 
-    emailService.sendEmail(Collections.singletonList("patrykpiwko123412@gmail.com"),
+    emailService.sendEmail(Collections.singletonList(email),
         params, "registration", "registration", onRegisterEvent.getLocale());
   }
 }
