@@ -34,6 +34,7 @@ public class TokenReverseConverter implements ReverseConverter<VerificationToken
     verificationTokenEntity.setToken(verificationTokenDTO.getToken());
     verificationTokenEntity.setTokenExpiryDate(verificationTokenDTO.getTokenExpiryDate());
     verificationTokenEntity.setUser(userEntity);
+    verificationTokenEntity.setUsed(verificationTokenDTO.isUsed());
     return verificationTokenEntity;
   }
 }

@@ -14,4 +14,5 @@ import com.piwkosoft.foodFinder.Dto.VerificationTokenDTO;
 public interface TokenFacade {
   VerificationTokenDTO generateSecretToken();
   VerificationTokenDTO getByToken(String token);
+  void setAsUsed(VerificationTokenDTO verificationTokenDTO);
 }

@@ -23,6 +23,7 @@ public class TokenConverter implements Converter<VerificationTokenDTO, Verificat
         .setTokenExpiryDate(verificationTokenEntity.getTokenExpiryDate())
         .setToken(verificationTokenEntity.getToken())
         .setId(verificationTokenEntity.getId())
+        .setUsed(verificationTokenEntity.isUsed())
         .setUser(verificationTokenEntity.getUser() != null ? verificationTokenEntity.getUser().getId() : null);
   }
 }

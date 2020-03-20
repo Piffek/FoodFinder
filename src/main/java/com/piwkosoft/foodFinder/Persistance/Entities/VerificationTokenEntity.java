@@ -29,10 +29,12 @@ import java.util.Date;
 public class VerificationTokenEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String token;
+
+    private boolean used;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date tokenExpiryDate; //current + 30m
@@ -42,6 +44,7 @@ public class VerificationTokenEntity {
 
     @PrePersist
     private void token() {
+        this.used = false;
         setToken();
         setExpirationTokenDate();
     }
