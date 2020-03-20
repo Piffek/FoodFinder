@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
   private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
   private final UserService userService;
@@ -37,9 +39,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
   @Override
-  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException, DisabledException {
     final UserEntity userEntity = userService.findByUsername(username);
-    if(userEntity == null) {
+    if (userEntity == null) {
       logger.debug("username {} not found", username);
       throw new UsernameNotFoundException(username);
     }
@@ -52,6 +54,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         .map(SimpleGrantedAuthority::new)
         .collect(Collectors.toList());
 
-    return new User(userEntity.getUsername(), userEntity.getPassword(), authorities);
+    return new User(userEntity.getUsername(), userEntity.getPassword(), userEntity.isEnabled(),
+        true, true, true,
+        authorities);
   }
 }

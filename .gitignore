@@ -77,3 +77,6 @@ mvnw.cmd
 
 *.js
 *.map
+
+*.log
+*.gz

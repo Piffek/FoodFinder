@@ -16,4 +16,6 @@ public class Constranits {
   public static String BASIC_URL = "http://localhost:78";
   public static String DEFAULT_LOCALE = "pl";
   public static int EXPIRATION_TOKEN_TIME = 30;
+  public final static String ANONYMOUS_USER_NAME = "anonymousUser";
+
 }
