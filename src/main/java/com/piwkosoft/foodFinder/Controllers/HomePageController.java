@@ -9,10 +9,6 @@ public class HomePageController {
 
     @RequestMapping("/")
     public ModelAndView homePage() {
-        ModelAndView modelAndView = new ModelAndView("layout");
-        return modelAndView;
+        return new ModelAndView("layout");
     }
-
-
-
 }
