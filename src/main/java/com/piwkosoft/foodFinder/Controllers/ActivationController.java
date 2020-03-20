@@ -1,12 +1,13 @@
 package com.piwkosoft.foodFinder.Controllers;
 
-import com.piwkosoft.foodFinder.Dto.UserDTO;
 import com.piwkosoft.foodFinder.Dto.VerificationTokenDTO;
+import com.piwkosoft.foodFinder.Events.OnActivationEvent;
 import com.piwkosoft.foodFinder.Facades.Interfaces.TokenFacade;
 import com.piwkosoft.foodFinder.Facades.Interfaces.UserFacade;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,13 +33,16 @@ public class ActivationController {
   private final TokenFacade tokenFacade;
   private final UserFacade userFacade;
   private final MessageSource messageSource;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   public ActivationController(final TokenFacade tokenFacade,
       final UserFacade userFacade,
-      final MessageSource messageSource) {
+      final MessageSource messageSource,
+      final ApplicationEventPublisher applicationEventPublisher) {
     this.tokenFacade = tokenFacade;
     this.userFacade = userFacade;
     this.messageSource = messageSource;
+    this.applicationEventPublisher = applicationEventPublisher;
   }
 
   @RequestMapping("/{token}")
@@ -54,6 +58,11 @@ public class ActivationController {
       return modelAndView;
     }
 
+    if(verificationTokenDTO.isUsed()) {
+      logger.info("token {} was used", token);
+      return modelAndView;
+    }
+
     if (verificationTokenDTO.getTokenExpiryDate().before(new Date())) {
       modelAndView.addObject("error",
           messageSource
@@ -63,9 +72,7 @@ public class ActivationController {
       return modelAndView;
     }
 
-    final UserDTO userDTO = userFacade.findById(verificationTokenDTO.getUser());
-    userDTO.setEnabled(true);
-    userFacade.updateUser(userDTO);
+    applicationEventPublisher.publishEvent(new OnActivationEvent(verificationTokenDTO, request.getLocale()));
 
     modelAndView.addObject("sucess",
         messageSource

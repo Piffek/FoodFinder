@@ -38,7 +38,7 @@ public class TokenServiceImpl implements TokenService {
   }
 
   @Override
-  public VerificationTokenEntity getByToken(final String token) {
+  public VerificationTokenEntity findByToken(final String token) {
     Query query = em.createQuery("FROM VerificationTokenEntity vte WHERE vte.token = :token");
     query.setParameter("token", token);
     VerificationTokenEntity verificationTokenEntity;
@@ -54,5 +54,10 @@ public class TokenServiceImpl implements TokenService {
   @Override
   public VerificationTokenEntity findById(final Long id) {
     return em.find(VerificationTokenEntity.class, id);
+  }
+
+  @Override
+  public void update(final VerificationTokenEntity verificationTokenEntity) {
+    em.merge(verificationTokenEntity);
   }
 }

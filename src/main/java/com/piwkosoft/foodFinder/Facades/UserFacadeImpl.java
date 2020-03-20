@@ -39,6 +39,12 @@ public class UserFacadeImpl implements UserFacade {
   }
 
   @Override
+  public void setAsEnable(final UserDTO userDto) {
+    userDto.setEnabled(true);
+    updateUser(userDto);
+  }
+
+  @Override
   public UserDTO findByUsername(final String username) {
     final UserEntity userEntity = userService.findByUsername(username);
     return converter.convert(userEntity);

@@ -22,4 +22,5 @@ public class VerificationTokenDTO {
   private String token;
   private Date tokenExpiryDate; //current + 30m
   private Long user;
+  private boolean used;
 }

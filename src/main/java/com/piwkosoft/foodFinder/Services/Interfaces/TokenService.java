@@ -13,6 +13,7 @@ import com.piwkosoft.foodFinder.Persistance.Entities.VerificationTokenEntity;
  */
 public interface TokenService {
   VerificationTokenEntity generateSecretToken();
-  VerificationTokenEntity getByToken(String token);
+  VerificationTokenEntity findByToken(String token);
   VerificationTokenEntity findById(Long id);
+  void update(VerificationTokenEntity verificationTokenEntity);
 }
