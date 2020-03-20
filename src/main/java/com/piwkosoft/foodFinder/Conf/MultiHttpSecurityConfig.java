@@ -50,7 +50,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
                         "/",
                         "/signup/**",
                         "/activate-token/**",
-                        "/login").permitAll()
+                        "/login/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -58,6 +58,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
                     .usernameParameter("name")
                     .passwordParameter("password")
                     .successForwardUrl("/")
+                    .failureForwardUrl("/login/error")
                     .permitAll()
                     .and()
                 .logout()
