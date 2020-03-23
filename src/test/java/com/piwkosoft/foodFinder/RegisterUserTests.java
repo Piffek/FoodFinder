@@ -1,6 +1,9 @@
 package com.piwkosoft.foodFinder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.piwkosoft.foodFinder.Controllers.RegisterController;
 import com.piwkosoft.foodFinder.Facades.Interfaces.AccountFacade;
@@ -16,10 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Project: FoodFinder
@@ -33,6 +39,9 @@ import org.springframework.web.context.request.WebRequest;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(value = RegisterController.class)
 public class RegisterUserTests {
+
+  public static final String SELECT_PLAN = "standard";
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -67,9 +76,35 @@ public class RegisterUserTests {
   }
 
   @Test
-  @DisplayName("registerController is not null")
-  public void controllerAreNotNull() {
-    assertNotNull("S");
+  @DisplayName("show plans view")
+  public void showPlansView() throws Exception {
+    mockMvc.perform(get("/signup/plans")).andExpect(status().isOk());
   }
 
+  @Test
+  @DisplayName("select plan status code")
+  public void selectPlan() throws Exception {
+    mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("select plan model view not null")
+  public void selectPlanModelIsNotNull() throws Exception {
+    final ModelAndView modelAndView = mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
+        .andExpect(status().isOk())
+        .andReturn().getModelAndView();
+
+    assertNotNull(modelAndView);
+  }
+
+  @Test
+  @DisplayName("select plan model view value plan")
+  public void selectPlanModelValue() throws Exception {
+    final ModelAndView modelAndView = mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
+        .andExpect(status().isOk())
+        .andReturn().getModelAndView();
+
+    assertEquals(modelAndView.getModel().get("plan"), SELECT_PLAN);
+  }
 }
