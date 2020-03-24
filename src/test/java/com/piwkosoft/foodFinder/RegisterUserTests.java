@@ -3,6 +3,7 @@ package com.piwkosoft.foodFinder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.piwkosoft.foodFinder.Controllers.RegisterController;
@@ -17,14 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -82,7 +78,7 @@ public class RegisterUserTests {
   }
 
   @Test
-  @DisplayName("select plan status code")
+  @DisplayName("STATUS 200 - select plan view")
   public void selectPlan() throws Exception {
     mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
         .andExpect(status().isOk());
@@ -107,4 +103,16 @@ public class RegisterUserTests {
 
     assertEquals(modelAndView.getModel().get("plan"), SELECT_PLAN);
   }
+
+  @Test
+  @DisplayName("STATUS 200 - selected plan and open reg form VIEW")
+  public void selectedPlanRegForm() throws Exception {
+    mockMvc.perform(get("/signup/plan/{plan}/regform", SELECT_PLAN)).andExpect(status().isOk());
+  }
+
+//  @Test
+//  @DisplayName("Main registration")
+//  public void registrationUser() throws Exception{
+//    mockMvc.perform(post("/signup/user-signup/"))
+//  }
 }
