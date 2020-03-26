@@ -150,7 +150,7 @@ public class RegisterUserTests {
   @Test
   @DisplayName("CORRECT - Validation form")
   public void correctFormValidation() {
-    Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
+    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
         assertEquals(errors.size(),
             0);
   }
@@ -158,7 +158,7 @@ public class RegisterUserTests {
   @Test
   @DisplayName("INCORRECT - Validation form")
   public void invalidFormValidation() {
-    Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
+    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
     assertEquals(errors.size(),
         1);
   }
