@@ -16,6 +16,11 @@ public class PasswordSizeValidator implements ConstraintValidator<PasswordSize, 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
         String string = (String) o;
-        return string.length() > defaultMinPasswordSize;
+
+        if(string != null) {
+            return string.length() > defaultMinPasswordSize;
+        }
+
+        return false;
     }
 }
