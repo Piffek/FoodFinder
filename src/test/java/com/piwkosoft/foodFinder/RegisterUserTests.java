@@ -77,6 +77,7 @@ public class RegisterUserTests {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     validatorFactory = Validation.buildDefaultValidatorFactory();
   }
+
   @BeforeEach
   public void fillWrongForm() {
     this.userRegistrationFormWrongPasswords.setAccountPlan(SELECT_PLAN);
@@ -151,14 +152,14 @@ public class RegisterUserTests {
   @DisplayName("CORRECT - Validation form")
   public void correctFormValidation() {
     final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
-        assertEquals(errors.size(),
-            0);
+    assertEquals(errors.size(),
+        0);
   }
 
   @Test
   @DisplayName("INCORRECT - Validation form")
   public void invalidFormValidation() {
-    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
+    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormWrongPasswords);
     assertEquals(errors.size(),
         1);
   }
