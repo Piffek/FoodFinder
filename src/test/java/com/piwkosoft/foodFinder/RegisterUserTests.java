@@ -6,21 +6,34 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.piwkosoft.foodFinder.Controllers.RegisterController;
 import com.piwkosoft.foodFinder.Facades.Interfaces.AccountFacade;
 import com.piwkosoft.foodFinder.Forms.UserRegistrationForm;
 import com.piwkosoft.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
 import com.piwkosoft.foodFinder.Services.Interfaces.RoleService;
 import com.piwkosoft.foodFinder.Services.UserDetailsServiceImpl;
+import com.piwkosoft.foodFinder.Validators.PasswordMatchesValidator;
+import com.piwkosoft.foodFinder.Validators.PasswordSizeValidator;
+import java.util.Set;
+import javax.validation.ConstraintValidator;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -33,13 +46,16 @@ import org.springframework.web.servlet.ModelAndView;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(value = RegisterController.class)
+@WebMvcTest(value = {RegisterController.class})
 public class RegisterUserTests {
 
   public static final String SELECT_PLAN = "standard";
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
 
   @MockBean
   private UserDetailsServiceImpl userDetailsService;
@@ -50,12 +66,20 @@ public class RegisterUserTests {
   @MockBean
   private RoleService roleService;
 
+  private ValidatorFactory validatorFactory;
+
   private UserRegistrationForm userRegistrationFormWrongPasswords = new UserRegistrationForm();
   private UserRegistrationForm userRegistrationFormCorrect = new UserRegistrationForm();
 
+
+  @BeforeEach
+  private void initMockMvc() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    validatorFactory = Validation.buildDefaultValidatorFactory();
+  }
   @BeforeEach
   public void fillWrongForm() {
-    this.userRegistrationFormWrongPasswords.setAccountPlan(AccountPlan.standard.name());
+    this.userRegistrationFormWrongPasswords.setAccountPlan(SELECT_PLAN);
     this.userRegistrationFormWrongPasswords.setCity("DDZ");
     this.userRegistrationFormWrongPasswords.setEmailAdress("patrykpiwko123412@gmail.com");
     this.userRegistrationFormWrongPasswords.setPassword("Piwko1.");
@@ -64,7 +88,7 @@ public class RegisterUserTests {
 
   @BeforeEach
   public void fillCorrectForm() {
-    this.userRegistrationFormCorrect.setAccountPlan(AccountPlan.standard.name());
+    this.userRegistrationFormCorrect.setAccountPlan(SELECT_PLAN);
     this.userRegistrationFormCorrect.setCity("DDZ");
     this.userRegistrationFormCorrect.setEmailAdress("patrykpiwko123412@gmail.com");
     this.userRegistrationFormCorrect.setPassword("Piwko1.");
@@ -87,7 +111,8 @@ public class RegisterUserTests {
   @Test
   @DisplayName("select plan model view not null")
   public void selectPlanModelIsNotNull() throws Exception {
-    final ModelAndView modelAndView = mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
+    final ModelAndView modelAndView = mockMvc
+        .perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
         .andExpect(status().isOk())
         .andReturn().getModelAndView();
 
@@ -97,7 +122,8 @@ public class RegisterUserTests {
   @Test
   @DisplayName("select plan model view value plan")
   public void selectPlanModelValue() throws Exception {
-    final ModelAndView modelAndView = mockMvc.perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
+    final ModelAndView modelAndView = mockMvc
+        .perform(get("/signup/plan/{plan}/registration", SELECT_PLAN))
         .andExpect(status().isOk())
         .andReturn().getModelAndView();
 
@@ -110,9 +136,30 @@ public class RegisterUserTests {
     mockMvc.perform(get("/signup/plan/{plan}/regform", SELECT_PLAN)).andExpect(status().isOk());
   }
 
-//  @Test
-//  @DisplayName("Main registration")
-//  public void registrationUser() throws Exception{
-//    mockMvc.perform(post("/signup/user-signup/"))
-//  }
+  @Test
+  @DisplayName("Main registration")
+  public void registrationUser() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+
+    mockMvc.perform(post("/signup/user-signup/")
+        .contentType(MediaType.TEXT_HTML_VALUE)
+        .content(objectMapper.writeValueAsString(userRegistrationFormCorrect)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("CORRECT - Validation form")
+  public void correctFormValidation() {
+    Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
+        assertEquals(errors.size(),
+            0);
+  }
+
+  @Test
+  @DisplayName("INCORRECT - Validation form")
+  public void invalidFormValidation() {
+    Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
+    assertEquals(errors.size(),
+        1);
+  }
 }
