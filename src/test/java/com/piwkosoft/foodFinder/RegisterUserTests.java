@@ -2,6 +2,7 @@ package com.piwkosoft.foodFinder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,10 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class RegisterUserTests {
 
   final String SELECT_PLAN = "standard";
-  final String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
-  final HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
 
-  private CsrfToken csrfToken;
   private MockMvc mockMvc;
 
   @Autowired
@@ -69,11 +67,6 @@ public class RegisterUserTests {
 
   private UserRegistrationForm userRegistrationFormWrongPasswords = new UserRegistrationForm();
   private UserRegistrationForm userRegistrationFormCorrect = new UserRegistrationForm();
-
-  @BeforeEach
-  private void initCsrfToken() {
-    this.csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-  }
 
   @BeforeEach
   private void initMockMvc() {
@@ -149,8 +142,7 @@ public class RegisterUserTests {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     mockMvc.perform(post("/signup/user-signup/")
-        .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
-        .param(csrfToken.getParameterName(), csrfToken.getToken())
+        .with(csrf())
         .contentType(MediaType.TEXT_HTML_VALUE)
         .content(objectMapper.writeValueAsBytes(userRegistrationFormCorrect)))
         .andExpect(status().isOk());
