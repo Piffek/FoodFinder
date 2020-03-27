@@ -2,6 +2,7 @@ package com.piwkosoft.foodFinder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -42,8 +46,11 @@ import org.springframework.web.servlet.ModelAndView;
 @WebMvcTest(value = {RegisterController.class})
 public class RegisterUserTests {
 
-  public static final String SELECT_PLAN = "standard";
+  final String SELECT_PLAN = "standard";
+  final String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+  final HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
 
+  private CsrfToken csrfToken;
   private MockMvc mockMvc;
 
   @Autowired
@@ -63,10 +70,17 @@ public class RegisterUserTests {
   private UserRegistrationForm userRegistrationFormWrongPasswords = new UserRegistrationForm();
   private UserRegistrationForm userRegistrationFormCorrect = new UserRegistrationForm();
 
+  @BeforeEach
+  private void initCsrfToken() {
+    this.csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
+  }
 
   @BeforeEach
   private void initMockMvc() {
-    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    mockMvc = MockMvcBuilders
+        .webAppContextSetup(webApplicationContext)
+        .apply(springSecurity())
+        .build();
     validatorFactory = Validation.buildDefaultValidatorFactory();
   }
 
@@ -135,6 +149,8 @@ public class RegisterUserTests {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     mockMvc.perform(post("/signup/user-signup/")
+        .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+        .param(csrfToken.getParameterName(), csrfToken.getToken())
         .contentType(MediaType.TEXT_HTML_VALUE)
         .content(objectMapper.writeValueAsBytes(userRegistrationFormCorrect)))
         .andExpect(status().isOk());
@@ -144,15 +160,13 @@ public class RegisterUserTests {
   @DisplayName("CORRECT - Validation form")
   public void correctFormValidation() {
     final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
-    assertEquals(errors.size(),
-        0);
+    assertEquals(errors.size(), 0);
   }
 
   @Test
   @DisplayName("INCORRECT - Validation form")
   public void invalidFormValidation() {
     final Set errors = validatorFactory.getValidator().validate(userRegistrationFormWrongPasswords);
-    assertEquals(errors.size(),
-        1);
+    assertEquals(errors.size(), 1);
   }
 }
