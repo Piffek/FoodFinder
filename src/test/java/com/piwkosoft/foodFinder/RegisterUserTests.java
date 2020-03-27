@@ -10,13 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.piwkosoft.foodFinder.Controllers.RegisterController;
 import com.piwkosoft.foodFinder.Facades.Interfaces.AccountFacade;
 import com.piwkosoft.foodFinder.Forms.UserRegistrationForm;
-import com.piwkosoft.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
 import com.piwkosoft.foodFinder.Services.Interfaces.RoleService;
 import com.piwkosoft.foodFinder.Services.UserDetailsServiceImpl;
-import com.piwkosoft.foodFinder.Validators.PasswordMatchesValidator;
-import com.piwkosoft.foodFinder.Validators.PasswordSizeValidator;
 import java.util.Set;
-import javax.validation.ConstraintValidator;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,15 +20,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,7 +44,6 @@ public class RegisterUserTests {
 
   public static final String SELECT_PLAN = "standard";
 
-  @Autowired
   private MockMvc mockMvc;
 
   @Autowired
@@ -144,7 +136,7 @@ public class RegisterUserTests {
 
     mockMvc.perform(post("/signup/user-signup/")
         .contentType(MediaType.TEXT_HTML_VALUE)
-        .content(objectMapper.writeValueAsString(userRegistrationFormCorrect)))
+        .content(objectMapper.writeValueAsBytes(userRegistrationFormCorrect)))
         .andExpect(status().isOk());
   }
 
