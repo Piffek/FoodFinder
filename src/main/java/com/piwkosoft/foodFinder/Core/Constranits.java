@@ -18,6 +18,6 @@ public class Constranits {
   public final static int EXPIRATION_TOKEN_TIME = 30;
   public final static String ANONYMOUS_USER_NAME = "anonymousUser";
   public final static String DEFAULT_EMAIL_PROPERTY_FILE = "email";
-  public final static String RESTAURANT_API_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyBo5Q8La6Y8ZbBLsUk-x-jAV0Zt7hQNPQg";
-  public final static String RESTAURANT_DOWNLOAD_CRON = "0 29 15 * * ?";
+  public final static String RESTAURANT_API_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=API_KEY";
+  public final static String RESTAURANT_DOWNLOAD_CRON = "0 1 1 * * ?"; //01:01 AM
 }

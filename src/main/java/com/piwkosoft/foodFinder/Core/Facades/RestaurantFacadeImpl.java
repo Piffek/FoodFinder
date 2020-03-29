@@ -1,19 +1,12 @@
 package com.piwkosoft.foodFinder.Core.Facades;
 
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
-import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceTypeService;
-import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.RestaurantEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.RestaurantService;
-import com.piwkosoft.foodFinder.UpdateRestaurantScheduler.JsonRestaurant;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 /**

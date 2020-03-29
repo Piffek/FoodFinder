@@ -1,29 +1,22 @@
 package com.piwkosoft.foodFinder;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceTypeFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
-import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
-import java.math.BigDecimal;
+import com.piwkosoft.foodFinder.WebServices.RestaurantJson;
+import com.piwkosoft.foodFinder.WebServices.RestaurantJson.JsonRestaurant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Project: FoodFinder
@@ -39,94 +32,68 @@ public class UpdateRestaurantScheduler {
 
   private static final Logger logger = LoggerFactory.getLogger(UpdateRestaurantScheduler.class);
 
+  private final RestaurantJson restaurantJson;
   private final RestaurantFacade restaurantFacade;
   private final PlaceTypeFacade placeTypeFacade;
-  private final RestTemplate restTemplate;
-  private final ReverseConverter<PlaceTypeEntity, PlaceTypeDTO> reverseConverter;
 
   public UpdateRestaurantScheduler(
+      final RestaurantJson restaurantJson,
       final RestaurantFacade restaurantFacade,
-      final PlaceTypeFacade placeTypeFacade,
-      final RestTemplate restTemplate,
-      final ReverseConverter<PlaceTypeEntity, PlaceTypeDTO> reverseConverter) {
+      final PlaceTypeFacade placeTypeFacade) {
+    this.restaurantJson = restaurantJson;
     this.restaurantFacade = restaurantFacade;
     this.placeTypeFacade = placeTypeFacade;
-    this.restTemplate = restTemplate;
-    this.reverseConverter = reverseConverter;
   }
 
-  List<String> cities = new ArrayList<>();
-
+  //TODO in many thread
   @Scheduled(cron = Constranits.RESTAURANT_DOWNLOAD_CRON)
   public void updateRestaurant() {
 
+    //TODO add to database
+    final List<String> cities = new ArrayList<>();
     cities.add("Zakopane");
     cities.add("Kraków");
     cities.add("Dzierżoniów");
 
-    String apiUrl = Constranits.RESTAURANT_API_URL + "&query=restaurants+in+";
-
     cities
         .forEach(city -> {
-          this.create(apiUrl+city);
+          this.create(RestaurantJson.BASE_URL + city);
         });
   }
 
-  @Getter
-  @Setter
-  @Accessors(chain = true)
-  @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-  public static class JsonRestaurant {
+  private synchronized void create(final String apiUrl) {
+    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = createRestaurantWithPlacesFromJson(
+        apiUrl);
 
-    private String name;
-    private String[] types;
-    private String formattedAddress;
-    private String icon;
-    private boolean isOpen;
-    private Double rating;
-    private BigDecimal userRatingsTotal;
+    String nextPageToken = restaurantList.getNextPageToken();
 
-    @Getter
-    @Setter
-    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class RestaurantList {
+    while (restaurantJson.hasNextPage(nextPageToken)) {
+      try {
+        wait(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
 
-      private String nextPageToken;
-      private JsonRestaurant[] results;
+      JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
+          apiUrl + "&pagetoken=" + nextPageToken);
+
+      nextPageToken = restaurantJson.resetNextPageToken(restaurants);
+
     }
   }
 
-  private void create(final String apiUrl) {
-    JsonRestaurant.RestaurantList restaurantList =
-        restTemplate.getForObject(
-            apiUrl,
-            JsonRestaurant.RestaurantList.class
-        );
-
-    JsonRestaurant[] restaurantDTOS = restaurantList.getResults();
-
-    createPlaceType(restaurantDTOS);
-    createRestaurants(restaurantDTOS);
-
-    String nextPageToken = restaurantList.nextPageToken;
-
-    while (nextPageToken != null) {
-      JsonRestaurant.RestaurantList restaurants = restTemplate.getForObject(
-          apiUrl + "&pagetoken=" + nextPageToken,
-          JsonRestaurant.RestaurantList.class
-      );
-
-      nextPageToken = restaurants.nextPageToken;
-
-      createPlaceType(restaurantList.getResults());
-      createRestaurants(restaurantList.getResults());
-    }
+  public JsonRestaurant.RestaurantList createRestaurantWithPlacesFromJson(final String url) {
+    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = restaurantJson
+        .objectFromJson(url);
+    createPlaceType(restaurantList.getResults());
+    createRestaurants(restaurantList.getResults());
+    return restaurantList;
   }
 
   private void createPlaceType(final JsonRestaurant[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
-        .flatMap(restaurant -> Stream.of(restaurant.types))
+        .flatMap(restaurant -> Stream.of(restaurant.getTypes()))
         .collect(Collectors.toSet())
         .stream()
         .map(type -> new PlaceTypeDTO().setName(type))
@@ -144,7 +111,7 @@ public class UpdateRestaurantScheduler {
                 .setUserRatingsTotal(restaurant.getUserRatingsTotal())
                 .setIcon(restaurant.getIcon())
                 .setName(restaurant.getName())
-                .setOpen(restaurant.isOpen)
+                .setOpen(restaurant.isOpen())
                 .setRating(restaurant.getRating())
                 .setTypes(
                     placeTypeFacade.findTypesByName(Arrays.asList(restaurant.getTypes()))
