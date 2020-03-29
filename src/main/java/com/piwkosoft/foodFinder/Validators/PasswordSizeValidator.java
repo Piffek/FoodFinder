@@ -1,6 +1,6 @@
 package com.piwkosoft.foodFinder.Validators;
 
-import com.piwkosoft.foodFinder.PasswordSize;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.PasswordSize;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

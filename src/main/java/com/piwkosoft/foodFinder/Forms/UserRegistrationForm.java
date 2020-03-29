@@ -1,8 +1,8 @@
 package com.piwkosoft.foodFinder.Forms;
 
-import com.piwkosoft.foodFinder.AccountTypeEnumValueExist;
-import com.piwkosoft.foodFinder.PasswordMatches;
-import com.piwkosoft.foodFinder.PasswordSize;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.AccountTypeEnumValueExist;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.PasswordMatches;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.PasswordSize;
 import lombok.Getter;
 import lombok.Setter;
 

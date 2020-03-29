@@ -2,8 +2,8 @@ package com.piwkosoft.foodFinder.Converters.accountPlan;
 
 import com.piwkosoft.foodFinder.Converters.Converter;
 import com.piwkosoft.foodFinder.Dto.AccountPlanDTO;
-import com.piwkosoft.foodFinder.Persistance.Entities.AccountPlanEntity;
-import com.piwkosoft.foodFinder.Persistance.Entities.UserEntity;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.AccountPlanEntity;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.UserEntity;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;

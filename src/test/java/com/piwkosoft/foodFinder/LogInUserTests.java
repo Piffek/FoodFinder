@@ -10,10 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.piwkosoft.foodFinder.Controllers.LoginController;
+import com.piwkosoft.foodFinder.Core.Controllers.LoginController;
 import com.piwkosoft.foodFinder.Forms.UserLoginForm;
-import com.piwkosoft.foodFinder.Services.UserDetailsServiceImpl;
-import java.net.UnknownServiceException;
+import com.piwkosoft.foodFinder.Core.Services.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,11 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -103,17 +97,4 @@ public class LogInUserTests {
             .user(userLoginFormWithoutPassword.getName()))
         .andExpect(forwardedUrl("/login/error"));
   }
-
-  @Test
-  @DisplayName("logIn correct")
-  public void resultLoginCorrect() throws Exception {
-    mockMvc.perform(
-        formLogin()
-            .user(userLoginFormCorrect.getName())
-            .password(userLoginFormCorrect.getPassword()))
-        .andExpect(forwardedUrl("/"));
-
-
-  }
-
 }

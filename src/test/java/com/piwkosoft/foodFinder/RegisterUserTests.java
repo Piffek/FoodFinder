@@ -9,11 +9,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.piwkosoft.foodFinder.Controllers.RegisterController;
-import com.piwkosoft.foodFinder.Facades.Interfaces.AccountFacade;
+import com.piwkosoft.foodFinder.Core.Controllers.RegisterController;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.AccountFacade;
 import com.piwkosoft.foodFinder.Forms.UserRegistrationForm;
-import com.piwkosoft.foodFinder.Services.Interfaces.RoleService;
-import com.piwkosoft.foodFinder.Services.UserDetailsServiceImpl;
+import com.piwkosoft.foodFinder.Core.Services.Interfaces.RoleService;
+import com.piwkosoft.foodFinder.Core.Services.UserDetailsServiceImpl;
 import java.util.Set;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
@@ -25,9 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;

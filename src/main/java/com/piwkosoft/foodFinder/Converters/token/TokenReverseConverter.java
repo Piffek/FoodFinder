@@ -2,9 +2,9 @@ package com.piwkosoft.foodFinder.Converters.token;
 
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Dto.VerificationTokenDTO;
-import com.piwkosoft.foodFinder.Persistance.Entities.UserEntity;
-import com.piwkosoft.foodFinder.Persistance.Entities.VerificationTokenEntity;
-import com.piwkosoft.foodFinder.Services.Interfaces.UserService;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.UserEntity;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.VerificationTokenEntity;
+import com.piwkosoft.foodFinder.Core.Services.Interfaces.UserService;
 import org.springframework.stereotype.Component;
 
 /**

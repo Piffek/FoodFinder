@@ -1,7 +1,7 @@
 package com.piwkosoft.foodFinder.Validators;
 
 import com.piwkosoft.foodFinder.Forms.UserRegistrationForm;
-import com.piwkosoft.foodFinder.PasswordMatches;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.PasswordMatches;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

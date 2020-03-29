@@ -1,6 +1,6 @@
 package com.piwkosoft.foodFinder.Conf;
 
-import com.piwkosoft.foodFinder.Services.UserDetailsServiceImpl;
+import com.piwkosoft.foodFinder.Core.Services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

@@ -1,17 +1,14 @@
 package com.piwkosoft.foodFinder.Listeners;
 
-import com.piwkosoft.foodFinder.Constranits;
+import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.Dto.UserDTO;
 import com.piwkosoft.foodFinder.Dto.VerificationTokenDTO;
 import com.piwkosoft.foodFinder.Events.OnRegisterationEvent;
-import com.piwkosoft.foodFinder.Facades.Interfaces.TokenFacade;
-import com.piwkosoft.foodFinder.Facades.Interfaces.UserFacade;
-import com.piwkosoft.foodFinder.Services.Interfaces.EmailService;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.TokenFacade;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.UserFacade;
+import com.piwkosoft.foodFinder.Core.Services.Interfaces.EmailService;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.NamingEnumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
