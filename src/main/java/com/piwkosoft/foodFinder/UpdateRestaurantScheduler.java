@@ -10,6 +10,7 @@ import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -54,18 +55,21 @@ public class UpdateRestaurantScheduler {
     this.reverseConverter = reverseConverter;
   }
 
+  List<String> cities = new ArrayList<>();
 
   @Scheduled(cron = Constranits.RESTAURANT_DOWNLOAD_CRON)
   public void updateRestaurant() {
-    JsonRestaurant.RestaurantList restaurantList = restTemplate.getForObject(
-        Constranits.RESTAURANT_API_URL,
-        JsonRestaurant.RestaurantList .class
-    );
 
-    JsonRestaurant[] restaurantDTOS = restaurantList.getResults();
+    cities.add("Zakopane");
+    cities.add("Kraków");
+    cities.add("Dzierżoniów");
 
-    createPlaceType(restaurantDTOS);
-    createRestaurants(restaurantDTOS);
+    String apiUrl = Constranits.RESTAURANT_API_URL + "&query=restaurants+in+";
+
+    cities
+        .forEach(city -> {
+          this.create(apiUrl+city);
+        });
   }
 
   @Getter
@@ -73,6 +77,7 @@ public class UpdateRestaurantScheduler {
   @Accessors(chain = true)
   @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
   public static class JsonRestaurant {
+
     private String name;
     private String[] types;
     private String formattedAddress;
@@ -83,12 +88,42 @@ public class UpdateRestaurantScheduler {
 
     @Getter
     @Setter
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class RestaurantList {
+
+      private String nextPageToken;
       private JsonRestaurant[] results;
     }
   }
 
-  private synchronized void createPlaceType(final JsonRestaurant[] restaurantDTOS) {
+  private void create(final String apiUrl) {
+    JsonRestaurant.RestaurantList restaurantList =
+        restTemplate.getForObject(
+            apiUrl,
+            JsonRestaurant.RestaurantList.class
+        );
+
+    JsonRestaurant[] restaurantDTOS = restaurantList.getResults();
+
+    createPlaceType(restaurantDTOS);
+    createRestaurants(restaurantDTOS);
+
+    String nextPageToken = restaurantList.nextPageToken;
+
+    while (nextPageToken != null) {
+      JsonRestaurant.RestaurantList restaurants = restTemplate.getForObject(
+          apiUrl + "&pagetoken=" + nextPageToken,
+          JsonRestaurant.RestaurantList.class
+      );
+
+      nextPageToken = restaurants.nextPageToken;
+
+      createPlaceType(restaurantList.getResults());
+      createRestaurants(restaurantList.getResults());
+    }
+  }
+
+  private void createPlaceType(final JsonRestaurant[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .flatMap(restaurant -> Stream.of(restaurant.types))
@@ -100,8 +135,8 @@ public class UpdateRestaurantScheduler {
     logger.info("added Place Types");
   }
 
-  private synchronized void createRestaurants(final JsonRestaurant[] restaurantDTOS) {
-    final List<RestaurantDTO> restaurants =  Arrays.stream(restaurantDTOS)
+  private void createRestaurants(final JsonRestaurant[] restaurantDTOS) {
+    final List<RestaurantDTO> restaurants = Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .map(restaurant ->
             new RestaurantDTO()
@@ -113,9 +148,9 @@ public class UpdateRestaurantScheduler {
                 .setRating(restaurant.getRating())
                 .setTypes(
                     placeTypeFacade.findTypesByName(Arrays.asList(restaurant.getTypes()))
-                    .stream()
-                    .map(PlaceTypeDTO::getId)
-                    .collect(Collectors.toSet()))
+                        .stream()
+                        .map(PlaceTypeDTO::getId)
+                        .collect(Collectors.toSet()))
         )
         .collect(Collectors.toList());
 

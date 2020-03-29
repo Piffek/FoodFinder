@@ -42,7 +42,15 @@ public class RestaurantFacadeImpl implements RestaurantFacade {
   @Override
   public void createOrUpdate(final List<RestaurantDTO> restaurantDTOs) {
     restaurantDTOs.stream()
+        .map(restaurant -> restaurantService
+            .findByNameAndAdress(restaurant.getName(), restaurant.getFormattedAddress()))
+        .filter(Objects::nonNull)
+        .forEach(restaurantService::update);
+
+    restaurantDTOs.stream()
+        .filter(restaurant -> restaurantService
+            .findByNameAndAdress(restaurant.getName(), restaurant.getFormattedAddress()) == null)
         .map(restaurant -> reverseConverter.convert(restaurant, new RestaurantEntity()))
-        .forEach(restaurantService::createOrUpdate);
+        .forEach(restaurantService::create);
   }
 }

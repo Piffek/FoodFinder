@@ -29,10 +29,10 @@ public class PlaceTypeServiceImpl implements PlaceTypeService {
 
   @Override
   public void createIfNotExist(final PlaceTypeEntity placeTypeEntity) {
-    Query query = entityManager.createQuery("SELECT ple.id FROM PlaceTypeEntity pte WHERE pte.name = :name");
+    Query query = entityManager.createQuery("SELECT pte.id FROM PlaceTypeEntity pte WHERE pte.name = :name");
     query.setParameter("name", placeTypeEntity.getName());
 
-    if(query.getMaxResults() == 0) {
+    if(query.getResultList().size() == 0) {
       entityManager.persist(placeTypeEntity);
     }
   }

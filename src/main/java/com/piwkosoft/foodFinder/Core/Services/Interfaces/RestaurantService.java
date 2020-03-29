@@ -14,9 +14,7 @@ import java.util.List;
  */
 public interface RestaurantService {
   RestaurantEntity create(RestaurantEntity restaurantEntity);
-  void createOrUpdate(RestaurantEntity restaurantEntity);
   void update(RestaurantEntity restaurantEntity);
-  void createRestaurants(List<RestaurantEntity> restaurantEntities);
   RestaurantEntity findById(Long id);
-  RestaurantEntity findByName(String name, boolean hasPlaceTypes);
+  RestaurantEntity findByNameAndAdress(String name, String adress);
 }

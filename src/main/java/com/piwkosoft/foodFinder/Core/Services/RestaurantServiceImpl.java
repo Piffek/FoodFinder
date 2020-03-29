@@ -6,6 +6,7 @@ import com.piwkosoft.foodFinder.Core.Services.Interfaces.RestaurantService;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
@@ -34,28 +35,8 @@ public class RestaurantServiceImpl implements RestaurantService {
   }
 
   @Override
-  public void createOrUpdate(final RestaurantEntity restaurantEntity) {
-    Query query = entityManager.createQuery("SELECT re.id FROM RestaurantEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
-    query.setParameter("name", restaurantEntity.getName());
-    query.setParameter("formattedAdress", restaurantEntity.getFormattedAdress());
-
-    if(query.getMaxResults() > 0) {
-      update(restaurantEntity);
-      return;
-    }
-
-    create(restaurantEntity);
-  }
-
-  @Override
   public void update(final RestaurantEntity restaurantEntity) {
     entityManager.merge(restaurantEntity);
-  }
-
-  @Override
-  public void createRestaurants(final List<RestaurantEntity> restaurantEntities) {
-    restaurantEntities
-        .forEach(entityManager::persist);
   }
 
   @Override
@@ -64,10 +45,19 @@ public class RestaurantServiceImpl implements RestaurantService {
   }
 
   @Override
-  public RestaurantEntity findByName(final String name, final boolean hasPlaceTypes) {
-    Query query = entityManager.createQuery("FROM RestaurantEntity re WHERE re.name = :name");
+  public RestaurantEntity findByNameAndAdress(final String name, final String adress) {
+    Query query = entityManager.createQuery("FROM RestaurantEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
     query.setParameter("name", name);
+    query.setParameter("formattedAdress", adress);
 
-    return (RestaurantEntity) query.getSingleResult();
+    RestaurantEntity result;
+
+    try {
+      result = (RestaurantEntity) query.getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+
+    return result;
   }
 }
