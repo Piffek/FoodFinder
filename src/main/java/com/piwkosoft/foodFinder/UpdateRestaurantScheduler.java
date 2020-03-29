@@ -71,7 +71,7 @@ public class UpdateRestaurantScheduler {
       try {
         wait(5000);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        logger.error("waiting error", e);
       }
 
       JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
