@@ -1,6 +1,6 @@
 package com.piwkosoft.foodFinder.Dto;
 
-import com.piwkosoft.foodFinder.Persistance.Entities.RoleEntity.Role;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.RoleEntity.Role;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;

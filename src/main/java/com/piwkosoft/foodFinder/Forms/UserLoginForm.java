@@ -1,6 +1,6 @@
 package com.piwkosoft.foodFinder.Forms;
 
-import com.piwkosoft.foodFinder.PasswordSize;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.PasswordSize;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;

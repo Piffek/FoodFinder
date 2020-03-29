@@ -1,6 +1,6 @@
 package com.piwkosoft.foodFinder.Dto;
 
-import com.piwkosoft.foodFinder.Persistance.Entities.AccountPlanEntity.AccountPlan;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.AccountPlanEntity.AccountPlan;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;

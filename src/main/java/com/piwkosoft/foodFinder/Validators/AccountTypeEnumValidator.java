@@ -1,7 +1,7 @@
 package com.piwkosoft.foodFinder.Validators;
 
-import com.piwkosoft.foodFinder.AccountTypeEnumValueExist;
-import com.piwkosoft.foodFinder.Persistance.Entities.AccountPlanEntity;
+import com.piwkosoft.foodFinder.Validators.CustomAnnotations.AccountTypeEnumValueExist;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.AccountPlanEntity;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

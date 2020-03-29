@@ -2,8 +2,8 @@ package com.piwkosoft.foodFinder.Converters.roles;
 
 import com.piwkosoft.foodFinder.Converters.Converter;
 import com.piwkosoft.foodFinder.Dto.RoleDTO;
-import com.piwkosoft.foodFinder.Persistance.Entities.RoleEntity;
-import com.piwkosoft.foodFinder.Persistance.Entities.UserEntity;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.RoleEntity;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.UserEntity;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
