@@ -56,12 +56,10 @@ public class UpdateRestaurantScheduler {
     cities.add("Dzierżoniów");
 
     cities
-        .forEach(city -> {
-          this.create(RestaurantJson.BASE_URL + city);
-        });
+        .forEach(city -> this.createAndPaging(RestaurantJson.BASE_URL + city));
   }
 
-  private synchronized void create(final String apiUrl) {
+  private synchronized void createAndPaging(final String apiUrl) {
     final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = createRestaurantWithPlacesFromJson(
         apiUrl);
 
@@ -74,11 +72,10 @@ public class UpdateRestaurantScheduler {
         logger.error("waiting error", e);
       }
 
-      JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
+      final JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
           apiUrl + "&pagetoken=" + nextPageToken);
 
-      nextPageToken = restaurantJson.resetNextPageToken(restaurants);
-
+      nextPageToken = restaurantJson.returnNextPageToken(restaurants);
     }
   }
 
@@ -98,8 +95,7 @@ public class UpdateRestaurantScheduler {
         .stream()
         .map(type -> new PlaceTypeDTO().setName(type))
         .forEach(placeTypeFacade::createIfNotExist);
-
-    logger.info("added Place Types");
+    logger.info("create Place Types");
   }
 
   private void createRestaurants(final JsonRestaurant[] restaurantDTOS) {
