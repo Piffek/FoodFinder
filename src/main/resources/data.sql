@@ -23,3 +23,8 @@ insert into foodfinder.user (id, password, email_adress, city, username, created
 insert into foodfinder.user_roles (user_id, role_id) values
 (1, 1),
 (2, 2);
+
+insert into foodfinder.country (name) values
+('Zakopake'),
+('Dzierżoniów'),
+('Wrocław');
