@@ -17,6 +17,6 @@ import java.util.stream.Stream;
 public interface PlaceTypeService {
   void createIfNotExist(PlaceTypeEntity placeTypeEntity);
   PlaceTypeEntity findById(Long id);
-  Set<PlaceTypeEntity> findTypesByName(List<String> types);
+  List<PlaceTypeEntity> findTypesByName(List<String> types);
   PlaceTypeEntity findTypeByName(String type);
 }

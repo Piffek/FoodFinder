@@ -1,8 +1,10 @@
 package com.piwkosoft.foodFinder;
 
 import com.piwkosoft.foodFinder.Core.Constranits;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.CountryFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceTypeFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
+import com.piwkosoft.foodFinder.Dto.CountryDTO;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
 import com.piwkosoft.foodFinder.WebServices.RestaurantJson;
@@ -34,14 +36,17 @@ public class UpdateRestaurantScheduler {
 
   private final RestaurantJson restaurantJson;
   private final RestaurantFacade restaurantFacade;
+  private final CountryFacade countryFacade;
   private final PlaceTypeFacade placeTypeFacade;
 
   public UpdateRestaurantScheduler(
       final RestaurantJson restaurantJson,
       final RestaurantFacade restaurantFacade,
+      final CountryFacade countryFacade,
       final PlaceTypeFacade placeTypeFacade) {
     this.restaurantJson = restaurantJson;
     this.restaurantFacade = restaurantFacade;
+    this.countryFacade = countryFacade;
     this.placeTypeFacade = placeTypeFacade;
   }
 
@@ -50,18 +55,16 @@ public class UpdateRestaurantScheduler {
   public void updateRestaurant() {
 
     //TODO add to database
-    final List<String> cities = new ArrayList<>();
-    cities.add("Zakopane");
-    cities.add("Kraków");
-    cities.add("Dzierżoniów");
+    final List<String> cities = countryFacade.getAllCountries()
+        .stream()
+        .map(CountryDTO::getName)
+        .collect(Collectors.toList());
 
     cities
-        .forEach(city -> {
-          this.create(RestaurantJson.BASE_URL + city);
-        });
+        .forEach(city -> this.createAndPaging(RestaurantJson.BASE_URL + city));
   }
 
-  private synchronized void create(final String apiUrl) {
+  private synchronized void createAndPaging(final String apiUrl) {
     final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = createRestaurantWithPlacesFromJson(
         apiUrl);
 
@@ -74,11 +77,10 @@ public class UpdateRestaurantScheduler {
         logger.error("waiting error", e);
       }
 
-      JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
+      final JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
           apiUrl + "&pagetoken=" + nextPageToken);
 
-      nextPageToken = restaurantJson.resetNextPageToken(restaurants);
-
+      nextPageToken = restaurantJson.returnNextPageToken(restaurants);
     }
   }
 
@@ -98,8 +100,7 @@ public class UpdateRestaurantScheduler {
         .stream()
         .map(type -> new PlaceTypeDTO().setName(type))
         .forEach(placeTypeFacade::createIfNotExist);
-
-    logger.info("added Place Types");
+    logger.info("create Place Types");
   }
 
   private void createRestaurants(final JsonRestaurant[] restaurantDTOS) {

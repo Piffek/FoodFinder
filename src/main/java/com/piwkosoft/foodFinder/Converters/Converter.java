@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @FunctionalInterface
 public interface Converter<OUT, IN> {
   OUT convert(IN in);
-  default Set<OUT> convertAll(Set<IN> in) {
+  default List<OUT> convertAll(List<IN> in) {
     return in.stream()
         .map(this::convert)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
   }
 }

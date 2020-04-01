@@ -19,5 +19,5 @@ import org.springframework.stereotype.Component;
 public interface PlaceTypeFacade {
   void createIfNotExist(PlaceTypeDTO placeTypeDTO);
   PlaceTypeDTO findById(Long id);
-  Set<PlaceTypeDTO> findTypesByName(List<String> types);
+  List<PlaceTypeDTO> findTypesByName(List<String> types);
 }

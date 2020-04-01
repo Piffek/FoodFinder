@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * Author    : Patryk Piwko
  * <p>
- * Copyright 2020 (C) Si-eCommerce sp. z o.o.
+ * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
 public class RestaurantConverter implements Converter<RestaurantDTO, RestaurantEntity> {

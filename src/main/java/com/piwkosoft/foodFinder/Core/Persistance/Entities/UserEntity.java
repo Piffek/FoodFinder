@@ -1,5 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
+import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -29,7 +30,7 @@ import java.util.Set;
 @Entity
 @Accessors(chain = true)
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

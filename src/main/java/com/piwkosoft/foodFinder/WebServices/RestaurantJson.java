@@ -40,7 +40,7 @@ public class RestaurantJson implements CustomJson<JsonRestaurant.RestaurantList>
   }
 
   @Override
-  public String resetNextPageToken(final JsonRestaurant.RestaurantList restaurants) {
+  public String returnNextPageToken(final JsonRestaurant.RestaurantList restaurants) {
     return restaurants.getNextPageToken();
   }
 

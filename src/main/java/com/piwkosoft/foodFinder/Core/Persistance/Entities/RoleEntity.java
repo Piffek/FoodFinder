@@ -1,5 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "role")
-public class RoleEntity {
+public class RoleEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

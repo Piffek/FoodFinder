@@ -43,10 +43,10 @@ public class PlaceTypeServiceImpl implements PlaceTypeService {
   }
 
   @Override
-  public Set<PlaceTypeEntity> findTypesByName(final List<String> types) {
+  public List<PlaceTypeEntity> findTypesByName(final List<String> types) {
     return types.stream()
         .map(this::findTypeByName)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
   }
 
   @Override

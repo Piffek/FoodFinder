@@ -46,7 +46,7 @@ public class PlaceTypeFacadeImpl implements PlaceTypeFacade {
   }
 
   @Override
-  public Set<PlaceTypeDTO> findTypesByName(final List<String> types) {
+  public List<PlaceTypeDTO> findTypesByName(final List<String> types) {
     return converter.convertAll(placeTypeService.findTypesByName(types));
   }
 }
