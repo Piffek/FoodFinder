@@ -1,5 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,14 +23,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * <p>
  * Author    : Patryk Piwko
  * <p>
- * Copyright 2020 (C) Si-eCommerce sp. z o.o.
+ * Copyright 2020 (C) PiwkoSoft.
  */
 @Setter
 @Getter
 @Accessors(chain = true)
 @Entity
 @Table(name = "place_type")
-public class PlaceTypeEntity {
+public class PlaceTypeEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

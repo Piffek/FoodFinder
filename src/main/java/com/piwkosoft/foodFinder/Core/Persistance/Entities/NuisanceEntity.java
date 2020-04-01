@@ -1,5 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "nuisance")
-public class NuisanceEntity {
+public class NuisanceEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

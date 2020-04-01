@@ -1,6 +1,7 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
 import com.piwkosoft.foodFinder.Core.Constranits;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.UUID;
@@ -26,7 +27,7 @@ import java.util.Date;
 @Entity
 @Accessors(chain = true)
 @Table(name = "verification_token")
-public class VerificationTokenEntity {
+public class VerificationTokenEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
