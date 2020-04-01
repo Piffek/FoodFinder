@@ -1,8 +1,10 @@
 package com.piwkosoft.foodFinder;
 
 import com.piwkosoft.foodFinder.Core.Constranits;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.CountryFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceTypeFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
+import com.piwkosoft.foodFinder.Dto.CountryDTO;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
 import com.piwkosoft.foodFinder.WebServices.RestaurantJson;
@@ -34,14 +36,17 @@ public class UpdateRestaurantScheduler {
 
   private final RestaurantJson restaurantJson;
   private final RestaurantFacade restaurantFacade;
+  private final CountryFacade countryFacade;
   private final PlaceTypeFacade placeTypeFacade;
 
   public UpdateRestaurantScheduler(
       final RestaurantJson restaurantJson,
       final RestaurantFacade restaurantFacade,
+      final CountryFacade countryFacade,
       final PlaceTypeFacade placeTypeFacade) {
     this.restaurantJson = restaurantJson;
     this.restaurantFacade = restaurantFacade;
+    this.countryFacade = countryFacade;
     this.placeTypeFacade = placeTypeFacade;
   }
 
@@ -50,10 +55,10 @@ public class UpdateRestaurantScheduler {
   public void updateRestaurant() {
 
     //TODO add to database
-    final List<String> cities = new ArrayList<>();
-    cities.add("Zakopane");
-    cities.add("Kraków");
-    cities.add("Dzierżoniów");
+    final List<String> cities = countryFacade.getAllCountries()
+        .stream()
+        .map(CountryDTO::getName)
+        .collect(Collectors.toList());
 
     cities
         .forEach(city -> this.createAndPaging(RestaurantJson.BASE_URL + city));
