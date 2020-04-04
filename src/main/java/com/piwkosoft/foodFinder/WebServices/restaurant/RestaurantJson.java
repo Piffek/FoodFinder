@@ -1,9 +1,10 @@
-package com.piwkosoft.foodFinder.WebServices;
+package com.piwkosoft.foodFinder.WebServices.restaurant;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.piwkosoft.foodFinder.Core.Constranits;
-import com.piwkosoft.foodFinder.WebServices.RestaurantJson.JsonRestaurant;
+import com.piwkosoft.foodFinder.WebServices.CustomJson;
+import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson.JsonRestaurant;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
