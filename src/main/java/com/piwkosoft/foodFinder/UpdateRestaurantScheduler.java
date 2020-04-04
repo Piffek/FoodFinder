@@ -7,9 +7,10 @@ import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
 import com.piwkosoft.foodFinder.Dto.CountryDTO;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
 import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
-import com.piwkosoft.foodFinder.WebServices.RestaurantJson;
-import com.piwkosoft.foodFinder.WebServices.RestaurantJson.JsonRestaurant;
-import java.util.ArrayList;
+import com.piwkosoft.foodFinder.WebServices.CustomJson;
+import com.piwkosoft.foodFinder.WebServices.JsonStrategy;
+import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson;
+import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson.JsonRestaurant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Project: FoodFinder
@@ -34,27 +36,33 @@ public class UpdateRestaurantScheduler {
 
   private static final Logger logger = LoggerFactory.getLogger(UpdateRestaurantScheduler.class);
 
-  private final RestaurantJson restaurantJson;
   private final RestaurantFacade restaurantFacade;
   private final CountryFacade countryFacade;
   private final PlaceTypeFacade placeTypeFacade;
+  private final JsonStrategy jsonStrategy;
+  private final RestTemplate restTemplate;
+  private final CustomJson json;
+
 
   public UpdateRestaurantScheduler(
-      final RestaurantJson restaurantJson,
       final RestaurantFacade restaurantFacade,
       final CountryFacade countryFacade,
-      final PlaceTypeFacade placeTypeFacade) {
-    this.restaurantJson = restaurantJson;
+      final PlaceTypeFacade placeTypeFacade,
+      final JsonStrategy jsonStrategy, RestTemplate restTemplate) {
     this.restaurantFacade = restaurantFacade;
     this.countryFacade = countryFacade;
     this.placeTypeFacade = placeTypeFacade;
+    this.jsonStrategy = jsonStrategy;
+    this.restTemplate = restTemplate;
+
+    this.jsonStrategy.setJsonStrategy(new RestaurantJson(restTemplate));
+    this.json = this.jsonStrategy.json();
   }
 
   //TODO in many thread
   @Scheduled(cron = Constranits.RESTAURANT_DOWNLOAD_CRON)
   public void updateRestaurant() {
 
-    //TODO add to database
     final List<String> cities = countryFacade.getAllCountries()
         .stream()
         .map(CountryDTO::getName)
@@ -70,7 +78,7 @@ public class UpdateRestaurantScheduler {
 
     String nextPageToken = restaurantList.getNextPageToken();
 
-    while (restaurantJson.hasNextPage(nextPageToken)) {
+    while (json.hasNextPage(nextPageToken)) {
       try {
         wait(5000);
       } catch (InterruptedException e) {
@@ -80,13 +88,13 @@ public class UpdateRestaurantScheduler {
       final JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
           apiUrl + "&pagetoken=" + nextPageToken);
 
-      nextPageToken = restaurantJson.returnNextPageToken(restaurants);
+      nextPageToken = json.returnNextPageToken(restaurants);
     }
   }
 
   public JsonRestaurant.RestaurantList createRestaurantWithPlacesFromJson(final String url) {
-    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = restaurantJson
-        .objectFromJson(url);
+    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList =
+        (RestaurantJson.JsonRestaurant.RestaurantList) json.objectFromJson(url);
     createPlaceType(restaurantList.getResults());
     createRestaurants(restaurantList.getResults());
     return restaurantList;
