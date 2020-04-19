@@ -22,9 +22,4 @@ public class PlacesAPI {
   public PlacesAPI(final PlaceFacade placeFacade) {
     this.placeFacade = placeFacade;
   }
-
-  public PlaceDTO publicRestaurantJson() {
-
-  }
-
 }

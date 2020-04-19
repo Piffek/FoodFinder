@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class RestaurantConverter implements Converter<PlaceDTO, PlaceEntity> {
+public class PlaceConverter implements Converter<PlaceDTO, PlaceEntity> {
 
   @Override
   public PlaceDTO convert(final PlaceEntity placeEntity) {

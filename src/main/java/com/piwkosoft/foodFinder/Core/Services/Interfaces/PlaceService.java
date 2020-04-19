@@ -11,7 +11,7 @@ import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
  * <p>
  * Copyright 2020 (C) PiwkoSoft.
  */
-public interface RestaurantService {
+public interface PlaceService {
   PlaceEntity create(PlaceEntity placeEntity);
   void update(PlaceEntity placeEntity);
   PlaceEntity findById(Long id);

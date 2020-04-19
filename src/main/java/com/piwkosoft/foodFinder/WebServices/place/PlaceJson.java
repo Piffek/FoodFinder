@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.WebServices.CustomJson;
-import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.PlaceList;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class PlaceJson implements CustomJson<PlaceList> {
+public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
 
   public static String BASE_URL = Constranits.PLACE_API_URL + "&query=restaurants+in+";
 
@@ -33,15 +33,15 @@ public class PlaceJson implements CustomJson<PlaceList> {
   }
 
   @Override
-  public PlaceList objectFromJson(final String url) {
+  public JsonPlace.PlaceList objectFromJson(final String url) {
     return restTemplate.getForObject(
         url,
-        PlaceList.class
+        JsonPlace.PlaceList.class
     );
   }
 
   @Override
-  public String returnNextPageToken(final PlaceList places) {
+  public String returnNextPageToken(final JsonPlace.PlaceList places) {
     return places.getNextPageToken();
   }
 

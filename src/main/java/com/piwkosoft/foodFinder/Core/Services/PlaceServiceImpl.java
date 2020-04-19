@@ -1,7 +1,7 @@
 package com.piwkosoft.foodFinder.Core.Services;
 
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
-import com.piwkosoft.foodFinder.Core.Services.Interfaces.RestaurantService;
+import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Transactional
-public class RestaurantServiceImpl implements RestaurantService {
+public class PlaceServiceImpl implements PlaceService {
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -43,7 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
   @Override
   public PlaceEntity findByNameAndAdress(final String name, final String adress) {
-    Query query = entityManager.createQuery("FROM RestaurantEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
+    Query query = entityManager.createQuery("FROM PlaceEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
     query.setParameter("name", name);
     query.setParameter("formattedAdress", adress);
 
