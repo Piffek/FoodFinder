@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface PlaceFacade {
   void createOrUpdate(List<PlaceDTO> placeDTOS);
+  List<PlaceDTO> findAllPlaces();
 }

@@ -1,4 +1,4 @@
-package com.piwkosoft.foodFinder.Converters.restaurant;
+package com.piwkosoft.foodFinder.Converters.place;
 
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class RestaurantReverseConverter implements
+public class PlaceReverseConverter implements
     ReverseConverter<PlaceEntity, PlaceDTO> {
 
   private final PlaceTypeService placeTypeService;
 
-  public RestaurantReverseConverter(
+  public PlaceReverseConverter(
       final PlaceTypeService placeTypeService) {
     this.placeTypeService = placeTypeService;
   }

@@ -1,6 +1,7 @@
 package com.piwkosoft.foodFinder.Core.Services.Interfaces;
 
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
+import java.util.List;
 
 /**
  * Project: FoodFinder
@@ -16,4 +17,5 @@ public interface PlaceService {
   void update(PlaceEntity placeEntity);
   PlaceEntity findById(Long id);
   PlaceEntity findByNameAndAdress(String name, String adress);
+  List<PlaceEntity> findAllPlaces();
 }

@@ -48,9 +48,9 @@ public class PlaceEntity implements Serializable {
       CascadeType.REFRESH
   })
   @JoinTable(
-      name = "restaurant_place",
-      joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")},
-      inverseJoinColumns = {@JoinColumn(name = "place_type_id", referencedColumnName = "id")}
+      name = "place_to_type",
+      joinColumns = {@JoinColumn(name = "place_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "type_id", referencedColumnName = "id")}
   )
   private Set<PlaceTypeEntity> types;
 }

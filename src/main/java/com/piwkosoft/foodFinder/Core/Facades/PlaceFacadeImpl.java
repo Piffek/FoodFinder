@@ -1,5 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Facades;
 
+import com.piwkosoft.foodFinder.Converters.Converter;
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Dto.PlaceDTO;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
@@ -22,13 +23,16 @@ import org.springframework.stereotype.Component;
 public class PlaceFacadeImpl implements PlaceFacade {
 
   private final ReverseConverter<PlaceEntity, PlaceDTO> reverseConverter;
+  private final Converter<PlaceDTO, PlaceEntity> converter;
 
   private final PlaceService placeService;
 
   public PlaceFacadeImpl(
       final ReverseConverter<PlaceEntity, PlaceDTO> reverseConverter,
+      final Converter<PlaceDTO, PlaceEntity> converter,
       final PlaceService placeService) {
     this.reverseConverter = reverseConverter;
+    this.converter = converter;
     this.placeService = placeService;
   }
 
@@ -45,5 +49,10 @@ public class PlaceFacadeImpl implements PlaceFacade {
             .findByNameAndAdress(restaurant.getName(), restaurant.getFormattedAddress()) == null)
         .map(restaurant -> reverseConverter.convert(restaurant, new PlaceEntity()))
         .forEach(placeService::create);
+  }
+
+  @Override
+  public List<PlaceDTO> findAllPlaces() {
+    return converter.convertAll(placeService.findAllPlaces());
   }
 }

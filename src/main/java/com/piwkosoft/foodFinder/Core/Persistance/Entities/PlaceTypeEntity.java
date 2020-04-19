@@ -42,5 +42,5 @@ public class PlaceTypeEntity implements Serializable {
           CascadeType.MERGE
       },
       mappedBy = "types")
-  public Set<PlaceEntity> restaurants;
+  public Set<PlaceEntity> places;
 }

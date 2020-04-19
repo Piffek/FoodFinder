@@ -50,7 +50,8 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {
                         "/",
                         "/signup/**",
                         "/activate-token/**",
-                        "/login/**").permitAll()
+                        "/login/**",
+                        "/api/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

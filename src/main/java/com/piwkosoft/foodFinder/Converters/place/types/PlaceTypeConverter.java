@@ -1,4 +1,4 @@
-package com.piwkosoft.foodFinder.Converters.restaurant.types;
+package com.piwkosoft.foodFinder.Converters.place.types;
 
 import com.piwkosoft.foodFinder.Converters.Converter;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;

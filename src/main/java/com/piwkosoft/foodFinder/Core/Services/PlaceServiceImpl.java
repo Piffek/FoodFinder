@@ -2,6 +2,7 @@ package com.piwkosoft.foodFinder.Core.Services;
 
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -56,5 +57,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     return result;
+  }
+
+  @Override
+  public List<PlaceEntity> findAllPlaces() {
+    Query query = entityManager.createQuery("FROM PlaceEntity");
+    return query.getResultList();
   }
 }
