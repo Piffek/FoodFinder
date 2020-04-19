@@ -30,8 +30,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(chain = true)
 @Entity
-@Table(name = "restaurant_entity")
-public class RestaurantEntity implements Serializable {
+@Table(name = "place_entity")
+public class PlaceEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

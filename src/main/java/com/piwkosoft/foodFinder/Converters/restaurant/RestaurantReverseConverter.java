@@ -3,8 +3,8 @@ package com.piwkosoft.foodFinder.Converters.restaurant;
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceTypeService;
-import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
-import com.piwkosoft.foodFinder.Core.Persistance.Entities.RestaurantEntity;
+import com.piwkosoft.foodFinder.Dto.PlaceDTO;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RestaurantReverseConverter implements
-    ReverseConverter<RestaurantEntity, RestaurantDTO> {
+    ReverseConverter<PlaceEntity, PlaceDTO> {
 
   private final PlaceTypeService placeTypeService;
 
@@ -31,20 +31,20 @@ public class RestaurantReverseConverter implements
   }
 
   @Override
-  public RestaurantEntity convert(final RestaurantDTO restaurantDTO, final RestaurantEntity restaurantEntity) {
+  public PlaceEntity convert(final PlaceDTO placeDTO, final PlaceEntity placeEntity) {
     final Set<PlaceTypeEntity> placeTypeEntities =
-        restaurantDTO.getTypes().stream()
+        placeDTO.getTypes().stream()
         .filter(Objects::nonNull)
         .map(placeTypeService::findById)
         .collect(Collectors.toSet());
 
-    return restaurantEntity
-        .setFormattedAdress(restaurantDTO.getFormattedAddress())
-        .setName(restaurantDTO.getName())
+    return placeEntity
+        .setFormattedAdress(placeDTO.getFormattedAddress())
+        .setName(placeDTO.getName())
         .setTypes(placeTypeEntities)
-        .setOpen(restaurantDTO.isOpen())
-        .setIcon(restaurantDTO.getIcon())
-        .setRating(restaurantDTO.getRating())
-        .setUserRatingsTotal(restaurantDTO.getUserRatingsTotal());
+        .setOpen(placeDTO.isOpen())
+        .setIcon(placeDTO.getIcon())
+        .setRating(placeDTO.getRating())
+        .setUserRatingsTotal(placeDTO.getUserRatingsTotal());
   }
 }

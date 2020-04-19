@@ -1,7 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Services.Interfaces;
 
-import com.piwkosoft.foodFinder.Core.Persistance.Entities.RestaurantEntity;
-import java.util.List;
+import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
 
 /**
  * Project: FoodFinder
@@ -13,8 +12,8 @@ import java.util.List;
  * Copyright 2020 (C) PiwkoSoft.
  */
 public interface RestaurantService {
-  RestaurantEntity create(RestaurantEntity restaurantEntity);
-  void update(RestaurantEntity restaurantEntity);
-  RestaurantEntity findById(Long id);
-  RestaurantEntity findByNameAndAdress(String name, String adress);
+  PlaceEntity create(PlaceEntity placeEntity);
+  void update(PlaceEntity placeEntity);
+  PlaceEntity findById(Long id);
+  PlaceEntity findByNameAndAdress(String name, String adress);
 }

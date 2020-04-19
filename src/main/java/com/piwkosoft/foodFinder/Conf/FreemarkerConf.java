@@ -1,6 +1,5 @@
 package com.piwkosoft.foodFinder.Conf;
 
-import freemarker.cache.ClassTemplateLoader;
 import freemarker.core.HTMLOutputFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
