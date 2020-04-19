@@ -3,14 +3,15 @@ package com.piwkosoft.foodFinder;
 import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.CountryFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceTypeFacade;
-import com.piwkosoft.foodFinder.Core.Facades.Interfaces.RestaurantFacade;
+import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
 import com.piwkosoft.foodFinder.Dto.CountryDTO;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
-import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
+import com.piwkosoft.foodFinder.Dto.PlaceDTO;
 import com.piwkosoft.foodFinder.WebServices.CustomJson;
 import com.piwkosoft.foodFinder.WebServices.JsonStrategy;
-import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson;
-import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson.JsonRestaurant;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.PlaceList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class UpdateRestaurantScheduler {
 
   private static final Logger logger = LoggerFactory.getLogger(UpdateRestaurantScheduler.class);
 
-  private final RestaurantFacade restaurantFacade;
+  private final PlaceFacade placeFacade;
   private final CountryFacade countryFacade;
   private final PlaceTypeFacade placeTypeFacade;
   private final JsonStrategy jsonStrategy;
@@ -45,17 +46,17 @@ public class UpdateRestaurantScheduler {
 
 
   public UpdateRestaurantScheduler(
-      final RestaurantFacade restaurantFacade,
+      final PlaceFacade placeFacade,
       final CountryFacade countryFacade,
       final PlaceTypeFacade placeTypeFacade,
       final JsonStrategy jsonStrategy, RestTemplate restTemplate) {
-    this.restaurantFacade = restaurantFacade;
+    this.placeFacade = placeFacade;
     this.countryFacade = countryFacade;
     this.placeTypeFacade = placeTypeFacade;
     this.jsonStrategy = jsonStrategy;
     this.restTemplate = restTemplate;
 
-    this.jsonStrategy.setJsonStrategy(new RestaurantJson(restTemplate));
+    this.jsonStrategy.setJsonStrategy(new PlaceJson(restTemplate));
     this.json = this.jsonStrategy.json();
   }
 
@@ -69,14 +70,14 @@ public class UpdateRestaurantScheduler {
         .collect(Collectors.toList());
 
     cities
-        .forEach(city -> this.createAndPaging(RestaurantJson.BASE_URL + city));
+        .forEach(city -> this.createAndPaging(PlaceJson.BASE_URL + city));
   }
 
   private synchronized void createAndPaging(final String apiUrl) {
-    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList = createRestaurantWithPlacesFromJson(
+    final PlaceList placeList = createRestaurantWithPlacesFromJson(
         apiUrl);
 
-    String nextPageToken = restaurantList.getNextPageToken();
+    String nextPageToken = placeList.getNextPageToken();
 
     while (json.hasNextPage(nextPageToken)) {
       try {
@@ -85,22 +86,22 @@ public class UpdateRestaurantScheduler {
         logger.error("waiting error", e);
       }
 
-      final JsonRestaurant.RestaurantList restaurants = createRestaurantWithPlacesFromJson(
+      final PlaceList restaurants = createRestaurantWithPlacesFromJson(
           apiUrl + "&pagetoken=" + nextPageToken);
 
       nextPageToken = json.returnNextPageToken(restaurants);
     }
   }
 
-  public JsonRestaurant.RestaurantList createRestaurantWithPlacesFromJson(final String url) {
-    final RestaurantJson.JsonRestaurant.RestaurantList restaurantList =
-        (RestaurantJson.JsonRestaurant.RestaurantList) json.objectFromJson(url);
-    createPlaceType(restaurantList.getResults());
-    createRestaurants(restaurantList.getResults());
-    return restaurantList;
+  public PlaceList createRestaurantWithPlacesFromJson(final String url) {
+    final PlaceList placeList =
+        (PlaceList) json.objectFromJson(url);
+    createPlaceType(placeList.getResults());
+    createRestaurants(placeList.getResults());
+    return placeList;
   }
 
-  private void createPlaceType(final JsonRestaurant[] restaurantDTOS) {
+  private void createPlaceType(final JsonPlace[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .flatMap(restaurant -> Stream.of(restaurant.getTypes()))
@@ -111,11 +112,11 @@ public class UpdateRestaurantScheduler {
     logger.info("create Place Types");
   }
 
-  private void createRestaurants(final JsonRestaurant[] restaurantDTOS) {
-    final List<RestaurantDTO> restaurants = Arrays.stream(restaurantDTOS)
+  private void createRestaurants(final JsonPlace[] restaurantDTOS) {
+    final List<PlaceDTO> restaurants = Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .map(restaurant ->
-            new RestaurantDTO()
+            new PlaceDTO()
                 .setFormattedAddress(restaurant.getFormattedAddress())
                 .setUserRatingsTotal(restaurant.getUserRatingsTotal())
                 .setIcon(restaurant.getIcon())
@@ -130,7 +131,7 @@ public class UpdateRestaurantScheduler {
         )
         .collect(Collectors.toList());
 
-    restaurantFacade.createOrUpdate(restaurants);
+    placeFacade.createOrUpdate(restaurants);
     logger.info("create restaurants");
   }
 }

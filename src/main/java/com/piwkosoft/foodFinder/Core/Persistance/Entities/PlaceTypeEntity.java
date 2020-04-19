@@ -1,7 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Persistance.Entities;
 
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Project: FoodFinder
@@ -44,5 +42,5 @@ public class PlaceTypeEntity implements Serializable {
           CascadeType.MERGE
       },
       mappedBy = "types")
-  public Set<RestaurantEntity> restaurants;
+  public Set<PlaceEntity> places;
 }

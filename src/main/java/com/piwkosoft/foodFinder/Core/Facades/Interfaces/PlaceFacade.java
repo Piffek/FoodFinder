@@ -1,7 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Facades.Interfaces;
 
-import com.piwkosoft.foodFinder.Core.Persistance.Entities.RestaurantEntity;
-import com.piwkosoft.foodFinder.Dto.RestaurantDTO;
+import com.piwkosoft.foodFinder.Dto.PlaceDTO;
 import java.util.List;
 
 /**
@@ -13,6 +12,7 @@ import java.util.List;
  * <p>
  * Copyright 2020 (C) PiwkoSoft.
  */
-public interface RestaurantFacade {
-  void createOrUpdate(List<RestaurantDTO> restaurantDTOs);
+public interface PlaceFacade {
+  void createOrUpdate(List<PlaceDTO> placeDTOS);
+  List<PlaceDTO> findAllPlaces();
 }

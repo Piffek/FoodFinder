@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class RestaurantDTO {
+public class PlaceDTO {
   private String name;
   private Set<Long> types;
   private String formattedAddress;

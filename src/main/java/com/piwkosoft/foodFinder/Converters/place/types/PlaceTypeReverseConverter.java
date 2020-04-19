@@ -1,14 +1,9 @@
-package com.piwkosoft.foodFinder.Converters.restaurant.types;
+package com.piwkosoft.foodFinder.Converters.place.types;
 
 import com.piwkosoft.foodFinder.Converters.ReverseConverter;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
-import com.piwkosoft.foodFinder.Core.Persistance.Entities.RestaurantEntity;
-import com.piwkosoft.foodFinder.Core.Services.Interfaces.RestaurantService;
+import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
 import com.piwkosoft.foodFinder.Dto.PlaceTypeDTO;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,11 +19,11 @@ import org.springframework.stereotype.Component;
 public class PlaceTypeReverseConverter implements ReverseConverter<PlaceTypeEntity, PlaceTypeDTO>
 {
 
-  private final RestaurantService restaurantService;
+  private final PlaceService placeService;
 
   public PlaceTypeReverseConverter(
-      final RestaurantService restaurantService) {
-    this.restaurantService = restaurantService;
+      final PlaceService placeService) {
+    this.placeService = placeService;
   }
 
   @Override

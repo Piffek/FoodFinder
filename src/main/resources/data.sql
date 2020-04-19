@@ -25,6 +25,6 @@ insert into foodfinder.user_roles (user_id, role_id) values
 (2, 2);
 
 insert into foodfinder.country (name) values
-('Zakopake'),
+('Zakopane'),
 ('Dzierżoniów'),
 ('Wrocław');

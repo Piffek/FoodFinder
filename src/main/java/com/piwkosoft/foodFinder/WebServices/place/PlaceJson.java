@@ -1,10 +1,10 @@
-package com.piwkosoft.foodFinder.WebServices.restaurant;
+package com.piwkosoft.foodFinder.WebServices.place;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.WebServices.CustomJson;
-import com.piwkosoft.foodFinder.WebServices.restaurant.RestaurantJson.JsonRestaurant;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,27 +22,27 @@ import org.springframework.web.client.RestTemplate;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class RestaurantJson implements CustomJson<JsonRestaurant.RestaurantList> {
+public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
 
-  public static String BASE_URL = Constranits.RESTAURANT_API_URL + "&query=restaurants+in+";
+  public static String BASE_URL = Constranits.PLACE_API_URL + "&query=restaurants+in+";
 
   private final RestTemplate restTemplate;
 
-  public RestaurantJson(final RestTemplate restTemplate) {
+  public PlaceJson(final RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
 
   @Override
-  public JsonRestaurant.RestaurantList objectFromJson(final String url) {
+  public JsonPlace.PlaceList objectFromJson(final String url) {
     return restTemplate.getForObject(
         url,
-        JsonRestaurant.RestaurantList.class
+        JsonPlace.PlaceList.class
     );
   }
 
   @Override
-  public String returnNextPageToken(final JsonRestaurant.RestaurantList restaurants) {
-    return restaurants.getNextPageToken();
+  public String returnNextPageToken(final JsonPlace.PlaceList places) {
+    return places.getNextPageToken();
   }
 
   @Override
@@ -54,7 +54,7 @@ public class RestaurantJson implements CustomJson<JsonRestaurant.RestaurantList>
   @Setter
   @Accessors(chain = true)
   @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-  public static class JsonRestaurant {
+  public static class JsonPlace {
 
     private String name;
     private String[] types;
@@ -67,10 +67,10 @@ public class RestaurantJson implements CustomJson<JsonRestaurant.RestaurantList>
     @Getter
     @Setter
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class RestaurantList {
+    public static class PlaceList {
 
       private String nextPageToken;
-      private JsonRestaurant[] results;
+      private JsonPlace[] results;
     }
   }
 }
