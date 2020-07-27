@@ -5,6 +5,7 @@ import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
 import com.piwkosoft.foodFinder.Dto.PlaceDTO;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.codehaus.groovy.runtime.ArrayUtil;
 import org.hibernate.event.internal.DirtyCollectionSearchVisitor;
 import org.springframework.http.HttpStatus;
@@ -37,10 +38,13 @@ public class PlacesAPI {
   @GetMapping(value = "places", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public List<PlaceDTO> publicPlaces() {
-    List<PlaceDTO> availablePlaces = placeFacade.findAllPlaces();
+    final List<PlaceDTO> availablePlaces = Optional.ofNullable(placeFacade.findAllPlaces())
+        .orElse(Collections.emptyList());
+
     if (CollectionUtils.isEmpty(availablePlaces)) {
       throw new PlacesNotFoundException("places not found");
     }
+
     return availablePlaces;
   }
 }
