@@ -2,6 +2,7 @@ package com.piwkosoft.foodFinder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,9 +15,17 @@ import com.piwkosoft.foodFinder.Core.Facades.Interfaces.AccountFacade;
 import com.piwkosoft.foodFinder.Forms.UserRegistrationForm;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.RoleService;
 import com.piwkosoft.foodFinder.Core.Services.UserDetailsServiceImpl;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,8 +71,8 @@ public class RegisterUserTests {
 
   private ValidatorFactory validatorFactory;
 
-  private UserRegistrationForm userRegistrationFormWrongPasswords = new UserRegistrationForm();
-  private UserRegistrationForm userRegistrationFormCorrect = new UserRegistrationForm();
+  private List<BasicNameValuePair> userRegistrationFormWrongPasswords = new ArrayList<>();
+  private List<BasicNameValuePair> userRegistrationFormCorrect = new ArrayList<>();
 
   @BeforeEach
   private void initMockMvc() {
@@ -76,20 +85,25 @@ public class RegisterUserTests {
 
   @BeforeEach
   public void fillWrongForm() {
-    this.userRegistrationFormWrongPasswords.setAccountPlan(SELECT_PLAN);
-    this.userRegistrationFormWrongPasswords.setCity("DDZ");
-    this.userRegistrationFormWrongPasswords.setEmailAdress("patrykpiwko123412@gmail.com");
-    this.userRegistrationFormWrongPasswords.setPassword("Piwko1.");
-    this.userRegistrationFormWrongPasswords.setMatchingPassword("Piwko1");
+    userRegistrationFormWrongPasswords = Arrays
+        .asList(
+            new BasicNameValuePair("accountPlan", SELECT_PLAN),
+            new BasicNameValuePair("city", "DDZ"),
+            new BasicNameValuePair("emailAdress", "patrykpiwko123412@gmail.com"),
+            new BasicNameValuePair("password", "Piwko1."),
+            //bad matching password
+            new BasicNameValuePair("matchingPassword", "Piwko1"));
   }
 
   @BeforeEach
   public void fillCorrectForm() {
-    this.userRegistrationFormCorrect.setAccountPlan(SELECT_PLAN);
-    this.userRegistrationFormCorrect.setCity("DDZ");
-    this.userRegistrationFormCorrect.setEmailAdress("patrykpiwko123412@gmail.com");
-    this.userRegistrationFormCorrect.setPassword("Piwko1.");
-    this.userRegistrationFormCorrect.setMatchingPassword("Piwko1.");
+    userRegistrationFormCorrect = Arrays
+        .asList(
+            new BasicNameValuePair("accountPlan", SELECT_PLAN),
+            new BasicNameValuePair("city", "DDZ"),
+            new BasicNameValuePair("emailAdress", "patrykpiwko123412@gmail.com"),
+            new BasicNameValuePair("password", "Piwko1."),
+            new BasicNameValuePair("matchingPassword", "Piwko1."));
   }
 
   @Test
@@ -134,28 +148,29 @@ public class RegisterUserTests {
   }
 
   @Test
-  @DisplayName("Main registration")
-  public void registrationUser() throws Exception {
-    final ObjectMapper objectMapper = new ObjectMapper();
-
-    mockMvc.perform(post("/signup/user-signup/")
-        .with(csrf())
-        .contentType(MediaType.TEXT_HTML_VALUE)
-        .content(objectMapper.writeValueAsBytes(userRegistrationFormCorrect)))
-        .andExpect(status().isOk());
-  }
-
-  @Test
   @DisplayName("CORRECT - Validation form")
-  public void correctFormValidation() {
-    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormCorrect);
-    assertEquals(errors.size(), 0);
+  public void correctFormValidation() throws Exception {
+    final ModelAndView modelAndView = mockMvc.perform(post("/signup/user-signup/")
+        .with(csrf())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .content(EntityUtils.toString(new UrlEncodedFormEntity(userRegistrationFormCorrect))))
+        .andExpect(status().isOk())
+        .andReturn().getModelAndView();
+
+    assertNull(modelAndView.getModelMap().getAttribute("errors"));
   }
 
   @Test
   @DisplayName("INCORRECT - Validation form")
-  public void invalidFormValidation() {
-    final Set errors = validatorFactory.getValidator().validate(userRegistrationFormWrongPasswords);
-    assertEquals(errors.size(), 1);
+  public void invalidFormValidation() throws Exception {
+    final ModelAndView modelAndView = mockMvc.perform(post("/signup/user-signup/")
+        .with(csrf())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .content(EntityUtils.toString(new UrlEncodedFormEntity(userRegistrationFormWrongPasswords))))
+        .andExpect(status().isOk())
+        .andReturn().getModelAndView();
+
+    assertNotNull(modelAndView.getModelMap().getAttribute("errors"));
+
   }
 }

@@ -95,6 +95,7 @@ public class RegisterController {
 
     if (bindingResult.hasErrors()) {
       logger.debug("registration form errors {}", bindingResult.getAllErrors());
+      modelAndView.addObject("errors", bindingResult.getAllErrors());
       return modelAndView;
     }
 
