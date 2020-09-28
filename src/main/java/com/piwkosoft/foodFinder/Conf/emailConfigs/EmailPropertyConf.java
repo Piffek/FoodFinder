@@ -24,7 +24,7 @@ public class EmailPropertyConf {
   @Bean
   @ConditionalOnProperty(name = "foodfinder.email", havingValue = "dev")
   public MailProperties mailProperties() {
-    MailProperties mailProperties = new MailProperties();
+    final MailProperties mailProperties = new MailProperties();
     mailProperties.setHost("127.0.0.1");
     mailProperties.setPort(25);
     mailProperties.getProperties().put("mail.smtp.auth", "false");
