@@ -62,7 +62,9 @@
                     <div class="p-5">
                         <h2 class="display-4">For those about to rock...</h2>
                        <div sec:authorize="isAuthenticated()">
-                           
+                           <ul th:each="place : ${places}">
+                               <li th:text="${place.name}"></li>
+                           </ul>
                        </div>
                     </div>
                 </div>
