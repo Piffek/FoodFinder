@@ -30,5 +30,6 @@ public class PlaceDTO {
   private boolean isOpen;
   private Double rating;
   private BigDecimal userRatingsTotal;
+  private String url;
 
 }
