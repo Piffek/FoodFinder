@@ -25,6 +25,15 @@ import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 01.04.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Getter
 @Setter
 @Entity
@@ -32,53 +41,53 @@ import java.util.Set;
 @Table(name = "user")
 public class UserEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String username;
+  private String username;
 
-    private String password;
+  private String password;
 
-    private String emailAdress;
+  private String emailAdress;
 
-    private String city;
+  private String city;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_plan_id")
-    private AccountPlanEntity accountPlan;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "account_plan_id")
+  private AccountPlanEntity accountPlan;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "user_roles",
-        joinColumns = { @JoinColumn(name = "user_id") },
-        inverseJoinColumns = { @JoinColumn(name = "role_id") }
-    )
-    private Set<RoleEntity> roles;
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "user_roles",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id")}
+  )
+  private Set<RoleEntity> roles;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private Set<NuisanceEntity> nuisanceEntitySet;
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+  private Set<NuisanceEntity> nuisanceEntitySet;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedDate;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date updatedDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date createdDate;
 
-    @JoinColumn(name = "token")
-    @OneToOne(fetch = FetchType.LAZY)
-    private VerificationTokenEntity activatedToken;
+  @JoinColumn(name = "token")
+  @OneToOne(fetch = FetchType.LAZY)
+  private VerificationTokenEntity activatedToken;
 
-    private boolean enabled;
+  private boolean enabled;
 
-    @PrePersist
-    private void initEnable() {
-        this.enabled = false;
-        this.createdDate = new Date();
-    }
+  @PrePersist
+  private void initEnable() {
+    this.enabled = false;
+    this.createdDate = new Date();
+  }
 
-    @PreUpdate
-    private void initUpdatedDate(){
-        updatedDate = new Date();
-    }
+  @PreUpdate
+  private void initUpdatedDate() {
+    updatedDate = new Date();
+  }
 }

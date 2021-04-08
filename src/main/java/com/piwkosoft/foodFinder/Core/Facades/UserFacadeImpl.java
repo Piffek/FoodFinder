@@ -31,17 +31,11 @@ public class UserFacadeImpl implements UserFacade {
     return userEntity.getId();
   }
 
-  @Override
-  public void updateUser(final UserDTO userDto) {
-    final UserEntity userEntity = userService.findById(userDto.getId());
-    final UserEntity mappedUser = reverseConverter.convert(userDto, userEntity);
-    userService.updateUser(mappedUser);
-  }
 
   @Override
   public void setAsEnable(final UserDTO userDto) {
     userDto.setEnabled(true);
-    updateUser(userDto);
+    update(userDto);
   }
 
   @Override
@@ -53,5 +47,11 @@ public class UserFacadeImpl implements UserFacade {
   @Override
   public UserDTO findById(final Long id) {
     return converter.convert(userService.findById(id));
+  }
+
+  private void update(final UserDTO userDto) {
+    final UserEntity userEntity = userService.findById(userDto.getId());
+    final UserEntity mappedUser = reverseConverter.convert(userDto, userEntity);
+    userService.updateUser(mappedUser);
   }
 }

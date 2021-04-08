@@ -30,6 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 01.04.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -51,10 +60,11 @@ public class EmailServiceImpl implements EmailService {
     Properties properties = new Properties();
     final String localeString = locale != null ? locale.toString() : Constranits.DEFAULT_LOCALE;
     final String templatePath = TEMPLATE_PATH + "" + templateName + "_" + localeString + ".properties";
-    final String defaultEmailProperty = TEMPLATE_PATH + "" + Constranits.DEFAULT_EMAIL_PROPERTY_FILE + "_" + localeString + ".properties";
+    final String defaultEmailProperty =
+        TEMPLATE_PATH + "" + Constranits.DEFAULT_EMAIL_PROPERTY_FILE + "_" + localeString + ".properties";
 
     try (final InputStream inputStream = getClass().getResourceAsStream(templatePath);
-         final InputStream defaultEmailPropertyFile = getClass().getResourceAsStream(defaultEmailProperty)) {
+        final InputStream defaultEmailPropertyFile = getClass().getResourceAsStream(defaultEmailProperty)) {
       properties.load(inputStream);
       properties.load(defaultEmailPropertyFile);
     } catch (IOException e) {
@@ -93,7 +103,7 @@ public class EmailServiceImpl implements EmailService {
       e.printStackTrace();
     }
 
-    logger.debug("email sending to {}",recipients);
+    logger.debug("email sending to {}", recipients);
   }
 
 
@@ -103,7 +113,7 @@ public class EmailServiceImpl implements EmailService {
     sendEmail(Collections.singletonList(recipient), message, templateName, locale);
   }
 
-  private Address[] setEmails(final List<String> emails)  {
+  private Address[] setEmails(final List<String> emails) {
 
     return emails.stream()
         .map(this::internetAddress)
@@ -116,7 +126,7 @@ public class EmailServiceImpl implements EmailService {
     try {
       return new InternetAddress(email, personal);
     } catch (final UnsupportedEncodingException e) {
-      logger.error("encoding exception for adress {}", email ,e);
+      logger.error("encoding exception for adress {}", email, e);
     }
     return null;
   }

@@ -25,17 +25,19 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
 public class UpdateRestaurantScheduler {
 
   private static final Logger logger = LoggerFactory.getLogger(UpdateRestaurantScheduler.class);
+
+  private static final String PAGE_TOKEN_URL_KEY = "&pagetoken=";
 
   private final PlaceFacade placeFacade;
   private final CountryFacade countryFacade;
@@ -82,18 +84,18 @@ public class UpdateRestaurantScheduler {
     while (json.hasNextPage(nextPageToken)) {
       try {
         wait(5000);
-      } catch (InterruptedException e) {
+      } catch (final InterruptedException e) {
         logger.error("waiting error", e);
       }
 
       final PlaceList restaurants = createRestaurantWithPlacesFromJson(
-          apiUrl + "&pagetoken=" + nextPageToken);
+          apiUrl + PAGE_TOKEN_URL_KEY + nextPageToken);
 
       nextPageToken = json.returnNextPageToken(restaurants);
     }
   }
 
-  public PlaceList createRestaurantWithPlacesFromJson(final String url) {
+  private PlaceList createRestaurantWithPlacesFromJson(final String url) {
     final PlaceList placeList =
         (PlaceList) json.objectFromJson(url);
     createPlaceType(placeList.getResults());
@@ -115,23 +117,27 @@ public class UpdateRestaurantScheduler {
   private void createRestaurants(final JsonPlace[] restaurantDTOS) {
     final List<PlaceDTO> restaurants = Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
-        .map(restaurant ->
-            new PlaceDTO()
-                .setFormattedAddress(restaurant.getFormattedAddress())
-                .setUserRatingsTotal(restaurant.getUserRatingsTotal())
-                .setIcon(restaurant.getIcon())
-                .setName(restaurant.getName())
-                .setOpen(restaurant.isOpen())
-                .setRating(restaurant.getRating())
-                .setTypes(
-                    placeTypeFacade.findTypesByName(Arrays.asList(restaurant.getTypes()))
-                        .stream()
-                        .map(PlaceTypeDTO::getId)
-                        .collect(Collectors.toSet()))
-        )
+        .map(this::create)
         .collect(Collectors.toList());
 
-    placeFacade.createOrUpdate(restaurants);
+    restaurants
+        .forEach(placeFacade::createOrUpdate);
+
     logger.info("create restaurants");
+  }
+
+  private PlaceDTO create(final JsonPlace json) {
+    return new PlaceDTO()
+        .setFormattedAddress(json.getFormattedAddress())
+        .setUserRatingsTotal(json.getUserRatingsTotal())
+        .setIcon(json.getIcon())
+        .setName(json.getName())
+        .setOpen(json.isOpen())
+        .setRating(json.getRating())
+        .setTypes(
+            placeTypeFacade.findTypesByName(Arrays.asList(json.getTypes()))
+                .stream()
+                .map(PlaceTypeDTO::getId)
+                .collect(Collectors.toSet()));
   }
 }

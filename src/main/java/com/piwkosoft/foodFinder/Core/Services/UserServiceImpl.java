@@ -12,6 +12,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 16.03.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -32,13 +41,13 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserEntity findByUsername(final String username) {
-    Query query = em.createQuery("FROM UserEntity ue WHERE ue.username = :username");
+    final Query query = em.createQuery("FROM UserEntity ue WHERE ue.username = :username");
     query.setParameter("username", username);
-    UserEntity userEntity;
+    UserEntity userEntity = null;
     try {
       userEntity = (UserEntity) query.getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    } catch (final NoResultException e) {
+      //TODO exception
     }
 
     return userEntity;
@@ -46,14 +55,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserEntity findById(final Long id) {
-    Query query = em.createQuery("FROM UserEntity ue WHERE ue.id = :id");
+    final Query query = em.createQuery("FROM UserEntity ue WHERE ue.id = :id");
     query.setParameter("id", id);
     return (UserEntity) query.getSingleResult();
   }
 
   @Override
   public List<RoleEntity> getRolesByUsername(final String username) {
-    Query query = em.createQuery("SELECT ue.roles FROM UserEntity ue WHERE ue.username = :username");
+    final Query query = em.createQuery("SELECT ue.roles FROM UserEntity ue WHERE ue.username = :username");
     query.setParameter("username", username);
     return (List<RoleEntity>) query.getResultList();
   }

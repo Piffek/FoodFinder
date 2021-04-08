@@ -10,25 +10,30 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 24.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Configuration
 @PropertySource("classpath:application.properties")
 public class EmailPropertyConf {
 
+  private final static String HOST = "127.0.0.1";
+  private final static int PORT = 25;
+  private final static String SMTP_AUTH_KEY = "mail.smtp.auth";
+  private final static String TLS_KEY = "mail.smtp.starttls.enable";
+
   @Bean
   @ConditionalOnProperty(name = "foodfinder.email", havingValue = "dev")
   public MailProperties mailProperties() {
-    MailProperties mailProperties = new MailProperties();
-    mailProperties.setHost("127.0.0.1");
-    mailProperties.setPort(25);
-    mailProperties.getProperties().put("mail.smtp.auth", "false");
-    mailProperties.getProperties().put("mail.smtp.starttls.enable", "false");
+    final MailProperties mailProperties = new MailProperties();
+    mailProperties.setHost(HOST);
+    mailProperties.setPort(PORT);
+    mailProperties.getProperties().put(SMTP_AUTH_KEY, "false");
+    mailProperties.getProperties().put(TLS_KEY, "false");
     return mailProperties;
   }
 

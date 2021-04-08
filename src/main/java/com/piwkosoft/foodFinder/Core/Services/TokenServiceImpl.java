@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 13.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Service
@@ -38,7 +38,7 @@ public class TokenServiceImpl implements TokenService {
 
   @Override
   public VerificationTokenEntity findByToken(final String token) {
-    Query query = em.createQuery("FROM VerificationTokenEntity vte WHERE vte.token = :token");
+    final Query query = em.createQuery("FROM VerificationTokenEntity vte WHERE vte.token = :token");
     query.setParameter("token", token);
     VerificationTokenEntity verificationTokenEntity;
     try {

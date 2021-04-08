@@ -3,7 +3,6 @@ package com.piwkosoft.foodFinder.Core.Services;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceTypeEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceTypeService;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
- * Copyright 2020 (C) Si-eCommerce sp. z o.o.
+ *
+ * Copyright 2020 (C) PiwkoSoft
  */
 @Service
 @Transactional
@@ -28,14 +27,18 @@ public class PlaceTypeServiceImpl implements PlaceTypeService {
   private EntityManager entityManager;
 
   @Override
-  public void createIfNotExist(final PlaceTypeEntity placeTypeEntity) {
-    Query query = entityManager.createQuery("SELECT pte.id FROM PlaceTypeEntity pte WHERE pte.name = :name");
-    query.setParameter("name", placeTypeEntity.getName());
+  public Long getCount(final String name) {
+    final Query query = entityManager.createQuery("SELECT COUNT(pte.id) FROM PlaceTypeEntity pte WHERE pte.name = :name");
+    query.setParameter("name", name);
 
-    if(query.getResultList().size() == 0) {
-      entityManager.persist(placeTypeEntity);
-    }
+    return (Long) query.getSingleResult();
   }
+
+  @Override
+  public void create(final PlaceTypeEntity placeTypeEntity) {
+    entityManager.persist(placeTypeEntity);
+  }
+
 
   @Override
   public PlaceTypeEntity findById(final Long id) {
@@ -51,7 +54,7 @@ public class PlaceTypeServiceImpl implements PlaceTypeService {
 
   @Override
   public PlaceTypeEntity findTypeByName(final String type) {
-    Query query = entityManager.createQuery("FROM PlaceTypeEntity pte WHERE pte.name = :name");
+    final Query query = entityManager.createQuery("FROM PlaceTypeEntity pte WHERE pte.name = :name");
     query.setParameter("name", type);
     return (PlaceTypeEntity) query.getSingleResult();
   }

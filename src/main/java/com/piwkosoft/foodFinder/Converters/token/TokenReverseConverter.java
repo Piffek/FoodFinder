@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 17.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
@@ -26,8 +26,8 @@ public class TokenReverseConverter implements ReverseConverter<VerificationToken
   }
 
   @Override
-  public VerificationTokenEntity convert(VerificationTokenDTO verificationTokenDTO,
-      VerificationTokenEntity verificationTokenEntity) {
+  public VerificationTokenEntity convert(final VerificationTokenDTO verificationTokenDTO,
+      final VerificationTokenEntity verificationTokenEntity) {
     final UserEntity userEntity = userService.findById(verificationTokenDTO.getId());
 
     verificationTokenEntity.setId(verificationTokenDTO.getId());

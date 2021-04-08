@@ -19,11 +19,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 16.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Service
@@ -48,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     final List<RoleEntity> roles = userService.getRolesByUsername(username);
 
-    List<GrantedAuthority> authorities = roles.stream()
+    final List<GrantedAuthority> authorities = roles.stream()
         .map(RoleEntity::getName)
         .map(Objects::toString)
         .map(SimpleGrantedAuthority::new)

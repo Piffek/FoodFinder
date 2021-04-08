@@ -14,8 +14,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 16.03.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Component
 public class OnRegisterationListener implements ApplicationListener<OnRegisterationEvent> {
+
   private static final Logger logger = LoggerFactory.getLogger(OnRegisterationListener.class);
 
   private final EmailService emailService;
@@ -39,9 +49,9 @@ public class OnRegisterationListener implements ApplicationListener<OnRegisterat
     logger.debug("created user {}", userDTO.getUsername());
 
     final String email = userDTO.getEmailAdress();
-    Map<String, Object> params = new HashMap<>();
+    final Map<String, Object> params = new HashMap<>();
     params.put("name", email);
-    params.put("activate_url", Constranits.BASIC_URL+"/activate-token/"+ verificationTokenDTO.getToken());
+    params.put("activate_url", Constranits.BASIC_URL + "/activate-token/" + verificationTokenDTO.getToken());
 
     emailService.sendEmail(email, params, "registration", onRegisterEvent.getLocale());
   }
