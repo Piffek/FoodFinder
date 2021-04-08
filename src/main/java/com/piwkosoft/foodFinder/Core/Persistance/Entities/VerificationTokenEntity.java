@@ -22,6 +22,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.Date;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 01.04.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Getter
 @Setter
 @Entity
@@ -29,35 +38,35 @@ import java.util.Date;
 @Table(name = "verification_token")
 public class VerificationTokenEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String token;
+  private String token;
 
-    private boolean used;
+  private boolean used;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date tokenExpiryDate; //current + 30m
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date tokenExpiryDate; //current + 30m
 
-    @OneToOne(mappedBy = "activatedToken", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserEntity user;
+  @OneToOne(mappedBy = "activatedToken", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private UserEntity user;
 
-    @PrePersist
-    private void token() {
-        this.used = false;
-        setToken();
-        setExpirationTokenDate();
-    }
+  @PrePersist
+  private void token() {
+    this.used = false;
+    setToken();
+    setExpirationTokenDate();
+  }
 
-    private void setToken() {
-        this.token = UUID.randomUUID().toString();
-    }
+  private void setToken() {
+    this.token = UUID.randomUUID().toString();
+  }
 
-    private void setExpirationTokenDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Timestamp(calendar.getTime().getTime()));
-        calendar.add(Calendar.MINUTE, Constranits.EXPIRATION_TOKEN_TIME);
-        this.tokenExpiryDate = new Date(calendar.getTime().getTime());
-    }
+  private void setExpirationTokenDate() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Timestamp(calendar.getTime().getTime()));
+    calendar.add(Calendar.MINUTE, Constranits.EXPIRATION_TOKEN_TIME);
+    this.tokenExpiryDate = new Date(calendar.getTime().getTime());
+  }
 }

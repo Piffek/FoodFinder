@@ -12,18 +12,17 @@ import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 13.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
 public class TokenFacadeImpl implements TokenFacade {
 
-  private static final Logger logger = LoggerFactory.getLogger(
-      TokenFacadeImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(TokenFacadeImpl.class);
 
   private final TokenService tokenService;
   private final Converter<VerificationTokenDTO, VerificationTokenEntity> converter;
@@ -39,7 +38,7 @@ public class TokenFacadeImpl implements TokenFacade {
 
   @Override
   public VerificationTokenDTO generateSecretToken() {
-    VerificationTokenEntity verificationTokenEntity = tokenService.generateSecretToken();
+    final VerificationTokenEntity verificationTokenEntity = tokenService.generateSecretToken();
 
     logger.debug("create token {}", verificationTokenEntity.getToken());
     return converter.convert(verificationTokenEntity);
@@ -47,7 +46,7 @@ public class TokenFacadeImpl implements TokenFacade {
 
   @Override
   public VerificationTokenDTO getByToken(final String token) {
-    VerificationTokenEntity verificationTokenEntity = tokenService.findByToken(token);
+    final VerificationTokenEntity verificationTokenEntity = tokenService.findByToken(token);
     if (verificationTokenEntity == null) {
       return null;
     }
@@ -56,7 +55,7 @@ public class TokenFacadeImpl implements TokenFacade {
   }
 
   @Override
-  public void setAsUsed(VerificationTokenDTO verificationTokenDTO) {
+  public void setAsUsed(final VerificationTokenDTO verificationTokenDTO) {
     verificationTokenDTO.setUsed(true);
 
     final VerificationTokenEntity verificationTokenEntity = tokenService

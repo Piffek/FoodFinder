@@ -7,16 +7,22 @@ import java.util.stream.Stream;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) Si-eCommerce sp. z o.o.
  */
 public interface PlaceTypeService {
-  void createIfNotExist(PlaceTypeEntity placeTypeEntity);
+
+  Long getCount(String name);
+
+  void create(PlaceTypeEntity placeTypeEntity);
+
   PlaceTypeEntity findById(Long id);
+
   List<PlaceTypeEntity> findTypesByName(List<String> types);
+
   PlaceTypeEntity findTypeByName(String type);
 }

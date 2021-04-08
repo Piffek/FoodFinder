@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 01.04.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) Si-eCommerce sp. z o.o.
  */
 @Service
@@ -26,7 +26,7 @@ public class CountryServiceImpl implements CountryService {
 
   @Override
   public List<CountryEntity> getAllCountries() {
-    Query query = entityManager.createQuery("FROM CountryEntity");
+    final Query query = entityManager.createQuery("FROM CountryEntity");
     return query.getResultList();
   }
 }

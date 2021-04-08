@@ -8,15 +8,16 @@ import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
@@ -24,7 +25,6 @@ public class PlaceFacadeImpl implements PlaceFacade {
 
   private final ReverseConverter<PlaceEntity, PlaceDTO> reverseConverter;
   private final Converter<PlaceDTO, PlaceEntity> converter;
-
   private final PlaceService placeService;
 
   public PlaceFacadeImpl(
@@ -37,18 +37,15 @@ public class PlaceFacadeImpl implements PlaceFacade {
   }
 
   @Override
-  public void createOrUpdate(final List<PlaceDTO> placeDTOS) {
-    placeDTOS.stream()
-        .map(restaurant -> placeService
-            .findByNameAndAdress(restaurant.getName(), restaurant.getFormattedAddress()))
-        .filter(Objects::nonNull)
-        .forEach(placeService::update);
+  public void createOrUpdate(final PlaceDTO placeDTO) {
+    final PlaceEntity place = placeService.findByNameAndAdress(placeDTO.getName(), placeDTO.getFormattedAddress());
 
-    placeDTOS.stream()
-        .filter(restaurant -> placeService
-            .findByNameAndAdress(restaurant.getName(), restaurant.getFormattedAddress()) == null)
-        .map(restaurant -> reverseConverter.convert(restaurant, new PlaceEntity()))
-        .forEach(placeService::create);
+    if(place == null) {
+      final PlaceEntity placeToCreate = reverseConverter.convert(placeDTO, new PlaceEntity());
+      placeService.create(placeToCreate);
+    }
+
+    placeService.update(place);
   }
 
   @Override

@@ -12,19 +12,28 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 01.04.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) PiwkoSoft.
+ */
 @Getter
 @Setter
 @Entity
 @Table(name = "nuisance")
 public class NuisanceEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private UserEntity userEntity;
 }

@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 20.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component

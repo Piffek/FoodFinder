@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Service
@@ -33,8 +33,9 @@ public class PlaceServiceImpl implements PlaceService {
   }
 
   @Override
-  public void update(final PlaceEntity placeEntity) {
+  public PlaceEntity update(final PlaceEntity placeEntity) {
     entityManager.merge(placeEntity);
+    return placeEntity;
   }
 
   @Override
@@ -44,16 +45,17 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   public PlaceEntity findByNameAndAdress(final String name, final String adress) {
-    Query query = entityManager.createQuery("FROM PlaceEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
+    final Query query = entityManager
+        .createQuery("FROM PlaceEntity re WHERE re.name = :name AND re.formattedAdress = :formattedAdress");
     query.setParameter("name", name);
     query.setParameter("formattedAdress", adress);
 
-    PlaceEntity result;
+    PlaceEntity result = null;
 
     try {
       result = (PlaceEntity) query.getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    } catch (final NoResultException e) {
+      //TODO make logger
     }
 
     return result;
@@ -61,7 +63,7 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   public List<PlaceEntity> findAllPlaces() {
-    Query query = entityManager.createQuery("FROM PlaceEntity");
+    final Query query = entityManager.createQuery("FROM PlaceEntity");
     return query.getResultList();
   }
 }

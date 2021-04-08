@@ -14,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 29.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
@@ -34,10 +34,7 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
 
   @Override
   public JsonPlace.PlaceList objectFromJson(final String url) {
-    return restTemplate.getForObject(
-        url,
-        JsonPlace.PlaceList.class
-    );
+    return restTemplate.getForObject(url, JsonPlace.PlaceList.class);
   }
 
   @Override

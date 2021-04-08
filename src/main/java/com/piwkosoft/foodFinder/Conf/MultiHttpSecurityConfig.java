@@ -12,7 +12,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+/**
+ * Project: FoodFinder
+ *
+ * Created on: 28.03.2020
+ *
+ * Author    : Patryk Piwko
+ *
+ * Copyright 2020 (C) Si-eCommerce sp. z o.o.
+ */
 @Configuration
 @EnableWebSecurity
 public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter  {

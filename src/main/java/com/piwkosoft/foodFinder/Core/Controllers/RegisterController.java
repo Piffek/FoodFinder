@@ -98,7 +98,7 @@ public class RegisterController {
       return modelAndView;
     }
 
-    AccountPlanDTO accountPlanDTO = accountFacade
+    final AccountPlanDTO accountPlanDTO = accountFacade
         .findAccountPlanByName(AccountPlan.lookup(userRegistrationForm.getAccountPlan()));
 
     if (accountPlanDTO == null) {

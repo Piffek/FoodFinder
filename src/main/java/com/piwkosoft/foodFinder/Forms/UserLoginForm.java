@@ -7,11 +7,11 @@ import lombok.Setter;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 19.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Getter

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 17.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Service
@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public RoleEntity findIdByRole(final Role roleName) {
-    Query query = em.createQuery("FROM RoleEntity re WHERE re.name = :name");
+    final Query query = em.createQuery("FROM RoleEntity re WHERE re.name = :name");
     query.setParameter("name", roleName);
     RoleEntity role;
     try {

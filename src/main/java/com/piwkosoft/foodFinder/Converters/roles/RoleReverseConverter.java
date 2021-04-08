@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 17.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) Si-eCommerce sp. z o.o.
  */
 @Component
@@ -29,10 +29,14 @@ public class RoleReverseConverter implements ReverseConverter<RoleEntity, RoleDT
 
   @Override
   public RoleEntity convert(final RoleDTO roleDTO, final RoleEntity roleEntity) {
-    Set<UserEntity> userEntities = roleDTO.getUsers().stream().map(userService::findById).collect(
-        Collectors.toSet());
     roleEntity.setName(roleDTO.getName());
-    roleEntity.setUser(userEntities);
+    roleEntity.setUser(getUsersByIds(roleDTO.getUsers()));
     return roleEntity;
+  }
+
+  private Set<UserEntity> getUsersByIds(final Set<Long> ids) {
+    return ids.stream()
+        .map(userService::findById)
+        .collect(Collectors.toSet());
   }
 }

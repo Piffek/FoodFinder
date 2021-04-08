@@ -8,16 +8,15 @@ import org.springframework.stereotype.Component;
 
 /**
  * Project: FoodFinder
- * <p>
+ *
  * Created on: 28.03.2020
- * <p>
+ *
  * Author    : Patryk Piwko
- * <p>
+ *
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class PlaceTypeReverseConverter implements ReverseConverter<PlaceTypeEntity, PlaceTypeDTO>
-{
+public class PlaceTypeReverseConverter implements ReverseConverter<PlaceTypeEntity, PlaceTypeDTO> {
 
   private final PlaceService placeService;
 
@@ -28,7 +27,6 @@ public class PlaceTypeReverseConverter implements ReverseConverter<PlaceTypeEnti
 
   @Override
   public PlaceTypeEntity convert(final PlaceTypeDTO placeTypeDTO, final PlaceTypeEntity placeTypeEntity) {
-
     return placeTypeEntity
         .setName(placeTypeDTO.getName());
   }
