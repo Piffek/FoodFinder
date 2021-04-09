@@ -42,11 +42,6 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
     return places.getNextPageToken();
   }
 
-  @Override
-  public boolean hasNextPage(final String token) {
-    return token != null;
-  }
-
   @Getter
   @Setter
   @Accessors(chain = true)
