@@ -55,7 +55,7 @@ public class UpdateRestaurantScheduler {
     this.restTemplate = restTemplate;
   }
 
-  @Scheduled(cron = "${cron.job.restaurant.download.scheduled.time}")
+  @Scheduled(cron = "${cronjob.restaurant.download.scheduled.time}")
   public void updateRestaurant() {
     final CustomJson json = new PlaceJson(restTemplate);
 
