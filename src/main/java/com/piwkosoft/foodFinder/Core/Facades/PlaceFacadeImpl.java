@@ -40,12 +40,12 @@ public class PlaceFacadeImpl implements PlaceFacade {
   public void createOrUpdate(final PlaceDTO placeDTO) {
     final PlaceEntity place = placeService.findByNameAndAdress(placeDTO.getName(), placeDTO.getFormattedAddress());
 
-    if(place == null) {
+    if (place == null) {
       final PlaceEntity placeToCreate = reverseConverter.convert(placeDTO, new PlaceEntity());
       placeService.create(placeToCreate);
+    } else {
+      placeService.update(place);
     }
-
-    placeService.update(place);
   }
 
   @Override

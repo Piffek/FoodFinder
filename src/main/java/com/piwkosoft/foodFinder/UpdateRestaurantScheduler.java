@@ -65,7 +65,7 @@ public class UpdateRestaurantScheduler {
   //TODO in many thread
   @Scheduled(cron = Constranits.RESTAURANT_DOWNLOAD_CRON)
   public void updateRestaurant() {
-
+    logger.info("inserting restaurants for url starting...");
     final List<String> cities = countryFacade.getAllCountries()
         .stream()
         .map(CountryDTO::getName)
@@ -73,15 +73,15 @@ public class UpdateRestaurantScheduler {
 
     cities
         .forEach(city -> this.createAndPaging(PlaceJson.BASE_URL + city));
+    logger.info("inserting restaurants for url ending...");
   }
 
   private synchronized void createAndPaging(final String apiUrl) {
-    final PlaceList placeList = createRestaurantWithPlacesFromJson(
-        apiUrl);
+    final PlaceList placeList = createRestaurantWithPlacesFromJson(apiUrl);
 
     String nextPageToken = placeList.getNextPageToken();
 
-    while (json.hasNextPage(nextPageToken)) {
+    while (nextPageToken != null) {
       try {
         wait(5000);
       } catch (final InterruptedException e) {
@@ -111,7 +111,6 @@ public class UpdateRestaurantScheduler {
         .stream()
         .map(type -> new PlaceTypeDTO().setName(type))
         .forEach(placeTypeFacade::createIfNotExist);
-    logger.info("create Place Types");
   }
 
   private void createRestaurants(final JsonPlace[] restaurantDTOS) {
@@ -122,8 +121,6 @@ public class UpdateRestaurantScheduler {
 
     restaurants
         .forEach(placeFacade::createOrUpdate);
-
-    logger.info("create restaurants");
   }
 
   private PlaceDTO create(final JsonPlace json) {

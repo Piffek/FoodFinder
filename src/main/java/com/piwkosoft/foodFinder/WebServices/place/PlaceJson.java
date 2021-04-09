@@ -42,16 +42,10 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
     return places.getNextPageToken();
   }
 
-  @Override
-  public boolean hasNextPage(final String token) {
-    return token != null;
-  }
-
   @Getter
-  @Setter
   @Accessors(chain = true)
   @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-  public static class JsonPlace {
+  public final static class JsonPlace {
 
     private String name;
     private String[] types;
@@ -62,9 +56,8 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
     private BigDecimal userRatingsTotal;
 
     @Getter
-    @Setter
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class PlaceList {
+    public final static class PlaceList {
 
       private String nextPageToken;
       private JsonPlace[] results;
