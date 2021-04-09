@@ -1,6 +1,5 @@
 package com.piwkosoft.foodFinder;
 
-import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.CountryFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceTypeFacade;
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
@@ -13,10 +12,12 @@ import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.JsonPlaceList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -31,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
+@Scope("prototype")
 public class UpdateRestaurantScheduler {
 
   private static final Logger logger = LoggerFactory.getLogger(UpdateRestaurantScheduler.class);
@@ -53,8 +55,7 @@ public class UpdateRestaurantScheduler {
     this.restTemplate = restTemplate;
   }
 
-  //TODO in many thread
-  @Scheduled(cron = Constranits.RESTAURANT_DOWNLOAD_CRON)
+  @Scheduled(cron = "${cron.job.restaurant.download.scheduled.time}")
   public void updateRestaurant() {
     final CustomJson json = new PlaceJson(restTemplate);
 
@@ -87,14 +88,14 @@ public class UpdateRestaurantScheduler {
     }
   }
 
-  private JsonPlaceList createRestaurantWithPlaces(final String url, final CustomJson json) {
+  private synchronized JsonPlaceList createRestaurantWithPlaces(final String url, final CustomJson json) {
     final JsonPlaceList jsonPlaceListByUrl = (JsonPlaceList) json.objectFromJson(url);
     createPlaceType(jsonPlaceListByUrl.getResults());
     createRestaurants(jsonPlaceListByUrl.getResults());
     return jsonPlaceListByUrl;
   }
 
-  private void createPlaceType(final JsonPlace[] restaurantDTOS) {
+  private synchronized void createPlaceType(final JsonPlace[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .flatMap(restaurant -> Stream.of(restaurant.getTypes()))
@@ -104,14 +105,21 @@ public class UpdateRestaurantScheduler {
         .forEach(placeTypeFacade::createIfNotExist);
   }
 
-  private void createRestaurants(final JsonPlace[] restaurantDTOS) {
+  private synchronized void createRestaurants(final JsonPlace[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
         .map(this::create)
         .forEach(placeFacade::createOrUpdate);
   }
 
-  private PlaceDTO create(final JsonPlace json) {
+  private synchronized PlaceDTO create(final JsonPlace json) {
+    final Set<Long> placeTypeIds =
+        placeTypeFacade.findTypesByName(Arrays.asList(json.getTypes()))
+            .stream()
+            .filter(Objects::nonNull)
+            .map(PlaceTypeDTO::getId)
+            .collect(Collectors.toSet());
+
     return new PlaceDTO()
         .setFormattedAddress(json.getFormattedAddress())
         .setUserRatingsTotal(json.getUserRatingsTotal())
@@ -119,10 +127,6 @@ public class UpdateRestaurantScheduler {
         .setName(json.getName())
         .setOpen(json.isOpen())
         .setRating(json.getRating())
-        .setTypes(
-            placeTypeFacade.findTypesByName(Arrays.asList(json.getTypes()))
-                .stream()
-                .map(PlaceTypeDTO::getId)
-                .collect(Collectors.toSet()));
+        .setTypes(placeTypeIds);
   }
 }
