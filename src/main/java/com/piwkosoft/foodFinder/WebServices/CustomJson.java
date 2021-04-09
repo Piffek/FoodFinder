@@ -12,6 +12,4 @@ package com.piwkosoft.foodFinder.WebServices;
 public interface CustomJson<JSON_OBJECT> {
 
   JSON_OBJECT objectFromJson(String url);
-
-  String returnNextPageToken(JSON_OBJECT places);
 }

@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.WebServices.CustomJson;
-import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
+import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.JsonPlaceList;
 import java.math.BigDecimal;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Component
-public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
+public class PlaceJson implements CustomJson<JsonPlaceList> {
 
   public static String BASE_URL = Constranits.PLACE_API_URL + "&query=restaurants+in+";
 
@@ -33,13 +32,8 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
   }
 
   @Override
-  public JsonPlace.PlaceList objectFromJson(final String url) {
-    return restTemplate.getForObject(url, JsonPlace.PlaceList.class);
-  }
-
-  @Override
-  public String returnNextPageToken(final JsonPlace.PlaceList places) {
-    return places.getNextPageToken();
+  public JsonPlaceList objectFromJson(final String url) {
+    return restTemplate.getForObject(url, JsonPlaceList.class);
   }
 
   @Getter
@@ -57,7 +51,7 @@ public class PlaceJson implements CustomJson<JsonPlace.PlaceList> {
 
     @Getter
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public final static class PlaceList {
+    public final static class JsonPlaceList {
 
       private String nextPageToken;
       private JsonPlace[] results;
