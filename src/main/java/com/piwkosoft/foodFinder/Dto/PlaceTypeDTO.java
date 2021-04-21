@@ -21,5 +21,5 @@ public class PlaceTypeDTO {
 
   public Long id;
   public String name;
-  public Set<Long> restaurants;
+  public Set<Long> places;
 }
