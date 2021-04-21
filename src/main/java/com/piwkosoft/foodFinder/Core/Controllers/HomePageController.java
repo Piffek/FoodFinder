@@ -1,7 +1,6 @@
 package com.piwkosoft.foodFinder.Core.Controllers;
 
 import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
-import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
 import com.piwkosoft.foodFinder.Dto.PlaceDTO;
 import java.util.Collections;
 import java.util.List;
