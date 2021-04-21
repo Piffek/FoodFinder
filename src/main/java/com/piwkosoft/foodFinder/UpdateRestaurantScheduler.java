@@ -10,7 +10,10 @@ import com.piwkosoft.foodFinder.WebServices.CustomJson;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.JsonPlaceList;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,10 +72,12 @@ public class UpdateRestaurantScheduler {
     logger.info("inserting restaurants for url ending...");
   }
 
-  private synchronized void createAndPaging(final String apiUrl, final CustomJson json) {
+  public synchronized List<JsonPlaceList> createAndPaging(final String apiUrl, final CustomJson json) {
     final JsonPlaceList jsonPlaceList = createRestaurantWithPlaces(apiUrl, json);
-
     String nextPageToken = jsonPlaceList.getNextPageToken();
+
+    final List<JsonPlaceList> placesPerPage = new ArrayList<>();
+    placesPerPage.add(jsonPlaceList);
 
     while (nextPageToken != null) {
       try {
@@ -85,7 +90,10 @@ public class UpdateRestaurantScheduler {
       final JsonPlaceList restaurants = createRestaurantWithPlaces(placeUrl, json);
 
       nextPageToken = restaurants.getNextPageToken();
+      placesPerPage.add(restaurants);
     }
+
+    return placesPerPage;
   }
 
   private synchronized JsonPlaceList createRestaurantWithPlaces(final String url, final CustomJson json) {
