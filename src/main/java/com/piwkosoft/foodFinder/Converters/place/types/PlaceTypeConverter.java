@@ -19,8 +19,9 @@ public class PlaceTypeConverter implements Converter<PlaceTypeDTO, PlaceTypeEnti
 
   @Override
   public PlaceTypeDTO convert(final PlaceTypeEntity placeTypeEntity) {
-    return new PlaceTypeDTO()
-        .setId(placeTypeEntity.getId())
-        .setName(placeTypeEntity.getName());
+    return PlaceTypeDTO.builder()
+        .id(placeTypeEntity.getId())
+        .name(placeTypeEntity.getName())
+        .build();
   }
 }

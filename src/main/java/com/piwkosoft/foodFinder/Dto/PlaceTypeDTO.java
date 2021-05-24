@@ -1,6 +1,7 @@
 package com.piwkosoft.foodFinder.Dto;
 
 import java.util.Set;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,7 +16,7 @@ import lombok.experimental.Accessors;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Getter
-@Setter
+@Builder
 @Accessors(chain = true)
 public class PlaceTypeDTO {
 

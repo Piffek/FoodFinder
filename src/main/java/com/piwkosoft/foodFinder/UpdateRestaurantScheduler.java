@@ -12,7 +12,6 @@ import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.JsonPlaceList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -109,32 +108,36 @@ public class UpdateRestaurantScheduler {
         .flatMap(restaurant -> Stream.of(restaurant.getTypes()))
         .collect(Collectors.toSet())
         .stream()
-        .map(type -> new PlaceTypeDTO().setName(type))
+        .map(type ->  PlaceTypeDTO.builder().name(type).build())
         .forEach(placeTypeFacade::createIfNotExist);
   }
 
   private synchronized void createRestaurants(final JsonPlace[] restaurantDTOS) {
     Arrays.stream(restaurantDTOS)
         .filter(Objects::nonNull)
-        .map(this::create)
-        .forEach(placeFacade::createOrUpdate);
+        .forEach(this::createPlace);
   }
 
-  private synchronized PlaceDTO create(final JsonPlace json) {
-    final Set<Long> placeTypeIds =
-        placeTypeFacade.findTypesByName(Arrays.asList(json.getTypes()))
-            .stream()
-            .filter(Objects::nonNull)
-            .map(PlaceTypeDTO::getId)
-            .collect(Collectors.toSet());
+  private synchronized void createPlace(final JsonPlace json) {
+    final PlaceDTO placeDTO =
+        PlaceDTO.builder()
+            .formattedAddress(json.getFormattedAddress())
+            .userRatingsTotal(json.getUserRatingsTotal())
+            .icon(json.getIcon())
+            .name(json.getName())
+            .isOpen(json.isOpen())
+            .rating(json.getRating())
+            .types(findPlaceTypesIds(json))
+            .build();
 
-    return new PlaceDTO()
-        .setFormattedAddress(json.getFormattedAddress())
-        .setUserRatingsTotal(json.getUserRatingsTotal())
-        .setIcon(json.getIcon())
-        .setName(json.getName())
-        .setOpen(json.isOpen())
-        .setRating(json.getRating())
-        .setTypes(placeTypeIds);
+    placeFacade.createOrUpdate(placeDTO);
+  }
+
+  private Set<Long> findPlaceTypesIds(final JsonPlace json) {
+    return placeTypeFacade.findTypesByName(Arrays.asList(json.getTypes()))
+        .stream()
+        .filter(Objects::nonNull)
+        .map(PlaceTypeDTO::getId)
+        .collect(Collectors.toSet());
   }
 }

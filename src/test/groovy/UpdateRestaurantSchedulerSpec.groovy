@@ -8,6 +8,7 @@ import com.piwkosoft.foodFinder.WebServices.CustomJson
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class UpdateRestaurantSchedulerSpec extends Specification {
 
@@ -21,8 +22,10 @@ class UpdateRestaurantSchedulerSpec extends Specification {
         def country = "Wroclaw"
 
         and: "create countries"
-        CountryDTO countryDTO = new CountryDTO()
-        countryDTO.setName(country)
+        CountryDTO countryDTO = CountryDTO
+                .builder()
+                .name(country)
+                .build();
 
         and: "create list from countries"
         def countries = [countryDTO] as ArrayList
@@ -32,10 +35,12 @@ class UpdateRestaurantSchedulerSpec extends Specification {
 
         and: "create place types"
         def placesIds = [1] as Set
-        PlaceTypeDTO placeTypeDTO = new PlaceTypeDTO()
-        placeTypeDTO.setName("custom restaurant")
-        placeTypeDTO.setPlaces(placesIds)
-        placeTypeDTO.setId(1)
+        PlaceTypeDTO placeTypeDTO = PlaceTypeDTO
+                .builder()
+                .name("custom restaurant")
+                .places(placesIds)
+                .id(1)
+                .build()
         def places = [placeTypeDTO] as List
 
         and:
@@ -43,7 +48,7 @@ class UpdateRestaurantSchedulerSpec extends Specification {
         placeTypeFacade.findTypesByName(_) >> places
 
         and: "create json object"
-        final CustomJson json = new PlaceJson(restTemplate);
+        final CustomJson json = new PlaceJson(restTemplate)
 
         and: "create UpdateRestaurantScheduler"
         UpdateRestaurantScheduler updateRestaurantScheduler =
@@ -55,6 +60,4 @@ class UpdateRestaurantSchedulerSpec extends Specification {
         then:
         listOnPages.size() != 0
     }
-
-
 }

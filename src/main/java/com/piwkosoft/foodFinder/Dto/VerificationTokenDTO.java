@@ -1,6 +1,7 @@
 package com.piwkosoft.foodFinder.Dto;
 
 import java.util.Date;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,6 +17,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
+@Builder
 @Accessors(chain = true)
 public class VerificationTokenDTO {
 
@@ -23,5 +25,5 @@ public class VerificationTokenDTO {
   private String token;
   private Date tokenExpiryDate; //current + 30m
   private Long user;
-  private boolean used;
+  private boolean isUsed;
 }

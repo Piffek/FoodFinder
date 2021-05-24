@@ -22,10 +22,10 @@ public class RoleConverter implements Converter<RoleDTO, RoleEntity> {
 
   @Override
   public RoleDTO convert(final RoleEntity roleEntity) {
-    final RoleDTO roleDTO = new RoleDTO();
-    roleDTO.setName(roleEntity.getName());
-    roleDTO.setUsers(getUserIdsAssignedToRole(roleEntity));
-    return roleDTO;
+    return RoleDTO.builder()
+        .name(roleEntity.getName())
+        .users(getUserIdsAssignedToRole(roleEntity))
+        .build();
   }
 
   private Set<Long> getUserIdsAssignedToRole(final RoleEntity role) {

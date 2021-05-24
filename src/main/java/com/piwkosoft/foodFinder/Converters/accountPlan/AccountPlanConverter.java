@@ -22,12 +22,14 @@ public class AccountPlanConverter implements Converter<AccountPlanDTO, AccountPl
 
   @Override
   public AccountPlanDTO convert(AccountPlanEntity accountPlanEntity) {
-    return new AccountPlanDTO()
-        .setId(accountPlanEntity.getId())
-        .setAccountPlan(accountPlanEntity.getAccountPlan())
-        .setUsers(accountPlanEntity.getUsers().stream()
+    return AccountPlanDTO
+        .builder()
+        .id(accountPlanEntity.getId())
+        .accountPlan(accountPlanEntity.getAccountPlan())
+        .users(accountPlanEntity.getUsers().stream()
             .filter(Objects::nonNull)
             .map(UserEntity::getId)
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toSet()))
+        .build();
   }
 }

@@ -2,6 +2,7 @@ package com.piwkosoft.foodFinder.Dto;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * Copyright 2020 (C) PiwkoSoft.
  */
 @Getter
-@Setter
+@Builder
 @Accessors(chain = true)
 public class PlaceDTO {
 
@@ -27,5 +28,7 @@ public class PlaceDTO {
   private boolean isOpen;
   private Double rating;
   private BigDecimal userRatingsTotal;
+
+
 
 }

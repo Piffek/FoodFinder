@@ -19,11 +19,12 @@ public class TokenConverter implements Converter<VerificationTokenDTO, Verificat
 
   @Override
   public VerificationTokenDTO convert(VerificationTokenEntity verificationTokenEntity) {
-    return new VerificationTokenDTO()
-        .setTokenExpiryDate(verificationTokenEntity.getTokenExpiryDate())
-        .setToken(verificationTokenEntity.getToken())
-        .setId(verificationTokenEntity.getId())
-        .setUsed(verificationTokenEntity.isUsed())
-        .setUser(verificationTokenEntity.getUser() != null ? verificationTokenEntity.getUser().getId() : null);
+    return VerificationTokenDTO.builder()
+        .tokenExpiryDate(verificationTokenEntity.getTokenExpiryDate())
+        .token(verificationTokenEntity.getToken())
+        .id(verificationTokenEntity.getId())
+        .isUsed(verificationTokenEntity.isUsed())
+        .user(verificationTokenEntity.getUser() != null ? verificationTokenEntity.getUser().getId() : null)
+        .build();
   }
 }

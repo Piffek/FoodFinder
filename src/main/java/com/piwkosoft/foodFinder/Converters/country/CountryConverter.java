@@ -19,6 +19,9 @@ public class CountryConverter implements Converter<CountryDTO, CountryEntity> {
 
   @Override
   public CountryDTO convert(final CountryEntity countryEntity) {
-    return new CountryDTO().setName(countryEntity.getName());
+    return CountryDTO
+        .builder()
+        .name(countryEntity.getName())
+        .build();
   }
 }

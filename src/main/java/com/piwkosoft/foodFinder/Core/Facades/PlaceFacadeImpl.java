@@ -7,8 +7,6 @@ import com.piwkosoft.foodFinder.Core.Facades.Interfaces.PlaceFacade;
 import com.piwkosoft.foodFinder.Core.Persistance.Entities.PlaceEntity;
 import com.piwkosoft.foodFinder.Core.Services.Interfaces.PlaceService;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**

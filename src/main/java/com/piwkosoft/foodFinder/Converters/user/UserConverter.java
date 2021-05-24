@@ -21,17 +21,19 @@ public class UserConverter implements Converter<UserDTO, UserEntity> {
 
   @Override
   public UserDTO convert(final UserEntity userEntity) {
-    return new UserDTO()
-        .setId(userEntity.getId())
-        .setPassword(userEntity.getPassword())
-        .setEmailAdress(userEntity.getEmailAdress())
-        .setUsername(userEntity.getUsername())
-        .setCity(userEntity.getCity())
-        .setAccountPlan(userEntity.getAccountPlan().getId())
-        .setActivatedToken(userEntity.getActivatedToken().getId())
-        .setRoles(userEntity.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet()))
-        .setEnabled(userEntity.isEnabled())
-        .setCreatedDate(userEntity.getCreatedDate())
-        .setUpdatedDate(userEntity.getUpdatedDate());
+    return UserDTO
+        .builder()
+        .id(userEntity.getId())
+        .password(userEntity.getPassword())
+        .emailAdress(userEntity.getEmailAdress())
+        .username(userEntity.getUsername())
+        .city(userEntity.getCity())
+        .accountPlan(userEntity.getAccountPlan().getId())
+        .activatedToken(userEntity.getActivatedToken().getId())
+        .roles(userEntity.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet()))
+        .enabled(userEntity.isEnabled())
+        .createdDate(userEntity.getCreatedDate())
+        .updatedDate(userEntity.getUpdatedDate())
+        .build();
   }
 }

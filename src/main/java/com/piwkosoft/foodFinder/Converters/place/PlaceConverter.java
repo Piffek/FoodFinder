@@ -28,13 +28,14 @@ public class PlaceConverter implements Converter<PlaceDTO, PlaceEntity> {
         .map(PlaceTypeEntity::getId)
         .collect(Collectors.toSet());
 
-    return new PlaceDTO()
-        .setFormattedAddress(placeEntity.getFormattedAdress())
-        .setName(placeEntity.getName())
-        .setTypes(typesId)
-        .setOpen(placeEntity.isOpen())
-        .setIcon(placeEntity.getIcon())
-        .setRating(placeEntity.getRating())
-        .setUserRatingsTotal(placeEntity.getUserRatingsTotal());
+    return PlaceDTO.builder()
+        .formattedAddress(placeEntity.getFormattedAdress())
+        .name(placeEntity.getName())
+        .types(typesId)
+        .isOpen(placeEntity.isOpen())
+        .icon(placeEntity.getIcon())
+        .rating(placeEntity.getRating())
+        .userRatingsTotal(placeEntity.getUserRatingsTotal())
+        .build();
   }
 }

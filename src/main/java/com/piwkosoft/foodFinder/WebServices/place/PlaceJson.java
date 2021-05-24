@@ -6,6 +6,7 @@ import com.piwkosoft.foodFinder.Core.Constranits;
 import com.piwkosoft.foodFinder.WebServices.CustomJson;
 import com.piwkosoft.foodFinder.WebServices.place.PlaceJson.JsonPlace.JsonPlaceList;
 import java.math.BigDecimal;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;

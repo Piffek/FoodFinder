@@ -121,13 +121,13 @@ public class RegisterController {
     final RoleEntity roleEntity = roleService.findIdByRole(Role.USER);
 
     logger.debug("creating user {} with role {}", userRegistrationForm.getEmailAdress(), roleEntity.getName());
-    UserDTO userDTO = new UserDTO();
-    userDTO.setCity(userRegistrationForm.getCity());
-    userDTO.setEmailAdress(userRegistrationForm.getEmailAdress());
-    userDTO.setUsername(userRegistrationForm.getEmailAdress());
-    userDTO.setPassword(hashedPassword);
-    userDTO.setAccountPlan(accountPlanDTO.getId());
-    userDTO.setRoles(roleEntity != null ? Collections.singleton(roleEntity.getId()) : null);
-    return userDTO;
+    return UserDTO.builder()
+        .city(userRegistrationForm.getCity())
+        .emailAdress(userRegistrationForm.getEmailAdress())
+        .username(userRegistrationForm.getEmailAdress())
+        .password(hashedPassword)
+        .accountPlan(accountPlanDTO.getId())
+        .roles(Collections.singleton(roleEntity.getId()))
+        .build();
   }
 }

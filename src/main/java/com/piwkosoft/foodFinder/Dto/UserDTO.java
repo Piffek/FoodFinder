@@ -1,6 +1,7 @@
 package com.piwkosoft.foodFinder.Dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -19,6 +20,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Builder
 @Accessors(chain = true)
 public class UserDTO {
 
